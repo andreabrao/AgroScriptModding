@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Case IH Axial Flow</title>
+  <desc id="desc">Miniatura realista de colheitadeira vermelha com plataforma frontal.</desc>
+  <defs>
+    <linearGradient id="red" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#d63a2f"/>
+      <stop offset=".62" stop-color="#8f1f1c"/>
+      <stop offset="1" stop-color="#3b1010"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" x2="1">
+      <stop offset="0" stop-color="#a6c8ce"/>
+      <stop offset="1" stop-color="#45616a"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="10" fill="#111719"/>
+  <path d="M18 169h324" stroke="#2d3437" stroke-width="10" stroke-linecap="round"/>
+  <ellipse cx="176" cy="170" rx="124" ry="17" fill="#050806" opacity=".58"/>
+  <path d="M52 128h64l36-58h122l32 58h22v24H52z" fill="url(#red)" stroke="#07140b" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M154 70h58l23 52h-101l20-52Z" fill="#15191b" stroke="#dfe7ea" stroke-width="5"/>
+  <path d="M166 82h34l12 29h-57l11-29Z" fill="url(#glass)"/>
+  <path d="M18 125h102M22 105h94M22 145h93" stroke="#b9c1c6" stroke-width="7" stroke-linecap="round"/>
+  <path d="M23 94v62M48 102v47M78 101v49M109 99v51" stroke="#7c878d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M240 72l44-31h38" stroke="#dfe7ea" stroke-width="8" stroke-linecap="round"/>
+  <path d="M255 132h55" stroke="#f2c94c" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="143" cy="154" r="39" fill="#0d1214" stroke="#cfd8dc" stroke-width="10"/>
+  <circle cx="143" cy="154" r="17" fill="#2d3437" stroke="#e6e6e6" stroke-width="7"/>
+  <circle cx="283" cy="156" r="25" fill="#0d1214" stroke="#cfd8dc" stroke-width="8"/>
+  <circle cx="283" cy="156" r="10" fill="#2d3437" stroke="#e6e6e6" stroke-width="6"/>
+</svg>

@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: agro-script-modding-api
+    runtime: node
+    plan: starter
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: agro-script-data
+      mountPath: /var/data
+      sizeGB: 5
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data/data
+      - key: PRIVATE_DOWNLOADS_DIR
+        value: /var/data/private-downloads
+      - key: MERCADO_PAGO_ACCESS_TOKEN
+        sync: false
+      - key: DOWNLOAD_TOKEN_SECRET
+        generateValue: true
+      - key: SITE_URL
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: MERCADO_PAGO_WEBHOOK_URL
+        sync: false
+      - key: MERCADO_PAGO_USE_SANDBOX
+        value: "false"

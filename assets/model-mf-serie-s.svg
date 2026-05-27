@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Massey Ferguson Série S</title>
+  <desc id="desc">Miniatura realista de trator vermelho Massey Ferguson.</desc>
+  <defs>
+    <linearGradient id="red" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#d83b35"/>
+      <stop offset=".62" stop-color="#8b201c"/>
+      <stop offset="1" stop-color="#3a1010"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" x2="1">
+      <stop offset="0" stop-color="#a8cad0"/>
+      <stop offset="1" stop-color="#405d67"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="10" fill="#101719"/>
+  <path d="M21 168h316" stroke="#2d3437" stroke-width="10" stroke-linecap="round"/>
+  <ellipse cx="168" cy="169" rx="124" ry="18" fill="#050806" opacity=".58"/>
+  <path d="M57 136h55l38-64h92l30 64h41" fill="none" stroke="#07140b" stroke-width="29" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M61 130h52l38-61h87l31 61h42" fill="none" stroke="url(#red)" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M151 70h-31l-22 38h64M229 70l19-40h42" fill="none" stroke="#dfe7ea" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M166 64h59l21 55H136l30-55Z" fill="#111719" stroke="#dfe7ea" stroke-width="6"/>
+  <path d="M177 76h31l12 33h-54l11-33Z" fill="url(#glass)"/>
+  <path d="M84 116h62M238 121h55" stroke="#dfe7ea" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="103" cy="151" r="42" fill="#0d1214" stroke="#cfd8dc" stroke-width="11"/>
+  <circle cx="103" cy="151" r="19" fill="#2d3437" stroke="#d63a2f" stroke-width="8"/>
+  <circle cx="271" cy="152" r="30" fill="#0d1214" stroke="#cfd8dc" stroke-width="9"/>
+  <circle cx="271" cy="152" r="13" fill="#2d3437" stroke="#d63a2f" stroke-width="7"/>
+</svg>

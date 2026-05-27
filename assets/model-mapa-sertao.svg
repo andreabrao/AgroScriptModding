@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa brasileiro rural</title>
+  <desc id="desc">Miniatura de mapa brasileiro com lavouras, estrada de terra e marcador.</desc>
+  <defs>
+    <linearGradient id="field" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#3aa54c"/>
+      <stop offset=".65" stop-color="#1f6f2f"/>
+      <stop offset="1" stop-color="#0b2a14"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="10" fill="#101719"/>
+  <path d="M59 45 154 25l72 25 77-21v148l-77 21-72-25-95 22V45Z" fill="url(#field)" stroke="#cfd8dc" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M154 25v148M226 50v148" stroke="#dfe7ea" stroke-width="5" opacity=".72"/>
+  <path d="M72 93c44 7 70 39 112 43 32 3 55-13 101-8" fill="none" stroke="#c9863a" stroke-width="14" stroke-linecap="round"/>
+  <path d="M82 63h50M90 151h43M182 70h30M244 74h38M242 158h37" stroke="#f2c94c" stroke-width="7" stroke-linecap="round"/>
+  <path d="M180 94c0-24 20-44 44-44s44 20 44 44c0 34-44 76-44 76s-44-42-44-76Z" fill="#d63a2f" stroke="#edf1f2" stroke-width="6"/>
+  <circle cx="224" cy="94" r="15" fill="#edf1f2"/>
+</svg>

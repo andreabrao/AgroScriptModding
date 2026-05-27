@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AGRO SCRIPT MODDING: mods brasileiros para Farming Simulator 22 com foco em qualidade, realismo e performance."
+    />
+    <title>AGRO SCRIPT MODDING | Mods Farming Simulator 22</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand-mark" href="#top" aria-label="AGRO SCRIPT MODDING">
+        <img src="assets/logo-agro-script.png" alt="AGRO SCRIPT MODDING" />
+      </a>
+
+      <button
+        class="icon-button menu-toggle"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Navegação principal">
+        <a href="#mods">Mods</a>
+        <a href="#planos">Planos</a>
+        <a href="#acesso">Acesso</a>
+        <a href="#destaque">Destaque</a>
+        <a href="#comunidade">Comunidade</a>
+        <a href="#suporte">Suporte</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero-section" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <video
+            class="hero-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster="assets/hero-tractor-field.png"
+          >
+            <source src="assets/trator-modificado-campo.mp4" type="video/mp4" />
+          </video>
+          <div class="hero-poster"></div>
+        </div>
+        <div class="hero-shade" aria-hidden="true"></div>
+
+        <div class="hero-content">
+          <img
+            class="hero-logo"
+            src="assets/logo-agro-script.png"
+            alt="AGRO SCRIPT MODDING"
+          />
+          <p class="eyebrow">Farming Simulator 22 • Brasil</p>
+          <h1 id="hero-title">AGRO SCRIPT MODDING</h1>
+          <p class="hero-copy">
+            Mods com pegada brasileira, visual pesado de máquina no campo e
+            ajustes feitos para jogar com realismo sem perder desempenho.
+          </p>
+
+          <div class="hero-actions">
+            <button
+              class="metal-button primary download-link"
+              type="button"
+              data-download-id="asm-8r"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" />
+              </svg>
+              Baixar destaque
+            </button>
+            <a class="metal-button ghost" href="#mods">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 5h7v7H4zM13 5h7v7h-7zM4 14h7v5H4zM13 14h7v5h-7z" />
+              </svg>
+              Ver garagem
+            </a>
+          </div>
+
+          <div class="hero-specs" aria-label="Destaques da marca">
+            <span>FS22</span>
+            <span>Qualidade BR</span>
+            <span>Performance</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="search-band" aria-label="Busca e filtros">
+        <div class="search-shell">
+          <label class="search-field" for="searchInput">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" />
+            </svg>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Buscar mod, marca ou script"
+              autocomplete="off"
+            />
+          </label>
+
+          <div class="filter-row" role="group" aria-label="Filtro por categoria">
+            <button class="filter-chip is-active" type="button" data-category="Todos">
+              Todos
+            </button>
+            <button class="filter-chip" type="button" data-category="Tratores">
+              Tratores
+            </button>
+            <button class="filter-chip" type="button" data-category="Colheitadeiras">
+              Colheitadeiras
+            </button>
+            <button class="filter-chip" type="button" data-category="Implementos">
+              Implementos
+            </button>
+            <button class="filter-chip" type="button" data-category="Mapas BR">
+              Mapas BR
+            </button>
+            <button class="filter-chip" type="button" data-category="Scripts">
+              Scripts
+            </button>
+          </div>
+
+          <label class="select-field" for="brandFilter">
+            <span>Marca</span>
+            <select id="brandFilter">
+              <option value="Todas">Todas</option>
+              <option value="John Deere">John Deere</option>
+              <option value="Case IH">Case IH</option>
+              <option value="New Holland">New Holland</option>
+              <option value="Massey Ferguson">Massey Ferguson</option>
+              <option value="ASM">ASM</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="content-section categories-section" id="mods">
+        <div class="section-heading">
+          <p class="eyebrow">Garagem ASM</p>
+          <h2>Categorias de Mods</h2>
+        </div>
+
+        <div class="category-grid">
+          <button class="category-card" type="button" data-category-card="Tratores">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M9 39h9l8-14h17l5 14h7" />
+              <circle cx="21" cy="43" r="9" />
+              <circle cx="49" cy="43" r="6" />
+              <path d="M27 25h-7l-5 8h15M38 25l4-8h8M44 31h8" />
+            </svg>
+            <span>Tratores</span>
+            <small>Potência, rodado e motor ajustado</small>
+          </button>
+
+          <button class="category-card" type="button" data-category-card="Colheitadeiras">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M8 39h9l6-12h24l7 12h4M11 31h15M8 48h51" />
+              <circle cx="24" cy="42" r="8" />
+              <circle cx="49" cy="42" r="6" />
+              <path d="M7 25h14M7 19h18M49 27l7-8" />
+            </svg>
+            <span>Colheitadeiras</span>
+            <small>Fluxo, plataforma e cabine</small>
+          </button>
+
+          <button class="category-card" type="button" data-category-card="Implementos">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M9 30h36l10 10H24L9 30Z" />
+              <path d="M17 40v8M29 40v8M41 40v8M53 40v8M13 26v-7h9" />
+              <circle cx="20" cy="51" r="4" />
+              <circle cx="48" cy="51" r="4" />
+            </svg>
+            <span>Implementos</span>
+            <small>Plantio, preparo e transporte</small>
+          </button>
+
+          <button class="category-card" type="button" data-category-card="Mapas BR">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M12 13 27 8l13 5 12-4v42l-12 4-13-5-15 5V13Z" />
+              <path d="M27 8v42M40 13v42M18 25h7M33 31h5M44 22h5M16 42h7" />
+            </svg>
+            <span>Mapas BR</span>
+            <small>Fazendas, estradas e relevo nacional</small>
+          </button>
+
+          <button class="category-card" type="button" data-category-card="Scripts">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M16 12h26l8 8v32H16V12Z" />
+              <path d="M42 12v10h8M25 30l-6 6 6 6M39 30l6 6-6 6M34 28l-6 16" />
+            </svg>
+            <span>Scripts</span>
+            <small>Automação, HUD e jogabilidade</small>
+          </button>
+        </div>
+      </section>
+
+      <section class="content-section featured-section" id="destaque">
+        <div class="section-heading">
+          <p class="eyebrow">Mod em Destaque</p>
+          <h2>Pronto para entrar no save</h2>
+        </div>
+
+        <article class="featured-card">
+          <div class="featured-preview">
+            <img
+              src="assets/mod-asm-8r.svg"
+              alt="Prévia do trator ASM 8R Performance BR"
+            />
+          </div>
+          <div class="featured-info">
+            <div class="mod-badges">
+              <span>John Deere</span>
+              <span>Tratores</span>
+              <span>FS22</span>
+            </div>
+            <h3>ASM 8R Performance BR</h3>
+            <p>
+              Pacote com ronco encorpado, pneus largos, iluminação revisada,
+              giro de motor calibrado e configuração pronta para lavouras
+              brasileiras.
+            </p>
+            <div class="spec-grid">
+              <span><strong>385 cv</strong> Potência</span>
+              <span><strong>1.3.2</strong> Versão</span>
+              <span><strong>4.7</strong> Avaliação</span>
+            </div>
+            <div class="featured-actions">
+              <button
+                class="metal-button primary download-link"
+                type="button"
+                data-download-id="asm-8r"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" />
+                </svg>
+                Download direto
+              </button>
+              <span class="download-counter">
+                <strong id="featuredDownloadCount">12.872</strong> downloads
+              </span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-section plans-section" id="planos">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Assinatura mensal</p>
+            <h2>Planos de acesso aos mods</h2>
+          </div>
+          <p class="result-count">
+            Cada plano libera uma quantidade de mods por mês para sua conta.
+          </p>
+        </div>
+
+        <div class="plan-grid">
+          <article class="plan-card">
+            <img
+              src="assets/planos/plano-bronze.webp"
+              alt="Plano Bronze com acesso a 3 mods por mês"
+              loading="lazy"
+            />
+            <div class="plan-info">
+              <span class="plan-price">R$ 9,90/mês</span>
+              <h3>Bronze</h3>
+              <p>3 mods mensais para quem quer começar com acesso organizado.</p>
+              <button class="metal-button ghost" type="button" data-checkout-plan="bronze">
+                Assinar plano
+              </button>
+            </div>
+          </article>
+
+          <article class="plan-card">
+            <img
+              src="assets/planos/plano-prata.webp"
+              alt="Plano Prata com acesso a 6 mods por mês"
+              loading="lazy"
+            />
+            <div class="plan-info">
+              <span class="plan-price">R$ 14,90/mês</span>
+              <h3>Prata</h3>
+              <p>6 mods mensais com atualizações inclusas e suporte padrão.</p>
+              <button class="metal-button ghost" type="button" data-checkout-plan="prata">
+                Assinar plano
+              </button>
+            </div>
+          </article>
+
+          <article class="plan-card">
+            <img
+              src="assets/planos/plano-ouro.webp"
+              alt="Plano Ouro com acesso a 10 mods por mês"
+              loading="lazy"
+            />
+            <div class="plan-info">
+              <span class="plan-price">R$ 24,90/mês</span>
+              <h3>Ouro</h3>
+              <p>10 mods mensais, acesso antecipado e suporte prioritário.</p>
+              <button class="metal-button ghost" type="button" data-checkout-plan="ouro">
+                Assinar plano
+              </button>
+            </div>
+          </article>
+
+          <article class="plan-card">
+            <img
+              src="assets/planos/plano-platina.webp"
+              alt="Plano Platina com acesso a 15 mods por mês"
+              loading="lazy"
+            />
+            <div class="plan-info">
+              <span class="plan-price">R$ 34,90/mês</span>
+              <h3>Platina</h3>
+              <p>15 mods mensais com mapas, scripts e fila prioritária.</p>
+              <button class="metal-button ghost" type="button" data-checkout-plan="platina">
+                Assinar plano
+              </button>
+            </div>
+          </article>
+
+          <article class="plan-card">
+            <img
+              src="assets/planos/plano-rubi.webp"
+              alt="Plano Rubi com acesso a 25 mods por mês"
+              loading="lazy"
+            />
+            <div class="plan-info">
+              <span class="plan-price">R$ 49,90/mês</span>
+              <h3>Rubi</h3>
+              <p>25 mods mensais, lançamentos VIP e pedidos em votação.</p>
+              <button class="metal-button ghost" type="button" data-checkout-plan="rubi">
+                Assinar plano
+              </button>
+            </div>
+          </article>
+
+          <article class="plan-card">
+            <img
+              src="assets/planos/plano-esmeralda.webp"
+              alt="Plano Esmeralda com acesso a 40 mods por mês"
+              loading="lazy"
+            />
+            <div class="plan-info">
+              <span class="plan-price">R$ 69,90/mês</span>
+              <h3>Esmeralda</h3>
+              <p>40 mods mensais, acesso beta e prioridade alta no suporte.</p>
+              <button class="metal-button ghost" type="button" data-checkout-plan="esmeralda">
+                Assinar plano
+              </button>
+            </div>
+          </article>
+
+          <article class="plan-card is-featured">
+            <img
+              src="assets/planos/plano-diamante.webp"
+              alt="Plano Diamante com acesso a todos os mods"
+              loading="lazy"
+            />
+            <div class="plan-info">
+              <span class="plan-price">R$ 99,90/mês</span>
+              <h3>Diamante</h3>
+              <p>Biblioteca completa, prioridade máxima e pedido exclusivo.</p>
+              <button class="metal-button primary" type="button" data-checkout-plan="diamante">
+                Assinar Diamante
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section access-section" id="acesso">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Area do assinante</p>
+            <h2>Liberar downloads</h2>
+          </div>
+          <p class="result-count" id="memberSummary">Nenhum plano liberado</p>
+        </div>
+
+        <div class="access-shell">
+          <form class="access-form" id="accessForm">
+            <label for="memberEmail">
+              <span>E-mail da assinatura</span>
+              <input
+                id="memberEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="cliente@email.com"
+                required
+              />
+            </label>
+
+            <label for="memberCode">
+              <span>Codigo de acesso</span>
+              <input
+                id="memberCode"
+                type="text"
+                autocomplete="one-time-code"
+                placeholder="PLANO-2026"
+                required
+              />
+            </label>
+
+            <div class="access-actions">
+              <button class="metal-button primary" type="submit">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 12l2 2 4-5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                Verificar plano
+              </button>
+              <button class="metal-button ghost" id="memberLogout" type="button" hidden>
+                Sair
+              </button>
+            </div>
+          </form>
+
+          <aside class="access-status" id="accessStatus" aria-live="polite">
+            <span class="status-pill">Aguardando verificacao</span>
+            <h3>Entre para liberar seus mods</h3>
+            <p>Os downloads ficam travados ate o plano mensal ser validado.</p>
+            <div class="access-stats">
+              <span><strong>-</strong> Plano</span>
+              <span><strong>-</strong> Usados</span>
+              <span><strong>-</strong> Restantes</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="content-section mods-section" aria-labelledby="mods-title">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Biblioteca</p>
+            <h2 id="mods-title">Últimos mods</h2>
+          </div>
+          <p class="result-count" id="resultCount">0 mods encontrados</p>
+        </div>
+
+        <div class="mod-grid" id="modGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="community-section" id="comunidade">
+        <div class="community-copy">
+          <p class="eyebrow">Comunidade brasileira</p>
+          <h2>Deus Acima de Tudo</h2>
+          <p>
+            A AGRO SCRIPT MODDING nasce para entregar mods com acabamento,
+            fidelidade e respeito ao jogador brasileiro: máquinas com presença,
+            mapas com cara de interior e scripts pensados para quem joga de
+            verdade.
+          </p>
+        </div>
+
+        <div class="community-metrics" aria-label="Indicadores da comunidade">
+          <span><strong>120k+</strong> Downloads</span>
+          <span><strong>35+</strong> Mods revisados</span>
+          <span><strong>BR</strong> Realismo no campo</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="suporte">
+      <div>
+        <img src="assets/logo-agro-script.png" alt="AGRO SCRIPT MODDING" />
+        <p>Mods FS22 com identidade brasileira, metal no visual e verde no campo.</p>
+      </div>
+
+      <nav aria-label="Redes sociais">
+        <a href="#" aria-label="YouTube">YouTube</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Discord">Discord</a>
+        <a href="#" aria-label="Facebook">Facebook</a>
+      </nav>
+
+      <nav aria-label="Área do usuário">
+        <a href="#acesso">Login</a>
+        <a href="#acesso">Minha conta</a>
+        <a href="#">Suporte técnico</a>
+        <a href="#">Enviar mod</a>
+      </nav>
+    </footer>
+
+    <div class="mobile-download-bar">
+      <button
+        class="metal-button primary download-link"
+        type="button"
+        data-download-id="asm-8r"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" />
+        </svg>
+        Baixar mod em destaque
+      </button>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

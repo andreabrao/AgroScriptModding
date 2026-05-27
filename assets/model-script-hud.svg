@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Script HUD Safra Realista</title>
+  <desc id="desc">Miniatura de painel HUD com telemetria agrícola e linhas de código.</desc>
+  <rect width="360" height="220" rx="10" fill="#101719"/>
+  <rect x="45" y="40" width="270" height="140" rx="8" fill="#0b1710" stroke="#cfd8dc" stroke-width="7"/>
+  <rect x="61" y="57" width="101" height="51" rx="5" fill="#1f6f2f" stroke="#2f9a43" stroke-width="4"/>
+  <path d="M75 96 92 77l18 13 25-28" fill="none" stroke="#f2c94c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M185 66h82M185 88h64M185 110h96M76 132h205M76 152h158" stroke="#b9c1c6" stroke-width="7" stroke-linecap="round"/>
+  <path d="M70 176h220" stroke="#2d3437" stroke-width="10" stroke-linecap="round"/>
+  <path d="M280 48l22 22" stroke="#f2c94c" stroke-width="7" stroke-linecap="round"/>
+</svg>

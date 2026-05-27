@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Grade pesada ASM</title>
+  <desc id="desc">Miniatura realista de grade pesada com discos metálicos.</desc>
+  <defs>
+    <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#edf1f2"/>
+      <stop offset=".25" stop-color="#889299"/>
+      <stop offset=".7" stop-color="#2d3437"/>
+      <stop offset="1" stop-color="#c8d1d6"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="10" fill="#101719"/>
+  <path d="M20 166h320" stroke="#2d3437" stroke-width="10" stroke-linecap="round"/>
+  <ellipse cx="183" cy="168" rx="130" ry="16" fill="#050806" opacity=".58"/>
+  <path d="M48 92h225l41 50H96z" fill="#1f6f2f" stroke="#07140b" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M44 88V56h45M80 114h215M105 141h176" stroke="#cfd8dc" stroke-width="8" stroke-linecap="round"/>
+  <path d="M104 111l-24 63M141 111l-24 63M178 111l-24 63M215 111l-24 63M252 111l-24 63M289 111l-24 63" stroke="#7c878d" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="80" cy="176" r="17" fill="url(#metal)" stroke="#111719" stroke-width="5"/>
+  <circle cx="118" cy="176" r="17" fill="url(#metal)" stroke="#111719" stroke-width="5"/>
+  <circle cx="156" cy="176" r="17" fill="url(#metal)" stroke="#111719" stroke-width="5"/>
+  <circle cx="194" cy="176" r="17" fill="url(#metal)" stroke="#111719" stroke-width="5"/>
+  <circle cx="232" cy="176" r="17" fill="url(#metal)" stroke="#111719" stroke-width="5"/>
+  <circle cx="270" cy="176" r="17" fill="url(#metal)" stroke="#111719" stroke-width="5"/>
+</svg>

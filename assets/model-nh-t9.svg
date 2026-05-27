@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">New Holland T9 articulado</title>
+  <desc id="desc">Miniatura realista de trator articulado azul com esteiras.</desc>
+  <defs>
+    <linearGradient id="blue" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#2f76c9"/>
+      <stop offset=".58" stop-color="#174f91"/>
+      <stop offset="1" stop-color="#0a2247"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" x2="1">
+      <stop offset="0" stop-color="#a8cad0"/>
+      <stop offset="1" stop-color="#405d67"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="10" fill="#101719"/>
+  <path d="M20 170h320" stroke="#2d3437" stroke-width="10" stroke-linecap="round"/>
+  <ellipse cx="183" cy="172" rx="126" ry="16" fill="#050806" opacity=".58"/>
+  <path d="M59 129h86l38-58h88l30 58h23v26H59z" fill="url(#blue)" stroke="#07140b" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M171 72h61l24 48H148l23-48Z" fill="#111719" stroke="#dfe7ea" stroke-width="5"/>
+  <path d="M183 84h35l12 26h-58l11-26Z" fill="url(#glass)"/>
+  <path d="M77 111h73M247 117h53" stroke="#f2c94c" stroke-width="7" stroke-linecap="round"/>
+  <path d="M66 143h94q22 0 22 18t-22 18H66q-22 0-22-18t22-18Z" fill="#0d1214" stroke="#cfd8dc" stroke-width="8"/>
+  <path d="M212 143h83q22 0 22 18t-22 18h-83q-22 0-22-18t22-18Z" fill="#0d1214" stroke="#cfd8dc" stroke-width="8"/>
+  <circle cx="87" cy="161" r="10" fill="#dfe7ea"/>
+  <circle cx="129" cy="161" r="10" fill="#dfe7ea"/>
+  <circle cx="234" cy="161" r="10" fill="#dfe7ea"/>
+  <circle cx="276" cy="161" r="10" fill="#dfe7ea"/>
+  <path d="M263 73l26-35h38" stroke="#dfe7ea" stroke-width="8" stroke-linecap="round"/>
+</svg>
