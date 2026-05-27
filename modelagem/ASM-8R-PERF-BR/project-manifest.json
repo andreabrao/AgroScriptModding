@@ -4,7 +4,7 @@
   "brand": "AgroScriptModding",
   "targetGames": ["Farming Simulator 22", "Farming Simulator 25"],
   "assetType": "tractor_heavy",
-  "productionStage": "pass_05_rear_hitch_hydraulics_ready",
+  "productionStage": "pass_06_cab_commandview_interior_ready",
   "modelingGoal": "high_poly_to_game_ready",
   "textureResolution": "4096",
   "requiredMaps": [
@@ -56,7 +56,10 @@
     "scripts/create_asm8r_engine_powertech_exhaust.py",
     "production-pass-05-rear-hitch-hydraulics.md",
     "rear-hitch-hydraulics-spec.md",
-    "scripts/create_asm8r_rear_hitch_hydraulics.py"
+    "scripts/create_asm8r_rear_hitch_hydraulics.py",
+    "production-pass-06-cab-commandview-interior.md",
+    "cab-commandview-interior-spec.md",
+    "scripts/create_asm8r_cab_commandview_interior.py"
   ],
   "sourceReferences": [
     "https://www.deere.com/8R",

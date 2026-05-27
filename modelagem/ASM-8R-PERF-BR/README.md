@@ -29,6 +29,8 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 - `powertech-engine-exhaust-spec.md`: especificacao do bloco, common rail, arrefecimento, turbo e escape inox.
 - `production-pass-05-rear-hitch-hydraulics.md`: roteiro do passe de levante traseiro, VCRs, PTO e drawbar.
 - `rear-hitch-hydraulics-spec.md`: especificacao do conjunto traseiro, pivots e attacher joints.
+- `production-pass-06-cab-commandview-interior.md`: roteiro do passe de cabine, interior, ActiveSeat II, CommandARM e G5.
+- `cab-commandview-interior-spec.md`: especificacao da cabine, vidros, camera interna e comandos.
 - `blender-hierarchy.md`: padrao de colecoes, nomes e pivots.
 - `fs22-fs25-integration.md`: notas para Giants Editor, materiais, LODs e sujeira.
 - `quality-checklist.md`: criterios de aprovacao antes da exportacao.
@@ -39,6 +41,7 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 - `scripts/create_asm8r_chassis_ils_transmission.py`: script opcional para gerar base high-poly de chassi, ILS e transmissao.
 - `scripts/create_asm8r_engine_powertech_exhaust.py`: script opcional para gerar base high-poly do motor e exaustao ASM.
 - `scripts/create_asm8r_rear_hitch_hydraulics.py`: script opcional para gerar base high-poly do levante traseiro e hidraulico.
+- `scripts/create_asm8r_cab_commandview_interior.py`: script opcional para gerar base high-poly da cabine e interior.
 
 ## Referencias oficiais base
 
