@@ -4,3 +4,7 @@ data/*.jsonl
 data/backups/*
 private-downloads/*
 !private-downloads/.gitkeep
+bin/
+obj/
+installer/**/bin/
+installer/**/obj/

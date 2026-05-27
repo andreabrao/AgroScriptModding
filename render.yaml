@@ -23,6 +23,10 @@ services:
         generateValue: true
       - key: ADMIN_TOKEN
         generateValue: true
+      - key: INSTALLER_API_TOKEN
+        sync: false
+      - key: INSTALLER_DEFAULT_MOD_ID
+        value: asm-8r
       - key: SITE_URL
         sync: false
       - key: FRONTEND_ORIGIN

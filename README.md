@@ -11,6 +11,7 @@ Site mobile-first para mods de Farming Simulator 22, com planos mensais, checkou
 - `server.js`: API Node para pagamento, verificacao de assinatura e entrega dos ZIPs.
 - `admin.html` e `admin.js`: painel protegido para ver assinantes, ZIPs privados, backups e eventos.
 - `termos.html`: termos de uso, privacidade e reembolso.
+- `installer/`: instalador Windows em C# para validar key, vincular HWID e instalar o ZIP do mod.
 - `assets/`: imagens do site.
 - `private-downloads/`: pasta privada dos ZIPs no servidor. Nao coloque essa pasta no GitHub Pages.
 
@@ -38,6 +39,8 @@ Copie `.env.example` para `.env` no backend e configure:
 MERCADO_PAGO_ACCESS_TOKEN=APP_USR_SEU_ACCESS_TOKEN_AQUI
 DOWNLOAD_TOKEN_SECRET=uma-chave-grande-e-secreta
 ADMIN_TOKEN=uma-chave-admin-grande-e-secreta
+INSTALLER_API_TOKEN=uma-chave-privada-do-instalador
+INSTALLER_DEFAULT_MOD_ID=asm-8r
 SITE_URL=https://seu-usuario.github.io/seu-repositorio
 FRONTEND_ORIGIN=https://seu-usuario.github.io
 MERCADO_PAGO_WEBHOOK_URL=https://sua-api.onrender.com/api/payments/webhook
@@ -70,6 +73,23 @@ private-downloads/
 ```
 
 O navegador chama `/api/mods/:id/download`, mas o servidor so entrega o ZIP se o token da assinatura for valido e se o plano ainda tiver cota mensal.
+
+## Instalador Windows
+
+O projeto em `installer/AgroScriptInstaller` cria um instalador Windows Forms para FS22/FS25:
+
+- valida a key em `POST /api/verify-key`;
+- envia HWID para vincular a key ao primeiro computador;
+- baixa o ZIP pela rota protegida `/api/mods/:id/download`;
+- copia o arquivo para a pasta `mods` com prefixo `FS22_` ou `FS25_`.
+
+Antes de compilar, edite `installer/AgroScriptInstaller/InstallerSettings.cs` e troque `InstallerApiToken` pelo mesmo valor de `INSTALLER_API_TOKEN` no Render.
+
+```bash
+dotnet publish installer/AgroScriptInstaller/AgroScriptInstaller.csproj -c Release -r win-x64 --self-contained true
+```
+
+O instalador nao esconde arquivos com `attrib +s +h`; a protecao fica no servidor, na key e no HWID. Isso evita instalacao invisivel no PC do cliente e reduz alerta de antivirus.
 
 ## Painel Admin
 

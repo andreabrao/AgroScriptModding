@@ -102,6 +102,10 @@ const server = http.createServer(async (req, res) => {
       return handlePaymentClaim(req, res);
     }
 
+    if (req.method === "POST" && requestUrl.pathname === "/api/verify-key") {
+      return handleVerifyKey(req, res);
+    }
+
     if (req.method === "POST" && requestUrl.pathname === "/api/subscriptions/verify") {
       return handleVerifySubscription(req, res);
     }
@@ -159,7 +163,7 @@ function setCorsHeaders(req, res) {
   const allowedOrigin = process.env.FRONTEND_ORIGIN || req.headers.origin || "*";
   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Admin-Token");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Admin-Token,X-Installer-Token");
   res.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
 }
 
@@ -292,6 +296,74 @@ async function handlePaymentClaim(req, res) {
       code: subscriber.code,
     },
     accessCode: subscriber.code,
+    downloadToken: createDownloadToken(subscriber),
+  });
+}
+
+async function handleVerifyKey(req, res) {
+  const auth = getInstallerAuth(req);
+  if (!auth.ok) {
+    return sendJson(res, auth.status, {
+      error: auth.error,
+      message: auth.message,
+    });
+  }
+
+  const body = await readJson(req);
+  const key = String(body.key || "").trim().toUpperCase();
+  const hwid = String(body.hwid || "").trim();
+  const modId = String(body.modId || process.env.INSTALLER_DEFAULT_MOD_ID || "asm-8r").trim();
+  const fileName = modFiles[modId];
+
+  if (!key || !hwid) {
+    return sendJson(res, 400, {
+      error: "missing_license_data",
+      message: "Informe a key e o HWID.",
+    });
+  }
+
+  if (!fileName) {
+    return sendJson(res, 404, {
+      error: "mod_not_found",
+      message: "Mod nao cadastrado no servidor.",
+    });
+  }
+
+  const database = readSubscribers();
+  const subscriber = database.subscribers.find(
+    (entry) => entry.active && String(entry.code || "").trim().toUpperCase() === key
+  );
+
+  if (!subscriber) {
+    return sendJson(res, 404, {
+      error: "invalid_key",
+      message: "Key nao encontrada ou assinatura inativa.",
+    });
+  }
+
+  const linkedHwid = String(subscriber.hwid || "").trim();
+  if (linkedHwid && linkedHwid !== hwid) {
+    return sendJson(res, 409, {
+      error: "hwid_mismatch",
+      message: "Esta key ja esta vinculada a outro computador.",
+    });
+  }
+
+  if (!linkedHwid) {
+    subscriber.hwid = hwid;
+    subscriber.hwidLinkedAt = new Date().toISOString();
+    fs.writeFileSync(subscribersPath, JSON.stringify(database, null, 2));
+    createBackup("installer-hwid-linked");
+  }
+
+  return sendJson(res, 200, {
+    ok: true,
+    email: subscriber.email,
+    name: subscriber.name,
+    plan: subscriber.plan,
+    planLabel: plans[subscriber.plan]?.label || subscriber.plan,
+    modId,
+    fileName,
     downloadToken: createDownloadToken(subscriber),
   });
 }
@@ -584,6 +656,36 @@ function getAdminAuth(req) {
   return { ok: true };
 }
 
+function getInstallerAuth(req) {
+  const configuredToken = process.env.INSTALLER_API_TOKEN;
+  if (!configuredToken) {
+    return {
+      ok: false,
+      status: 503,
+      error: "installer_not_configured",
+      message: "Configure INSTALLER_API_TOKEN no backend antes de usar o instalador.",
+    };
+  }
+
+  const authorization = String(req.headers.authorization || "");
+  const bearerToken = authorization.startsWith("Bearer ")
+    ? authorization.slice("Bearer ".length).trim()
+    : "";
+  const headerToken = String(req.headers["x-installer-token"] || "").trim();
+  const receivedToken = bearerToken || headerToken;
+
+  if (!receivedToken || !safeEqual(receivedToken, configuredToken)) {
+    return {
+      ok: false,
+      status: 401,
+      error: "unauthorized_installer",
+      message: "Token do instalador invalido.",
+    };
+  }
+
+  return { ok: true };
+}
+
 function safeEqual(left, right) {
   const leftBuffer = Buffer.from(String(left));
   const rightBuffer = Buffer.from(String(right));
@@ -640,8 +742,17 @@ function sanitizeSubscriber(subscriber) {
     name: subscriber.name,
     active: Boolean(subscriber.active),
     paymentId: subscriber.paymentId,
+    hwid: maskSecret(subscriber.hwid),
+    hwidLinkedAt: subscriber.hwidLinkedAt,
     updatedAt: subscriber.updatedAt,
   };
+}
+
+function maskSecret(value) {
+  const text = String(value || "");
+  if (!text) return "";
+  if (text.length <= 10) return "********";
+  return `${text.slice(0, 6)}...${text.slice(-4)}`;
 }
 
 function getModFileStatuses() {
