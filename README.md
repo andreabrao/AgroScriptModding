@@ -9,6 +9,8 @@ Site mobile-first para mods de Farming Simulator 22, com planos mensais, checkou
 - `app.js`: busca, planos, checkout, login do assinante e chamada de download protegido.
 - `config.js`: URL publica do backend quando o site estiver no GitHub Pages.
 - `server.js`: API Node para pagamento, verificacao de assinatura e entrega dos ZIPs.
+- `admin.html` e `admin.js`: painel protegido para ver assinantes, ZIPs privados, backups e eventos.
+- `termos.html`: termos de uso, privacidade e reembolso.
 - `assets/`: imagens do site.
 - `private-downloads/`: pasta privada dos ZIPs no servidor. Nao coloque essa pasta no GitHub Pages.
 
@@ -35,14 +37,19 @@ Copie `.env.example` para `.env` no backend e configure:
 ```env
 MERCADO_PAGO_ACCESS_TOKEN=APP_USR_SEU_ACCESS_TOKEN_AQUI
 DOWNLOAD_TOKEN_SECRET=uma-chave-grande-e-secreta
+ADMIN_TOKEN=uma-chave-admin-grande-e-secreta
 SITE_URL=https://seu-usuario.github.io/seu-repositorio
 FRONTEND_ORIGIN=https://seu-usuario.github.io
 MERCADO_PAGO_WEBHOOK_URL=https://sua-api.onrender.com/api/payments/webhook
 DATA_DIR=private-data
 PRIVATE_DOWNLOADS_DIR=private-downloads
+RESEND_API_KEY=
+EMAIL_FROM="AGRO SCRIPT MODDING <suporte@seudominio.com>"
 ```
 
 Nunca envie `.env` para o GitHub.
+
+Se algum token real ja foi colado em chat, video, print ou commit, gere outro token no painel do provedor e atualize o Render.
 
 ## Downloads Protegidos
 
@@ -64,10 +71,41 @@ private-downloads/
 
 O navegador chama `/api/mods/:id/download`, mas o servidor so entrega o ZIP se o token da assinatura for valido e se o plano ainda tiver cota mensal.
 
+## Painel Admin
+
+Acesse `admin.html`, cole o valor de `ADMIN_TOKEN` e use o painel para:
+
+- ver assinantes liberados;
+- conferir quais ZIPs privados estao faltando;
+- acompanhar eventos recentes do Mercado Pago;
+- gerar backup manual dos dados.
+
+O painel aparece no site publico, mas os dados so abrem com `ADMIN_TOKEN`. Use uma chave longa e nao compartilhe.
+
+## Email automatico
+
+Quando `RESEND_API_KEY` e `EMAIL_FROM` estiverem configurados, o backend envia automaticamente o codigo de acesso para o email do comprador assim que o Mercado Pago aprovar o pagamento.
+
+Sem essas variaveis, o site continua funcionando: o usuario consegue pegar o codigo pelo retorno do pagamento ou pelo formulario com o ID do pagamento.
+
+## Backups
+
+O servidor salva backups JSON em `DATA_DIR/backups` quando uma assinatura nova e ativada e tambem pelo botao "Gerar backup" no admin.
+
+No Render, os dados ficam no disco persistente:
+
+```text
+/var/data/data
+/var/data/data/backups
+/var/data/private-downloads
+```
+
+Coloque os ZIPs reais em `/var/data/private-downloads` com os mesmos nomes listados acima. O admin mostra "Faltando" ate o arquivo existir nessa pasta.
+
 ## Rodar Localmente
 
 ```bash
-node server.js
+npm start
 ```
 
 Abra `http://localhost:3000`.

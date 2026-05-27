@@ -11,6 +11,7 @@ const privateDownloadDir = resolvePrivateDownloadDir();
 const subscribersPath = path.join(dataDir, "subscribers.json");
 const paymentEventsPath = path.join(dataDir, "payment-events.jsonl");
 const downloadUsagePath = path.join(dataDir, "download-usage.json");
+const backupDir = path.join(dataDir, "backups");
 
 const plans = {
   bronze: { label: "Bronze", quota: 3, price: 9.9 },
@@ -85,6 +86,10 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, { ok: true, service: "agro-script-modding-api" });
     }
 
+    if (requestUrl.pathname.startsWith("/api/admin/")) {
+      return handleAdminRequest(req, res, requestUrl);
+    }
+
     if (req.method === "POST" && requestUrl.pathname === "/api/payments/create-preference") {
       return handleCreatePreference(req, res);
     }
@@ -141,6 +146,7 @@ function loadEnv() {
 function ensureDataFiles() {
   fs.mkdirSync(dataDir, { recursive: true });
   fs.mkdirSync(privateDownloadDir, { recursive: true });
+  fs.mkdirSync(backupDir, { recursive: true });
   if (!fs.existsSync(subscribersPath)) {
     fs.writeFileSync(subscribersPath, JSON.stringify({ subscribers: [] }, null, 2));
   }
@@ -153,7 +159,7 @@ function setCorsHeaders(req, res) {
   const allowedOrigin = process.env.FRONTEND_ORIGIN || req.headers.origin || "*";
   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Admin-Token");
   res.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
 }
 
@@ -312,6 +318,8 @@ async function tryActivateSubscriptionFromPayment(paymentId) {
   const existing = database.subscribers.find(
     (subscriber) => normalize(subscriber.email) === normalize(email)
   );
+  const alreadyActivated =
+    existing?.paymentId && String(existing.paymentId) === String(paymentId);
 
   const subscription = {
     email,
@@ -330,7 +338,67 @@ async function tryActivateSubscriptionFromPayment(paymentId) {
   }
 
   fs.writeFileSync(subscribersPath, JSON.stringify(database, null, 2));
-  return existing || subscription;
+  const savedSubscriber = existing || subscription;
+
+  if (!alreadyActivated) {
+    createBackup("subscription-activated");
+    await sendAccessEmail(savedSubscriber).catch((error) => {
+      console.error("Falha ao enviar email de acesso:", error);
+    });
+  }
+
+  return savedSubscriber;
+}
+
+async function handleAdminRequest(req, res, requestUrl) {
+  const auth = getAdminAuth(req);
+  if (!auth.ok) {
+    return sendJson(res, auth.status, {
+      error: auth.error,
+      message: auth.message,
+    });
+  }
+
+  if (req.method === "GET" && requestUrl.pathname === "/api/admin/summary") {
+    return sendJson(res, 200, getAdminSummary());
+  }
+
+  if (req.method === "GET" && requestUrl.pathname === "/api/admin/subscribers") {
+    return sendJson(res, 200, {
+      subscribers: readSubscribers().subscribers.map(sanitizeSubscriber),
+    });
+  }
+
+  if (req.method === "GET" && requestUrl.pathname === "/api/admin/mod-files") {
+    return sendJson(res, 200, {
+      privateDownloadDir,
+      files: getModFileStatuses(),
+    });
+  }
+
+  if (req.method === "GET" && requestUrl.pathname === "/api/admin/payment-events") {
+    return sendJson(res, 200, {
+      events: readPaymentEvents(80),
+    });
+  }
+
+  if (req.method === "GET" && requestUrl.pathname === "/api/admin/backups") {
+    return sendJson(res, 200, {
+      backups: listBackups(),
+    });
+  }
+
+  if (req.method === "POST" && requestUrl.pathname === "/api/admin/backups/create") {
+    return sendJson(res, 200, {
+      backup: createBackup("manual-admin"),
+      backups: listBackups(),
+    });
+  }
+
+  return sendJson(res, 404, {
+    error: "admin_route_not_found",
+    message: "Rota administrativa nao encontrada.",
+  });
 }
 
 async function handleVerifySubscription(req, res) {
@@ -484,6 +552,254 @@ function readDownloadUsage() {
   } catch {
     return {};
   }
+}
+
+function getAdminAuth(req) {
+  const configuredToken = process.env.ADMIN_TOKEN;
+  if (!configuredToken) {
+    return {
+      ok: false,
+      status: 503,
+      error: "admin_not_configured",
+      message: "Configure ADMIN_TOKEN no backend antes de usar o painel admin.",
+    };
+  }
+
+  const authorization = String(req.headers.authorization || "");
+  const bearerToken = authorization.startsWith("Bearer ")
+    ? authorization.slice("Bearer ".length).trim()
+    : "";
+  const headerToken = String(req.headers["x-admin-token"] || "").trim();
+  const receivedToken = bearerToken || headerToken;
+
+  if (!receivedToken || !safeEqual(receivedToken, configuredToken)) {
+    return {
+      ok: false,
+      status: 401,
+      error: "unauthorized_admin",
+      message: "Token administrativo invalido.",
+    };
+  }
+
+  return { ok: true };
+}
+
+function safeEqual(left, right) {
+  const leftBuffer = Buffer.from(String(left));
+  const rightBuffer = Buffer.from(String(right));
+  if (leftBuffer.length !== rightBuffer.length) return false;
+  return crypto.timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function getAdminSummary() {
+  const database = readSubscribers();
+  const usage = readDownloadUsage();
+  const activeSubscribers = database.subscribers.filter((subscriber) => subscriber.active);
+  const currentMonth = new Date().toISOString().slice(0, 7);
+  const files = getModFileStatuses();
+
+  const byPlan = Object.fromEntries(
+    Object.keys(plans).map((planId) => [
+      planId,
+      activeSubscribers.filter((subscriber) => subscriber.plan === planId).length,
+    ])
+  );
+
+  const monthlyDownloads = Object.entries(usage)
+    .filter(([key]) => key.endsWith(`:${currentMonth}`))
+    .reduce((total, [, downloadedMods]) => {
+      return total + (Array.isArray(downloadedMods) ? downloadedMods.length : 0);
+    }, 0);
+
+  return {
+    generatedAt: new Date().toISOString(),
+    totals: {
+      activeSubscribers: activeSubscribers.length,
+      plans: Object.keys(plans).length,
+      mods: Object.keys(modFiles).length,
+      filesReady: files.filter((file) => file.exists).length,
+      monthlyDownloads,
+      backups: listBackups().length,
+    },
+    byPlan,
+    files,
+    recentSubscribers: activeSubscribers
+      .slice()
+      .sort((left, right) => String(right.updatedAt).localeCompare(String(left.updatedAt)))
+      .slice(0, 8)
+      .map(sanitizeSubscriber),
+  };
+}
+
+function sanitizeSubscriber(subscriber) {
+  return {
+    email: subscriber.email,
+    code: subscriber.code,
+    plan: subscriber.plan,
+    planLabel: plans[subscriber.plan]?.label || subscriber.plan,
+    name: subscriber.name,
+    active: Boolean(subscriber.active),
+    paymentId: subscriber.paymentId,
+    updatedAt: subscriber.updatedAt,
+  };
+}
+
+function getModFileStatuses() {
+  return Object.entries(modFiles).map(([modId, fileName]) => {
+    const filePath = path.normalize(path.join(privateDownloadDir, fileName));
+    const exists = isPathInside(filePath, privateDownloadDir) && fs.existsSync(filePath);
+    const stat = exists ? fs.statSync(filePath) : null;
+
+    return {
+      modId,
+      fileName,
+      exists,
+      size: stat?.size || 0,
+      sizeLabel: stat ? formatBytes(stat.size) : "0 B",
+      updatedAt: stat ? stat.mtime.toISOString() : null,
+    };
+  });
+}
+
+function listBackups() {
+  if (!fs.existsSync(backupDir)) return [];
+
+  return fs
+    .readdirSync(backupDir)
+    .filter((fileName) => fileName.endsWith(".json"))
+    .map((fileName) => {
+      const filePath = path.join(backupDir, fileName);
+      const stat = fs.statSync(filePath);
+      return {
+        fileName,
+        size: stat.size,
+        sizeLabel: formatBytes(stat.size),
+        createdAt: stat.birthtime.toISOString(),
+        updatedAt: stat.mtime.toISOString(),
+      };
+    })
+    .sort((left, right) => String(right.updatedAt).localeCompare(String(left.updatedAt)));
+}
+
+function createBackup(reason = "manual") {
+  fs.mkdirSync(backupDir, { recursive: true });
+  const createdAt = new Date().toISOString();
+  const safeTimestamp = createdAt.replace(/[:.]/g, "-");
+  const fileName = `backup-${safeTimestamp}.json`;
+  const filePath = path.join(backupDir, fileName);
+  const payload = {
+    createdAt,
+    reason,
+    subscribers: readSubscribers(),
+    downloadUsage: readDownloadUsage(),
+    paymentEvents: readPaymentEvents(200),
+    plans,
+    modFiles,
+  };
+
+  fs.writeFileSync(filePath, JSON.stringify(payload, null, 2));
+  const stat = fs.statSync(filePath);
+  return {
+    fileName,
+    size: stat.size,
+    sizeLabel: formatBytes(stat.size),
+    createdAt,
+  };
+}
+
+function readPaymentEvents(limit = 50) {
+  if (!fs.existsSync(paymentEventsPath)) return [];
+
+  return fs
+    .readFileSync(paymentEventsPath, "utf8")
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .slice(-limit)
+    .map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return { raw: line };
+      }
+    })
+    .reverse();
+}
+
+async function sendAccessEmail(subscriber) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.EMAIL_FROM;
+  if (!apiKey || !from || !subscriber?.email) {
+    return { skipped: true };
+  }
+
+  const plan = plans[subscriber.plan];
+  const siteUrl = (process.env.SITE_URL || "").replace(/\/$/, "");
+  const loginUrl = siteUrl ? `${siteUrl}/#acesso` : "#acesso";
+  const subject = `Codigo do Plano ${plan?.label || subscriber.plan} - AGRO SCRIPT MODDING`;
+  const text = [
+    `Seu Plano ${plan?.label || subscriber.plan} foi aprovado.`,
+    `Email: ${subscriber.email}`,
+    `Codigo de acesso: ${subscriber.code}`,
+    `Entrar: ${loginUrl}`,
+    "Nao compartilhe este codigo. Ele libera os downloads do seu plano mensal.",
+  ].join("\n");
+  const html = `
+    <div style="font-family:Arial,sans-serif;line-height:1.5;color:#111">
+      <h1>AGRO SCRIPT MODDING</h1>
+      <p>Seu Plano ${escapeHtml(plan?.label || subscriber.plan)} foi aprovado.</p>
+      <p><strong>Codigo de acesso:</strong> ${escapeHtml(subscriber.code)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(subscriber.email)}</p>
+      <p><a href="${escapeHtml(loginUrl)}">Entrar na area do assinante</a></p>
+      <p>Nao compartilhe este codigo. Ele libera os downloads do seu plano mensal.</p>
+    </div>
+  `;
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: subscriber.email,
+      subject,
+      text,
+      html,
+    }),
+  });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
+    console.error("Resend recusou o email de acesso:", response.status, details);
+    return { sent: false };
+  }
+
+  return { sent: true };
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatBytes(bytes) {
+  const value = Number(bytes) || 0;
+  if (value < 1024) return `${value} B`;
+  const units = ["KB", "MB", "GB"];
+  let size = value / 1024;
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unitIndex]}`;
 }
 
 function appendJsonLine(filePath, data) {

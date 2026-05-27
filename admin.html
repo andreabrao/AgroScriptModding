@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Painel administrativo AGRO SCRIPT MODDING para assinantes, backups e arquivos privados."
+    />
+    <title>Painel Admin | AGRO SCRIPT MODDING</title>
+    <link rel="icon" type="image/png" href="assets/logo-agro-script.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand-mark" href="index.html" aria-label="AGRO SCRIPT MODDING">
+        <img src="assets/logo-agro-script.png" alt="AGRO SCRIPT MODDING" />
+      </a>
+
+      <nav class="site-nav admin-nav" aria-label="Navegacao admin">
+        <a href="index.html">Site</a>
+        <a href="termos.html">Termos</a>
+      </nav>
+    </header>
+
+    <main class="admin-page">
+      <section class="content-section admin-intro">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Controle interno</p>
+            <h1>Painel Admin</h1>
+          </div>
+          <p class="result-count" id="adminStatus">Informe o token administrativo</p>
+        </div>
+
+        <form class="admin-token-form" id="adminTokenForm">
+          <label for="adminToken">
+            <span>Token admin</span>
+            <input
+              id="adminToken"
+              type="password"
+              autocomplete="off"
+              placeholder="Cole o ADMIN_TOKEN do servidor"
+              required
+            />
+          </label>
+          <div class="admin-actions">
+            <button class="metal-button primary" type="submit">Entrar</button>
+            <button class="metal-button ghost" id="clearAdminToken" type="button">Limpar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="content-section admin-dashboard" id="adminDashboard" hidden>
+        <div class="admin-toolbar">
+          <button class="metal-button ghost" id="refreshAdmin" type="button">Atualizar</button>
+          <button class="metal-button primary" id="createBackup" type="button">Gerar backup</button>
+        </div>
+
+        <div class="admin-stat-grid" id="adminStats"></div>
+
+        <div class="admin-panel">
+          <div class="admin-panel-heading">
+            <h2>Arquivos privados dos mods</h2>
+            <p id="privateDownloadDir"></p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Mod</th>
+                  <th>Arquivo</th>
+                  <th>Status</th>
+                  <th>Tamanho</th>
+                </tr>
+              </thead>
+              <tbody id="modFilesTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-panel">
+          <div class="admin-panel-heading">
+            <h2>Assinantes</h2>
+            <p>Planos liberados pelo Mercado Pago.</p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Plano</th>
+                  <th>Codigo</th>
+                  <th>Atualizado</th>
+                </tr>
+              </thead>
+              <tbody id="subscribersTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-grid-two">
+          <div class="admin-panel">
+            <div class="admin-panel-heading">
+              <h2>Backups</h2>
+              <p>Copias dos dados salvas no servidor.</p>
+            </div>
+            <div class="admin-list" id="backupsList"></div>
+          </div>
+
+          <div class="admin-panel">
+            <div class="admin-panel-heading">
+              <h2>Pagamentos recentes</h2>
+              <p>Eventos recebidos pelo webhook.</p>
+            </div>
+            <div class="admin-list" id="paymentEventsList"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>

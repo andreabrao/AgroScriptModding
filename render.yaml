@@ -21,6 +21,8 @@ services:
         sync: false
       - key: DOWNLOAD_TOKEN_SECRET
         generateValue: true
+      - key: ADMIN_TOKEN
+        generateValue: true
       - key: SITE_URL
         sync: false
       - key: FRONTEND_ORIGIN
@@ -29,3 +31,7 @@ services:
         sync: false
       - key: MERCADO_PAGO_USE_SANDBOX
         value: "false"
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false

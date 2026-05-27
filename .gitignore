@@ -1,5 +1,6 @@
 .env
 data/*.json
 data/*.jsonl
+data/backups/*
 private-downloads/*
 !private-downloads/.gitkeep
