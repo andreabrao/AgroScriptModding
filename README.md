@@ -22,7 +22,7 @@ O GitHub Pages nao roda `server.js`; ele serve apenas HTML/CSS/JS. Por isso:
 
 ```js
 window.ASM_CONFIG = {
-  apiBaseUrl: "https://sua-api.onrender.com",
+  apiBaseUrl: "https://agroscriptmodding.onrender.com",
 };
 ```
 
