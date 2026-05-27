@@ -175,6 +175,8 @@ const memberLogout = document.querySelector("#memberLogout");
 const accessStatus = document.querySelector("#accessStatus");
 const memberSummary = document.querySelector("#memberSummary");
 const checkoutButtons = Array.from(document.querySelectorAll("[data-checkout-plan]"));
+const paymentClaimForm = document.querySelector("#paymentClaimForm");
+const paymentIdInput = document.querySelector("#paymentId");
 
 const formatter = new Intl.NumberFormat("pt-BR");
 const apiBaseUrl = (window.ASM_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
@@ -710,9 +712,25 @@ checkoutButtons.forEach((button) => {
   });
 });
 
+paymentClaimForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const paymentId = paymentIdInput.value.trim();
+  if (!paymentId) {
+    setAccessPanelMessage(
+      "Informe o ID do pagamento",
+      "Cole o ID que aparece no comprovante ou detalhes da compra no Mercado Pago.",
+      "is-warning"
+    );
+    return;
+  }
+
+  await claimApprovedPayment(paymentId);
+});
+
 memberLogout.addEventListener("click", () => {
   clearActiveMember();
   accessForm.reset();
+  paymentClaimForm.reset();
   renderAccessState();
   renderMods();
 });

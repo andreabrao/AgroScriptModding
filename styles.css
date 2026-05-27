@@ -729,12 +729,14 @@ h1 {
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
 }
 
-.access-form {
+.access-form,
+.payment-claim-form {
   display: grid;
   gap: 0.85rem;
 }
 
-.access-form label {
+.access-form label,
+.payment-claim-form label {
   display: grid;
   gap: 0.4rem;
   color: var(--muted);
@@ -743,7 +745,8 @@ h1 {
   text-transform: uppercase;
 }
 
-.access-form input {
+.access-form input,
+.payment-claim-form input {
   width: 100%;
   min-height: 3.2rem;
   padding: 0 0.9rem;
@@ -754,8 +757,14 @@ h1 {
   outline: none;
 }
 
-.access-form input:focus {
+.access-form input:focus,
+.payment-claim-form input:focus {
   border-color: rgba(242, 201, 76, 0.72);
+}
+
+.payment-claim-form {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .access-actions {
