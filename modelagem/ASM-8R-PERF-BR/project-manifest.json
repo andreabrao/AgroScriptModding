@@ -4,7 +4,7 @@
   "brand": "AgroScriptModding",
   "targetGames": ["Farming Simulator 22", "Farming Simulator 25"],
   "assetType": "tractor_heavy",
-  "productionStage": "technical_modeling_brief",
+  "productionStage": "pass_01_blockout_ready",
   "modelingGoal": "high_poly_to_game_ready",
   "textureResolution": "4096",
   "requiredMaps": [
@@ -40,6 +40,11 @@
     "lights",
     "seat_rotation",
     "steering_wheel"
+  ],
+  "productionFiles": [
+    "reference-scale-data.md",
+    "production-pass-01-blockout.md",
+    "scripts/create_asm8r_blockout.py"
   ],
   "sourceReferences": [
     "https://www.deere.com/8R",

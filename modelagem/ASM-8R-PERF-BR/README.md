@@ -19,11 +19,14 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 
 - `briefing-tecnico.md`: especificacao principal do modelo.
 - `part-breakdown.csv`: lista tecnica de componentes, prioridade e uso no jogo.
+- `reference-scale-data.md`: medidas de escala e envelope usadas no blockout.
+- `production-pass-01-blockout.md`: roteiro do primeiro passe de modelagem.
 - `blender-hierarchy.md`: padrao de colecoes, nomes e pivots.
 - `fs22-fs25-integration.md`: notas para Giants Editor, materiais, LODs e sujeira.
 - `quality-checklist.md`: criterios de aprovacao antes da exportacao.
 - `project-manifest.json`: metadados do projeto.
 - `scripts/create_blender_collections.py`: script opcional para montar a estrutura inicial no Blender.
+- `scripts/create_asm8r_blockout.py`: script opcional para gerar o blockout proporcional inicial.
 
 ## Referencias oficiais base
 
