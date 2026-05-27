@@ -283,7 +283,9 @@ async function handlePaymentClaim(req, res) {
       plan: subscriber.plan,
       name: subscriber.name,
       active: true,
+      code: subscriber.code,
     },
+    accessCode: subscriber.code,
     downloadToken: createDownloadToken(subscriber),
   });
 }
@@ -354,7 +356,9 @@ async function handleVerifySubscription(req, res) {
       plan: subscriber.plan,
       name: subscriber.name || `Cliente ${plans[subscriber.plan]?.label || ""}`.trim(),
       active: true,
+      code: subscriber.code,
     },
+    accessCode: subscriber.code,
     downloadToken: createDownloadToken(subscriber),
   });
 }

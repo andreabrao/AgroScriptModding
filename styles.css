@@ -813,6 +813,19 @@ h1 {
   line-height: 1.55;
 }
 
+.access-code {
+  padding: 0.75rem;
+  border: 1px solid rgba(242, 201, 76, 0.42);
+  border-radius: var(--radius);
+  color: var(--white) !important;
+  background: rgba(242, 201, 76, 0.12);
+  font-size: 1rem;
+}
+
+.access-code strong {
+  color: var(--field-yellow);
+}
+
 .access-stats {
   display: grid;
   gap: 0.55rem;

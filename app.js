@@ -244,6 +244,7 @@ function saveActiveMember(member) {
       name: member.name,
       active: member.active,
       token: member.token,
+      code: member.code,
     })
   );
 }
@@ -387,6 +388,11 @@ function renderAccessState(message = "") {
     <span class="status-pill">Plano ativo</span>
     <h3>${rule.label} liberado</h3>
     <p>${message || "Acesso mensal validado para esta conta."}</p>
+    ${
+      member.code
+        ? `<p class="access-code"><strong>Codigo de acesso:</strong> ${member.code}</p>`
+        : ""
+    }
     <div class="access-stats">
       <span><strong>${rule.label}</strong> Plano</span>
       <span><strong>${usedText}</strong> Usados</span>
@@ -520,9 +526,9 @@ async function claimApprovedPayment(paymentId) {
       return false;
     }
 
-    const member = { ...data.member, token: data.downloadToken };
+    const member = { ...data.member, token: data.downloadToken, code: data.accessCode || data.member?.code };
     saveActiveMember(member);
-    renderAccessState("Pagamento aprovado. Plano liberado automaticamente.");
+    renderAccessState("Pagamento aprovado. Guarde o codigo abaixo para entrar depois.");
     renderMods();
     return true;
   } catch {
