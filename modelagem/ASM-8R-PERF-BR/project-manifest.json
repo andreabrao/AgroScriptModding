@@ -1,0 +1,51 @@
+{
+  "code": "ASM-8R-PERF-BR",
+  "name": "John Deere Serie 8R Performance BR",
+  "brand": "AgroScriptModding",
+  "targetGames": ["Farming Simulator 22", "Farming Simulator 25"],
+  "assetType": "tractor_heavy",
+  "productionStage": "technical_modeling_brief",
+  "modelingGoal": "high_poly_to_game_ready",
+  "textureResolution": "4096",
+  "requiredMaps": [
+    "baseColor",
+    "normal",
+    "metallic",
+    "roughness",
+    "glossiness",
+    "dirtWear"
+  ],
+  "primaryMaterials": [
+    "john_deere_green",
+    "john_deere_yellow",
+    "metallic_gray",
+    "black_rubber",
+    "cab_glass",
+    "stainless_exhaust"
+  ],
+  "asmCustoms": [
+    "rear_dual_800_70r38",
+    "direct_stainless_exhaust",
+    "roof_slim_led_bar",
+    "grille_aux_lights",
+    "front_22x50kg_weights",
+    "rear_cast_weight_discs"
+  ],
+  "animationTargets": [
+    "wheels",
+    "steering",
+    "ils_front_axle",
+    "rear_hitch",
+    "hydraulic_cylinders",
+    "lights",
+    "seat_rotation",
+    "steering_wheel"
+  ],
+  "sourceReferences": [
+    "https://www.deere.com/8R",
+    "https://www.deere.com/en/tractors/row-crop-tractors/row-crop-8-family/power-efficiency/",
+    "https://www.deere.com/en/tractors/row-crop-tractors/row-crop-8-family/comfort-visibility/",
+    "https://www.deere.com/en/tractors/row-crop-tractors/row-crop-8-family/versatility-capability/",
+    "https://www.deere.com/en/technology-products/precision-ag-technology/guidance/g5-commandcenter/"
+  ]
+}
