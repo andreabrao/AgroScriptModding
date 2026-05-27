@@ -4,7 +4,7 @@
   "brand": "AgroScriptModding",
   "targetGames": ["Farming Simulator 22", "Farming Simulator 25"],
   "assetType": "tractor_heavy",
-  "productionStage": "pass_02_wheelset_highpoly_ready",
+  "productionStage": "pass_03_chassis_ils_transmission_ready",
   "modelingGoal": "high_poly_to_game_ready",
   "textureResolution": "4096",
   "requiredMaps": [
@@ -47,7 +47,10 @@
     "scripts/create_asm8r_blockout.py",
     "production-pass-02-wheels-tires.md",
     "wheelset-modeling-spec.md",
-    "scripts/create_asm8r_wheelset_highpoly.py"
+    "scripts/create_asm8r_wheelset_highpoly.py",
+    "production-pass-03-chassis-ils-transmission.md",
+    "chassis-ils-transmission-spec.md",
+    "scripts/create_asm8r_chassis_ils_transmission.py"
   ],
   "sourceReferences": [
     "https://www.deere.com/8R",
