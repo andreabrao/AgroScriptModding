@@ -4,7 +4,7 @@
   "brand": "AgroScriptModding",
   "targetGames": ["Farming Simulator 22", "Farming Simulator 25"],
   "assetType": "tractor_heavy",
-  "productionStage": "pass_01_blockout_ready",
+  "productionStage": "pass_02_wheelset_highpoly_ready",
   "modelingGoal": "high_poly_to_game_ready",
   "textureResolution": "4096",
   "requiredMaps": [
@@ -44,7 +44,10 @@
   "productionFiles": [
     "reference-scale-data.md",
     "production-pass-01-blockout.md",
-    "scripts/create_asm8r_blockout.py"
+    "scripts/create_asm8r_blockout.py",
+    "production-pass-02-wheels-tires.md",
+    "wheelset-modeling-spec.md",
+    "scripts/create_asm8r_wheelset_highpoly.py"
   ],
   "sourceReferences": [
     "https://www.deere.com/8R",

@@ -21,12 +21,15 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 - `part-breakdown.csv`: lista tecnica de componentes, prioridade e uso no jogo.
 - `reference-scale-data.md`: medidas de escala e envelope usadas no blockout.
 - `production-pass-01-blockout.md`: roteiro do primeiro passe de modelagem.
+- `production-pass-02-wheels-tires.md`: roteiro do passe high-poly de rodado e pneus.
+- `wheelset-modeling-spec.md`: especificacao detalhada dos pneus, rodas, pesos e bake.
 - `blender-hierarchy.md`: padrao de colecoes, nomes e pivots.
 - `fs22-fs25-integration.md`: notas para Giants Editor, materiais, LODs e sujeira.
 - `quality-checklist.md`: criterios de aprovacao antes da exportacao.
 - `project-manifest.json`: metadados do projeto.
 - `scripts/create_blender_collections.py`: script opcional para montar a estrutura inicial no Blender.
 - `scripts/create_asm8r_blockout.py`: script opcional para gerar o blockout proporcional inicial.
+- `scripts/create_asm8r_wheelset_highpoly.py`: script opcional para gerar base high-poly procedural do rodado.
 
 ## Referencias oficiais base
 
