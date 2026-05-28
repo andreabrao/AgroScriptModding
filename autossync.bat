@@ -1,13 +1,17 @@
 @echo off
-:: Navega até a pasta do seu projeto
-cd "D:\Documentos\AgroScriptModding"
+:: Altera para o drive D: e entra na pasta RAIZ correta do projeto
+cd /d "D:\Documentos\AgroScriptModding"
 
-:: Adiciona todas as alterações
+:: Puxa as alterações do GitHub para evitar o erro de rejeição
+git pull origin main --no-rebase
+
+:: Adiciona todas as alterações da raiz e subpastas
 git add .
 
-:: Cria um commit com a data e hora atuais
+:: Cria o commit se houver alterações
 git commit -m "Backup automatico - %date% %time%"
 
-:: Envia para o GitHub (certifique-se de que a branch se chama 'main' ou mude para 'master')
+:: Envia tudo atualizado para o GitHub
 git push origin main
+
 pause
