@@ -54,14 +54,14 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "asm-8r": "asm-8r-performance-br.zip",
-  "case-axial": "case-axial-flow-9250-br.zip",
-  "nh-t9": "new-holland-t9-smarttrax-custom.zip",
-  "plantadeira-asm": "plantadeira-asm-32-linhas.zip",
-  "mapa-sertao": "mapa-sertao-verde.zip",
-  "script-hud": "hud-safra-realista.zip",
-  "mf-serie-s": "massey-serie-s-pro.zip",
-  "grade-asm": "grade-pesada-asm-48-discos.zip",
+  "asm-8r": "FS22_asm_8r_performance_br.zip",
+  "case-axial": "FS22_case_axial_flow_9250_br.zip",
+  "nh-t9": "FS22_new_holland_t9_smarttrax_custom.zip",
+  "plantadeira-asm": "FS22_plantadeira_asm_32_linhas.zip",
+  "mapa-sertao": "FS22_mapa_sertao_verde.zip",
+  "script-hud": "FS22_hud_safra_realista.zip",
+  "mf-serie-s": "FS22_massey_serie_s_pro.zip",
+  "grade-asm": "FS22_grade_pesada_asm_48_discos.zip",
 };
 
 ensureDataFiles();
