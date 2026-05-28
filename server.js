@@ -206,6 +206,10 @@ const server = http.createServer(async (req, res) => {
       return handleVerifySubscription(req, res);
     }
 
+    if (req.method === "POST" && requestUrl.pathname === "/api/generate-key") {
+      return handleGenerateKey(req, res);
+    }
+
     if (
       req.method === "POST" &&
       requestUrl.pathname.startsWith("/api/mods/") &&
@@ -1124,4 +1128,64 @@ function sendJson(res, statusCode, data) {
 function sendText(res, statusCode, text) {
   res.writeHead(statusCode, { "Content-Type": "text/plain; charset=utf-8" });
   res.end(text);
+}
+
+// ==========================================
+// NOVAS FUNCOES ADICIONADAS PARA GERACAO MANUAL DE KEYS
+// ==========================================
+
+async function handleGenerateKey(req, res) {
+  // Protege a rota exigindo o token de admin para evitar abuso publico
+  const auth = getAdminAuth(req);
+  if (!auth.ok) {
+    return sendJson(res, auth.status, {
+      error: auth.error,
+      message: auth.message,
+    });
+  }
+
+  const body = await readJson(req).catch(() => ({}));
+  const planId = String(body.planId || "diamante").toLowerCase();
+  const plan = plans[planId];
+
+  if (!plan) {
+    return sendJson(res, 400, { error: "invalid_plan", message: "Plano invalido." });
+  }
+
+  const novaKey = gerarChaveAtivacao();
+  const database = readSubscribers();
+
+  const subscription = {
+    email: body.email || `manual_${Date.now()}@agroscript.com`,
+    code: novaKey,
+    plan: planId,
+    name: body.name || "Cliente Avulso (Gerado Manualmente)",
+    active: true,
+    paymentId: `manual_${Date.now()}`,
+    hwid: null,
+    updatedAt: new Date().toISOString(),
+  };
+
+  database.subscribers.push(subscription);
+  fs.writeFileSync(subscribersPath, JSON.stringify(database, null, 2));
+  createBackup("manual-key-generated");
+
+  return sendJson(res, 201, {
+    success: true,
+    key: novaKey,
+    member: subscription
+  });
+}
+
+function gerarChaveAtivacao() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const gerarBloco = () => {
+    let bloco = '';
+    for (let i = 0; i < 4; i++) {
+      const index = crypto.randomInt(0, caracteres.length);
+      bloco += caracteres[index];
+    }
+    return bloco;
+  };
+  return `AGRO-${gerarBloco()}-${gerarBloco()}-${gerarBloco()}`;
 }
