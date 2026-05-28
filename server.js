@@ -63,14 +63,10 @@ function getDownloadStorageMode() {
 }
 
 function getR2Endpoint() {
-<<<<<<< HEAD
   const configuredEndpoint = String(process.env.R2_ENDPOINT || "").trim();
   if (/^https?:\/\//i.test(configuredEndpoint)) {
     return configuredEndpoint.replace(/\/$/, "");
   }
-=======
-  if (process.env.R2_ENDPOINT) return process.env.R2_ENDPOINT.replace(/\/$/, "");
->>>>>>> e1471d5ae3fc208a0d4dcb845bdaabfd2d77ecb7
   return `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
 }
 
@@ -106,10 +102,7 @@ function getR2Client() {
     r2Client = new S3Client({
       region: "auto",
       endpoint: getR2Endpoint(),
-<<<<<<< HEAD
       forcePathStyle: true,
-=======
->>>>>>> e1471d5ae3fc208a0d4dcb845bdaabfd2d77ecb7
       credentials: {
         accessKeyId: process.env.R2_ACCESS_KEY_ID,
         secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
