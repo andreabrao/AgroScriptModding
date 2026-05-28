@@ -1,4 +1,0 @@
-
-<suspensions>
-      <suspension node="0>14" weight="5400" minRotation="-20 0 -20" maxRotation="40 0 15" suspensionParametersX="50 10" suspensionParametersZ="50 10" />
-</suspensions>

@@ -2,6 +2,7 @@
 data/*.json
 data/*.jsonl
 data/backups/*
+modelagem/*
 private-downloads/*
 !private-downloads/.gitkeep
 bin/
