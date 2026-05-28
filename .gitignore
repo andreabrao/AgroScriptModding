@@ -9,3 +9,4 @@ bin/
 obj/
 installer/**/bin/
 installer/**/obj/
+.png/*
