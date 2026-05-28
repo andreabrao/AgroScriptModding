@@ -65,7 +65,12 @@ function getDownloadStorageMode() {
 function getR2Endpoint() {
   const configuredEndpoint = String(process.env.R2_ENDPOINT || "").trim();
   if (/^https?:\/\//i.test(configuredEndpoint)) {
-    return configuredEndpoint.replace(/\/$/, "");
+    try {
+      const endpointUrl = new URL(configuredEndpoint);
+      return `${endpointUrl.protocol}//${endpointUrl.host}`;
+    } catch {
+      return configuredEndpoint.replace(/\/$/, "");
+    }
   }
   return `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
 }
@@ -77,7 +82,9 @@ function getR2ExpiresIn() {
 
 function getR2ObjectKey(fileName) {
   const prefix = String(process.env.R2_KEY_PREFIX || "").replace(/^\/+|\/+$/g, "");
-  return prefix ? `${prefix}/${fileName}` : fileName;
+  const bucket = String(process.env.R2_BUCKET || "").replace(/^\/+|\/+$/g, "");
+  const safePrefix = prefix === bucket ? "" : prefix;
+  return safePrefix ? `${safePrefix}/${fileName}` : fileName;
 }
 
 function getR2Sdk() {
@@ -102,7 +109,6 @@ function getR2Client() {
     r2Client = new S3Client({
       region: "auto",
       endpoint: getR2Endpoint(),
-      forcePathStyle: true,
       credentials: {
         accessKeyId: process.env.R2_ACCESS_KEY_ID,
         secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
