@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<wheel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../shared/xml/schema/wheel.xsd">
+    <brand>BKT</brand>
+    <name>AGRIMAX FORCE</name>
+    <default>
+        <physics radius="0.785" width="0.603" mass="0.273" tireType="mud" frictionScale="1.60" maxLongStiffness="10" maxLatStiffness="120" maxLatStiffnessLoad="2"/>
+        <tire filename="$data/shared/wheels/tires/bkt/agrimaxForce/R30_agrimaxForce.i3d" nodeLeft="0|0" nodeRight="0|0" maxDeformation="0.085" sideDeformOffset="0.984" isCareWheel="false" tireTrackAtlasIndex="0"/>
+        <outerRim filename="$data/shared/wheels/rims/rim001.i3d" node="1|0" widthAndDiam="21 30"/>
+        <innerRim filename="$data/shared/wheels/rims/rim001.i3d" nodeLeft="3|0" nodeRight="3|1" widthAndDiam="21 30"/>
+    </default>
+    <configurations>
+        <configuration id="dual">
+            <innerRim filename="-"/>
+        </configuration>
+        <configuration id="jd">
+            <innerRim filename="$data/shared/wheels/rims/rim006.i3d" nodeLeft="0|0" nodeRight="0|1"/>
+        </configuration>
+        <configuration id="jd_outer" >
+            <innerRim filename="$data/shared/wheels/rims/rim009.i3d" nodeLeft="0|0" nodeRight="0|1"/>
+        </configuration>
+    </configurations>
+</wheel>

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<wheel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../shared/xml/schema/wheel.xsd">
+    <brand>TRELLEBORG</brand>
+    <name>TM600</name>
+    <default>
+        <physics radius="1.087" width="0.49" mass="0.433" tireType="mud" frictionScale="1.60" maxLongStiffness="8" maxLatStiffness="100" maxLatStiffnessLoad="2"/>
+        <tire filename="Wheels/US/R50_TM600.i3d" nodeLeft="2|0" nodeRight="2|0" maxDeformation="0.0904" sideDeformOffset="0.955" isCareWheel="true" tireTrackAtlasIndex="0"/>
+        <outerRim filename="$data/shared/wheels/rims/rim001.i3d" node="2|0" widthAndDiam="16 50" scale="0 0 0"/>
+        <innerRim filename="$data/shared/wheels/rims/rim001.i3d" nodeLeft="3|0" nodeRight="3|1" widthAndDiam="16 50" scale="0 0 0"/>
+    </default>
+    <configurations>
+        <configuration id="dual">
+            <innerRim filename="-"/>
+        </configuration>
+        <configuration id="jd" >
+            <innerRim filename="$data/shared/wheels/rims/rim007.i3d" nodeLeft="1|0" nodeRight="1|1" />
+        </configuration>
+        <configuration id="jd3" >
+            <innerRim filename="$data/shared/wheels/rims/rim008.i3d" nodeLeft="1|0" nodeRight="1|1" />
+        </configuration>
+        <configuration id="jd_outer" >
+            <innerRim filename="$data/shared/wheels/rims/rim009.i3d" nodeLeft="0|0" nodeRight="0|1" scale="0 0 0"/>
+        </configuration>
+        <configuration id="weight3">
+            <additional filename="$data/shared/wheels/weights/weight003.i3d" nodeLeft="0|0" nodeRight="0|1" offset="0.05" scale="0.32 1.13 1.13" mass="0.6"/>
+        </configuration>
+        <configuration id="jdW" >
+            <innerRim filename="$data/shared/wheels/rims/rim009.i3d" nodeLeft="0|0" nodeRight="0|1" scale="0 0 0"/>
+            <additional filename="$data/shared/wheels/weights/weight005.i3d" nodeLeft="3|0" nodeRight="3|1" offset="-0.006" scale="1 1.06 1.06" mass="1" />
+            <additional filename="$data/shared/wheels/weights/weight005.i3d" nodeLeft="1|0" nodeRight="1|1" offset="-0.006" scale="1 1.06 1.06" mass="0.3" />
+        </configuration>
+        <configuration id="W" >
+            <innerRim filename="$data/shared/wheels/rims/rim008.i3d" nodeLeft="1|0" nodeRight="1|1" />
+            <additional filename="$data/shared/wheels/weights/weight005.i3d" nodeLeft="3|0" nodeRight="3|1" offset="-0.006" scale="1 1.06 1.06" mass="1" />
+            <additional filename="$data/shared/wheels/weights/weight005.i3d" nodeLeft="1|0" nodeRight="1|1" offset="-0.006" scale="1 1.06 1.06" mass="0.3" />
+        </configuration>
+        <configuration id="jd_outerW" >
+            <innerRim filename="$data/shared/wheels/rims/rim009.i3d" nodeLeft="0|0" nodeRight="0|1" scale="0 0 0"/>
+            <additional filename="$data/shared/wheels/weights/weight005.i3d" nodeLeft="3|0" nodeRight="3|1" offset="-0.006" scale="1 1.06 1.06" mass="1" />
+            <additional filename="$data/shared/wheels/weights/weight005.i3d" nodeLeft="1|0" nodeRight="1|1" offset="-0.006" scale="1 1.06 1.06" mass="0.3" />
+        </configuration>
+    </configurations>
+</wheel>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="logo.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="1" filename="Firestone.png"/>
+    <File fileId="3" filename="R-1W.png"/>
+    <File fileId="2" filename="Super traction.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="UnnamedMaterial" materialId="16">
+      <Texture fileId="1"/>
+    </Material>
+    <Material name="UnnamedMaterial" materialId="106">
+      <Texture fileId="3"/>
+    </Material>
+    <Material name="UnnamedMaterial" materialId="17">
+      <Texture fileId="2"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="logo.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="logo" nodeId="67">
+        <Shape shapeId="1" name="listra 1" translation="0.286823 0.266141 -0.392538" rotation="2.42871 29.9222 -90.5145" scale="0.578637 0.997654 0.364746" nodeId="68" materialIds="16" distanceBlending="false"/>
+        <Shape shapeId="1" name="listra 2" translation="0.282405 0.030508 0.407542" rotation="-168.928 1.53691 89.0594" scale="0.652558 0.961826 0.348255" nodeId="69" materialIds="17" distanceBlending="false"/>
+        <Shape shapeId="1" name="listra 3" translation="0.27566 -0.461851 -0.0414732" rotation="21.6104 -81.8936 -85.9039" scale="0.699982 1 0.255085" nodeId="105" materialIds="106" distanceBlending="false"/>
+      </TransformGroup>
+  </Scene>
+
+</i3D>

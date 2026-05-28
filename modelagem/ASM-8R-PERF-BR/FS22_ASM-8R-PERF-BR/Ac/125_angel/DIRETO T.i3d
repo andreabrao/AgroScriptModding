@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="DIRETO T.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.4"/>
+  </Asset>
+
+  <Files>
+  </Files>
+
+
+  <Materials>
+    <Material name="07 - Default" materialId="5" diffuseColor="0.109804 0.109804 0.109804 1">
+    </Material>
+    <Material name="Reifenhalter" materialId="32" diffuseColor="0.639216 0.639216 0.639216 1" specularColor="0.639216 1 1">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="DIRETO T.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="escape " translation="-1.05807 2.44006 0.141452" rotation="0 23.8771 0.205891" scale="1 2.3 1" nodeId="412">
+        <TransformGroup name="Skrsten" translation="-0.00914736 -0.05 0" nodeId="413">
+          <Shape shapeId="1" name=".002" translation="-0.55995 -3.61188 0.59795" nodeId="414" materialIds="32,32,32" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+        <TransformGroup name="transform" translation="0.00101387 0.0103877 -0.0036897" scale="0.95 0.95 0.95" nodeId="415">
+          <Shape shapeId="1" name="pipe" translation="-0.55995 -3.61188 0.59795" scale="0.99 0.99 0.99" nodeId="416" materialIds="5" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+      </TransformGroup>
+  </Scene>
+
+</i3D>

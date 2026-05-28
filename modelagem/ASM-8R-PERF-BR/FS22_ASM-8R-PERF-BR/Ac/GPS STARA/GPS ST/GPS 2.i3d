@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="GPS 2.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="2" filename="$data/shaders/vehicleShader.xml"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="gps_mat" materialId="5" diffuseColor="1 1 1 1" customShaderId="2">
+      <CustomParameter name="RDT" value="1 1 60 30"/>
+    </Material>
+    <Material name="stMax150_mat" materialId="6" diffuseColor="1 1 1 1" customShaderId="2" customShaderVariation="colorMask">
+      <CustomParameter name="colorMat0" value="0.624 0.624 0.624 1"/>
+      <CustomParameter name="colorMat1" value="0.8832 0.1636 0.0046 1"/>
+      <CustomParameter name="colorMat2" value="0.8832 0.1636 0.0046 0"/>
+      <CustomParameter name="colorMat3" value="0.651 0.456 0.027 1"/>
+      <CustomParameter name="colorMat4" value="0.776 0.776 0.776 0"/>
+      <CustomParameter name="colorMat5" value="0.8832 0.1636 0.0046 10"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="GPS 2.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <Shape shapeId="1" name="gps_vis" translation="0.0380693 2.79817 -0.00190767" rotation="0.126064 0 0" clipDistance="300" nodeId="10" materialIds="5" castsShadows="true" receiveShadows="true">
+        <Shape shapeId="2" name="cable" translation="0.0451365 -0.0248088 0.026373" rotation="-0.126064 0 0" clipDistance="40" nodeId="11" materialIds="6" castsShadows="true" receiveShadows="true"/>
+      </Shape>
+  </Scene>
+
+  <UserAttributes>
+    <UserAttribute nodeId="10">
+      <Attribute name="MaxHandle" type="integer" value="16217"/>
+      <Attribute name="UDP3DSMAX" type="string" value="MapChannel:1 = UVChannel_1"/>
+    </UserAttribute>
+  </UserAttributes>
+
+</i3D>

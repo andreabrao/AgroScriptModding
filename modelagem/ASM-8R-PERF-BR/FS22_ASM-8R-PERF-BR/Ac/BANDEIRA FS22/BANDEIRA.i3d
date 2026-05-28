@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="IDEAL" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.3"/>
+  </Asset>
+
+  <Files>
+    <File fileId="2" filename="$data/shaders/flagShader.xml"/>
+    <File fileId="4" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="1" filename="../../../../Documents/My FS 22 Mods/FS22_IDEAL_BR/Ac/BANDEIRA FS22/textura/brasil.dds"/>
+    <File fileId="3" filename="../../../../Documents/My FS 22 Mods/FS22_IDEAL_BR/Ac/BANDEIRA FS22/textura/cor bastao.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="bandeirabr_mat" materialId="709" customShaderId="2">
+      <Texture fileId="1"/>
+      <CustomParameter name="displacementSpeedFrequency" value="0.05 -8 -5 4"/>
+    </Material>
+    <Material name="peca_mat" materialId="710" customShaderId="4" customShaderVariation="colorMask">
+      <Texture fileId="3"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.8 0.55 0.05 1"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="BANDEIRA.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="Bandeira" translation="1.53092 0.962453 3.56981" rotation="-9.92807e-10 90 0" scale="0.215 0.215359 0.215359" clipDistance="300" nodeId="714">
+        <Shape shapeId="1" name="Brasil" translation="0.0514701 2.54327 0.0175408" scale="1.21566 1.24887 1" clipDistance="300" nodeId="715" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Argentina" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="716" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Bolivia" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="717" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Chile" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="718" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Colombia" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="719" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Ecuador" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="720" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Guyana" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="721" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Paraguay" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="722" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Peru" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="723" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Suriname" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="724" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Uruguay" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="725" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="1" name="Venezuela" translation="0.0514701 1.46166 0.0175408" visibility="false" clipDistance="300" nodeId="726" materialIds="709" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="2" name="Cylinder001" translation="-7.03102e-09 0.492429 -6.14671e-16" scale="1 1.6464 1" nodeId="727" materialIds="710" castsShadows="true" receiveShadows="true"/>
+      </TransformGroup>
+  </Scene>
+
+</i3D>

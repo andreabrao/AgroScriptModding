@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="1000 Vario" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.3"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="9" filename="$data/shared/clearGlass_diffuse.png"/>
+    <File fileId="1" filename="$data/shared/clearPlastic_diffuse.png"/>
+    <File fileId="15" filename="$data/shared/default_normal.png"/>
+    <File fileId="33" filename="$data/shared/default_specular.png"/>
+    <File fileId="17" filename="$data/shared/window_specular.dds"/>
+    <File fileId="2" filename="$data/vehicles/fendt/vario1000/vario1000Lights_normal.png"/>
+    <File fileId="3" filename="$data/vehicles/fendt/vario1000/vario1000Lights_vmask.png"/>
+    <File fileId="11" filename="$data/vehicles/fendt/vario1000/vario1000_normal.dds"/>
+    <File fileId="12" filename="$data/vehicles/fendt/vario1000/vario1000_vmask.dds"/>
+    <File fileId="16" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/Specular.dds"/>
+    <File fileId="20" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/bizonZ056Lights_normal.dds"/>
+    <File fileId="21" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/bizonZ056Lights_specular.dds"/>
+    <File fileId="19" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/clearGlass_diffuse.dds"/>
+    <File fileId="27" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/clearPlastic_diffuse.dds"/>
+    <File fileId="28" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/hellaWorkingLightRound_01_normal.dds"/>
+    <File fileId="29" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/hellaWorkingLightRound_01_specular.dds"/>
+    <File fileId="23" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/hellaWorkingLightRound_03_normal.dds"/>
+    <File fileId="24" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/hellaWorkingLightRound_03_specular.dds"/>
+    <File fileId="30" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/rearLightOvalLED_01_normal.dds"/>
+    <File fileId="31" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/rearLightOvalLED_01_specular.dds"/>
+    <File fileId="32" filename="../../../../../../../../Desktop/FS22_Fendt_1000_Vario/textures/yellowPlastic_diffuse.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="clearGlass_mat" materialId="7" alphaBlending="true" customShaderId="4" customShaderVariation="colorMask">
+      <Texture fileId="9"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="clearPlastic_mat" materialId="9" alphaBlending="true" customShaderId="4" customShaderVariation="colorMask">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="clearPlastic_mat" materialId="8" alphaBlending="true" customShaderId="4" customShaderVariation="staticLight">
+      <Texture fileId="27"/>
+      <Normalmap fileId="28"/>
+      <Glossmap fileId="29"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.25 0 2"/>
+      <CustomParameter name="colorMat2" value="0.5 0 0 2"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Default OBJ" materialId="11" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="12"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.25 0 2"/>
+      <CustomParameter name="colorMat2" value="0.5 0 0 2"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Default OBJ" materialId="12" diffuseColor="0.8 0.8 0.8 1" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.25 0 2"/>
+      <CustomParameter name="colorMat2" value="0.5 0 0 2"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Hella_LED" materialId="15" diffuseColor="0.494118 0.8 0.494118 1" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="23"/>
+      <Glossmap fileId="24"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.25 0.5 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Hella_Plastic" materialId="16" diffuseColor="0.6 0.494118 0.494118 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="23"/>
+      <Glossmap fileId="24"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="Hella_Reflektor" materialId="17" diffuseColor="0.694118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="23"/>
+      <Glossmap fileId="24"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.25 0.5 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="lambert3" materialId="22" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="colorMask">
+      <Glossmap fileId="33"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.8 0.55 0.05 1"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="oldCircleLight_mat" materialId="24" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="20"/>
+      <Glossmap fileId="21"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 0"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="oldGlass_mat" materialId="25" alphaBlending="true" customShaderId="4" customShaderVariation="staticLight">
+      <Texture fileId="19"/>
+      <Normalmap fileId="20"/>
+      <Glossmap fileId="21"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0 0.2 0.5 0"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="rearLightOvalLED_01_mat" materialId="28" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="30"/>
+      <Glossmap fileId="31"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.25 0 2"/>
+      <CustomParameter name="colorMat2" value="0.5 0 0 2"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="rearLightOvalLED_01_mat1" materialId="29" diffuseColor="0.494118 0.494118 0.494118 1" alphaBlending="true" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="30"/>
+      <Glossmap fileId="31"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.25 0 2"/>
+      <CustomParameter name="colorMat2" value="0.5 0 0 2"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Scheinwerfer_Glass" materialId="30" alphaBlending="true" customShaderId="4" customShaderVariation="colorMask">
+      <Texture fileId="9"/>
+      <Normalmap fileId="15"/>
+      <Glossmap fileId="17"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.8 0.55 0.05 1"/>
+      <CustomParameter name="colorMat1" value="1 1 1 27"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="Scheinwerfer_LED" materialId="31" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="15"/>
+      <Glossmap fileId="16"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.8 0.55 0.05 1"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="0.25 0.5 1 2"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Scheinwerfer_Reflecktor" materialId="32" diffuseColor="0.2 0.494118 0.494118 1" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="15"/>
+      <Glossmap fileId="16"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.8 0.55 0.05 1"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.25 0.5 1 2"/>
+      <CustomParameter name="colorMat4" value="0.25 0.5 1 2"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Scheinwerfer_Static" materialId="33" diffuseColor="0.4 0.494118 0.494118 1" alphaBlending="true" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="15"/>
+      <Glossmap fileId="16"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.8 0.55 0.05 1"/>
+      <CustomParameter name="colorMat1" value="0 0 0 0"/>
+      <CustomParameter name="colorMat2" value="1 1 1 2"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="vario1000_mat" materialId="36" diffuseColor="0.486275 0.494118 0.494118 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="11"/>
+      <Glossmap fileId="12"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.0519 0.1922 0.0196 0"/>
+      <CustomParameter name="colorMat1" value="0.0189 0.1332 0.1975 1"/>
+      <CustomParameter name="colorMat2" value="0.0546 0.0546 0.0546 0"/>
+      <CustomParameter name="colorMat3" value="0.0987 0.0987 0.0987 1"/>
+      <CustomParameter name="colorMat4" value="0.0987 0.0987 0.0987 0"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="vario1000Lights_mat" materialId="48" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="staticLight">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="1 1 1 2"/>
+      <CustomParameter name="colorMat1" value="1 0.25 0 2"/>
+      <CustomParameter name="colorMat2" value="0.5 0 0 2"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+    <Material name="Yellow" materialId="58" alphaBlending="true" customShaderId="4" customShaderVariation="staticLight">
+      <Texture fileId="32"/>
+      <Normalmap fileId="30"/>
+      <Glossmap fileId="31"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.966 0.4368 0.0143 1"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+      <CustomParameter name="lightControl" value="0 0 0 0"/>
+      <CustomParameter name="blinkOffset" value="0 0 1 0"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="led frente.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="lights" nodeId="267">
+        <TransformGroup name="sharedLights" nodeId="268"/>
+        <TransformGroup name="staticLights" nodeId="269">
+          <Shape shapeId="1" name="dayLightSelfIllum01Static" clipDistance="75" nodeId="270" materialIds="9" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="2" name="dayLightSelfIllum02Static" clipDistance="75" nodeId="271" materialIds="48" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="3" name="frontLightSelfIllum01Static" visibility="false" clipDistance="75" nodeId="272" materialIds="7" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="4" name="frontLightSelfIllum02Static" visibility="false" clipDistance="75" nodeId="273" materialIds="48" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="5" name="turnLightRightSelfIllum04_static" clipDistance="75" nodeId="274" materialIds="48" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="6" name="turnLightRightSelfIllum03_static" clipDistance="75" nodeId="275" materialIds="7" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="7" name="workLightFrontSelfIllum04_static" visibility="false" clipDistance="75" nodeId="276" materialIds="48" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="8" name="workLightFrontSelfIllum03_static" visibility="false" clipDistance="75" nodeId="277" materialIds="7" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="9" name="frontLightSelfIllum05_static" visibility="false" clipDistance="75" nodeId="278" materialIds="48" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <Shape shapeId="10" name="frontLightSelfIllum06_static" visibility="false" clipDistance="75" nodeId="279" materialIds="7" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          <TransformGroup name="visuals" nodeId="280">
+            <Shape shapeId="11" name="vario1000Gen_vis1" clipDistance="300" nodeId="281" materialIds="36" castsShadows="true" receiveShadows="true"/>
+          </TransformGroup>
+          <TransformGroup name="TFL" translation="0 0 -0.00136687" nodeId="282">
+            <Shape shapeId="12" name="TFL_orange" translation="0 -2.07314e-08 0" rotation="90 -0 0" nodeId="283" materialIds="11"/>
+            <Shape shapeId="13" name="TFL_gruen" translation="0 0 -4.6669e-10" rotation="90 -0 0" nodeId="284" materialIds="12"/>
+          </TransformGroup>
+          <TransformGroup name="glas_eckig" translation="-1.065 2.45138 1.25229" scale="0.89836 0.891684 0.95" nodeId="285">
+            <Shape shapeId="14" name="Static_Small" translation="0 0.0540245 0.062" clipDistance="300" nodeId="286" materialIds="33" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="15" name="Glass_Small" translation="-5.89155e-06 0.053924 0.068207" clipDistance="300" nodeId="287" materialIds="30" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="16" name="Reflecktor_Small" translation="7.15293e-05 0.053871 0.0552661" clipDistance="35" nodeId="288" materialIds="32" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+            <Shape shapeId="17" name="LED" translation="7.15312e-05 0.053871 0.0483249" clipDistance="35" nodeId="289" materialIds="31" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </TransformGroup>
+          <TransformGroup name="glas_eckig" translation="-1.155 2.13551 1.2287" rotation="-180 -74.2591 -180" scale="0.89836 0.891684 0.95" nodeId="290">
+            <Shape shapeId="14" name="Static_Small" translation="-0.000130273 0.0540245 0.062" clipDistance="300" nodeId="291" materialIds="33" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="15" name="Glass_Small" translation="-5.89155e-06 0.053924 0.068207" clipDistance="300" nodeId="292" materialIds="30" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="16" name="Reflecktor_Small" translation="0 0.053871 0.0552661" clipDistance="35" nodeId="293" materialIds="32" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+            <Shape shapeId="17" name="LED" translation="7.15312e-05 0.053871 0.0483249" clipDistance="35" nodeId="294" materialIds="31" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </TransformGroup>
+          <Shape shapeId="18" name="Headlight" translation="-1.23 1.42185 -2.9726" scale="0.7 0.7 2" nodeId="295" materialIds="25"/>
+          <TransformGroup name="transform" translation="0.172 1.351 2.653" scale="0.5 0.5 1" nodeId="296">
+            <Shape shapeId="19" name="bodyOldCircle" translation="-0.11 0.1393 -0.00109005" clipDistance="300" nodeId="297" materialIds="24" castsShadows="true" receiveShadows="true">
+              <Shape shapeId="18" name="Headlight" translation="-0.273448 -2.73415 -2.091" scale="2.1 2.1 1" nodeId="298" materialIds="25"/>
+            </Shape>
+          </TransformGroup>
+          <TransformGroup name="transform" translation="-0.172 1.351 2.653" scale="0.5 0.5 1" nodeId="299">
+            <Shape shapeId="19" name="bodyOldCircle" translation="-0.11 0.1393 -0.00109005" clipDistance="300" nodeId="300" materialIds="24" castsShadows="true" receiveShadows="true">
+              <Shape shapeId="18" name="Headlight" translation="-0.273448 -2.73415 -2.09132" scale="2.1 2.1 1" nodeId="301" materialIds="25"/>
+            </Shape>
+          </TransformGroup>
+          <TransformGroup name="glas_rund" translation="-0.243798 1.47047 2.62598" rotation="26.6288 -18.137 2.01307" nodeId="302">
+            <Shape shapeId="20" name="LED" translation="0 0.0472278 0.0244366" clipDistance="300" nodeId="303" materialIds="15" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="21" name="LED_Reflektor" translation="0 0.0472278 0.03029" clipDistance="300" nodeId="304" materialIds="17" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="22" name="Plastic" translation="0 0.0472064 0.0361435" clipDistance="300" nodeId="305" materialIds="16" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="23" name="workFrontStatic" translation="0 0 -0.00342036" clipDistance="35" nodeId="306" materialIds="8" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </TransformGroup>
+          <TransformGroup name="glas_rund" translation="0.244114 1.47031 2.62631" rotation="27.7113 17.1284 1.4509" nodeId="307">
+            <Shape shapeId="20" name="LED" translation="0 0.0472278 0.0244366" clipDistance="300" nodeId="308" materialIds="15" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="21" name="LED_Reflektor" translation="0 0.0472278 0.03029" clipDistance="300" nodeId="309" materialIds="17" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="22" name="Plastic" translation="0 0.0472064 0.0361435" clipDistance="300" nodeId="310" materialIds="16" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="23" name="workFrontStatic" translation="0 0 -0.00342036" clipDistance="35" nodeId="311" materialIds="8" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </TransformGroup>
+          <TransformGroup name="transform" translation="0.399665 2.09164 2.66046" rotation="19.6377 -7.73259 75.0297" scale="0.476133 0.475658 0.454" nodeId="312">
+            <Shape shapeId="19" name="bodyOldCircle" translation="-0.11 0.1393 -0.00109005" clipDistance="300" nodeId="313" materialIds="24" castsShadows="true" receiveShadows="true">
+              <Shape shapeId="18" name="Headlight" translation="-0.273448 -2.73415 -2.09132" scale="2.1 2.1 1" nodeId="314" materialIds="25"/>
+            </Shape>
+          </TransformGroup>
+          <TransformGroup name="transform" translation="-0.396233 2.08466 2.66118" rotation="19.667 8.3123 -69.3238" scale="0.476133 0.475658 0.454" nodeId="315">
+            <Shape shapeId="19" name="bodyOldCircle" translation="-0.11 0.1393 -0.00109005" clipDistance="300" nodeId="316" materialIds="24" castsShadows="true" receiveShadows="true">
+              <Shape shapeId="18" name="Headlight" translation="-0.273448 -2.73415 -2.09132" scale="2.1 2.1 1" nodeId="317" materialIds="25"/>
+            </Shape>
+          </TransformGroup>
+          <TransformGroup name="glas_rund" translation="-0.363917 2.08702 2.56626" rotation="13.4303 -45.1793 -1.30732" scale="1.15 1.15 1.15" nodeId="318">
+            <Shape shapeId="20" name="LED" translation="0 0.0472278 0.0244366" clipDistance="300" nodeId="319" materialIds="15" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="21" name="LED_Reflektor" translation="0 0.0472278 0.03029" clipDistance="300" nodeId="320" materialIds="17" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="22" name="Plastic" translation="0 0.0472064 0.0361435" clipDistance="300" nodeId="321" materialIds="16" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="23" name="workFrontStatic" translation="0 0 -0.00342036" clipDistance="35" nodeId="322" materialIds="8" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </TransformGroup>
+          <TransformGroup name="glas_rund" translation="0.364709 2.0907 2.56688" rotation="13.4303 45.179 -1.30732" scale="1.15 1.15 1.15" nodeId="323">
+            <Shape shapeId="20" name="LED" translation="0 0.0472278 0.0244366" clipDistance="300" nodeId="324" materialIds="15" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="21" name="LED_Reflektor" translation="0 0.0472278 0.03029" clipDistance="300" nodeId="325" materialIds="17" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="22" name="Plastic" translation="0 0.0472064 0.0361435" clipDistance="300" nodeId="326" materialIds="16" castsShadows="true" receiveShadows="true"/>
+            <Shape shapeId="23" name="workFrontStatic" translation="0 0 -0.00342036" clipDistance="35" nodeId="327" materialIds="8" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="defaultLights" nodeId="328">
+          <Light name="frontLightLow" translation="3.31322e-31 2.05291 2.92149" rotation="165 0 -180" clipDistance="75" nodeId="329" type="spot" color="0.85 0.85 1" emitDiffuse="true" emitSpecular="true" range="20" coneAngle="80" dropOff="3"/>
+          <Light name="highBeamLow" translation="5.52203e-32 2.05291 2.92149" rotation="170 -8.82781e-32 180" clipDistance="75" nodeId="330" type="spot" color="0.85 0.85 1" emitDiffuse="true" emitSpecular="true" range="40" coneAngle="70" dropOff="2"/>
+          <Light name="frontLightHigh" translation="-0.312359 2.05291 2.78701" rotation="165 8 180" clipDistance="75" nodeId="331" type="spot" color="0.85 0.85 1" emitDiffuse="true" emitSpecular="true" range="25" coneAngle="70" dropOff="3">
+            <Light name="frontLightHigh1" translation="-0.618283 -0.0224898 0.0839332" rotation="0 16 0" clipDistance="75" nodeId="332" type="spot" color="0.85 0.85 1" emitDiffuse="true" emitSpecular="true" range="25" coneAngle="70" dropOff="3"/>
+          </Light>
+          <Light name="highBeamHigh" translation="0.312 2.05291 2.78701" rotation="170 -7 180" clipDistance="75" nodeId="333" type="spot" color="0.85 0.85 1" emitDiffuse="true" emitSpecular="true" range="70" coneAngle="40" dropOff="2.5">
+            <Light name="highBeamHigh1" translation="0.619705 -0.0132129 0.0749343" rotation="0.299678 -13.7831 -2.47909" clipDistance="75" nodeId="334" type="spot" color="0.85 0.85 1" emitDiffuse="true" emitSpecular="true" range="70" coneAngle="40" dropOff="2.5"/>
+          </Light>
+        </TransformGroup>
+        <TransformGroup name="defaultLights_LED" nodeId="335">
+          <Light name="frontLightLow" translation="3.31322e-31 2.05291 2.92149" rotation="165 0 -180" clipDistance="75" nodeId="336" type="spot" color="1 1 3" emitDiffuse="true" emitSpecular="true" range="20" coneAngle="80" dropOff="3"/>
+          <Light name="highBeamLow" translation="5.52203e-32 2.05291 2.92149" rotation="170 -8.82781e-32 180" clipDistance="75" nodeId="337" type="spot" color="1 1 3" emitDiffuse="true" emitSpecular="true" range="40" coneAngle="70" dropOff="2"/>
+          <Light name="frontLightHigh" translation="-0.312359 2.05291 2.78701" rotation="165 8 180" clipDistance="75" nodeId="338" type="spot" color="1 1 3" emitDiffuse="true" emitSpecular="true" range="25" coneAngle="70" dropOff="3">
+            <Light name="frontLightHigh1" translation="-0.618283 -0.0224898 0.0839332" rotation="0 16 0" clipDistance="75" nodeId="339" type="spot" color="1 1 3" emitDiffuse="true" emitSpecular="true" range="25" coneAngle="70" dropOff="3"/>
+          </Light>
+          <Light name="highBeamHigh" translation="0.312 2.05291 2.78701" rotation="170 -7 180" clipDistance="75" nodeId="340" type="spot" color="1 1 3" emitDiffuse="true" emitSpecular="true" range="70" coneAngle="40" dropOff="2.5">
+            <Light name="highBeamHigh1" translation="0.619705 -0.0132129 0.0749343" rotation="0.299678 -13.7831 -2.47909" clipDistance="75" nodeId="341" type="spot" color="1 1 3" emitDiffuse="true" emitSpecular="true" range="70" coneAngle="40" dropOff="2.5"/>
+          </Light>
+        </TransformGroup>
+        <TransformGroup name="Trittbeleuchtung" nodeId="342">
+          <Shape shapeId="24" name="Orange_licht" translation="0.70436 1.709 -0.102307" rotation="90 86.8832 -1.79994e-05" scale="0.2 0.2 0.2" clipDistance="300" nodeId="343" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="344" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="345" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+          <Shape shapeId="24" name="Orange_licht" translation="0.694927 1.70888 0.113094" rotation="90 86.8832 -1.79994e-05" scale="0.2 0.2 0.2" clipDistance="300" nodeId="346" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="347" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="348" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+          <Shape shapeId="24" name="Orange_licht" translation="0.832754 1.439 -0.0738261" rotation="90 79.3588 -3.99178e-05" scale="0.2 0.2 0.2" clipDistance="300" nodeId="349" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="350" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="351" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+          <Shape shapeId="24" name="Orange_licht" translation="0.797025 1.439 0.157091" rotation="90 80.4265 -3.62363e-05" scale="0.2 0.2 0.2" clipDistance="300" nodeId="352" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="353" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="354" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+          <Shape shapeId="24" name="Orange_licht" translation="0.936141 1.211 -0.00458289" rotation="90 89.5062 2.48182e-05" scale="0.2 0.2 0.2" clipDistance="300" nodeId="355" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="356" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="357" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+          <Shape shapeId="24" name="Orange_licht" translation="0.936255 1.211 0.194598" rotation="90 88.2876 -2.38018e-06" scale="0.2 0.2 0.2" clipDistance="300" nodeId="358" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="359" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="360" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+          <Shape shapeId="24" name="Orange_licht" translation="1.03142 0.90934 0.221724" rotation="120.723 86.0416 30.7836" scale="0.2 0.2 0.2" clipDistance="300" nodeId="361" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="362" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="363" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+          <Shape shapeId="24" name="Orange_licht" translation="1.04376 0.916693 0.0140913" rotation="120.723 86.0416 30.7836" scale="0.2 0.2 0.2" clipDistance="300" nodeId="364" materialIds="28" castsShadows="true" receiveShadows="true">
+            <Shape shapeId="25" name="staticlight" nodeId="365" materialIds="58"/>
+            <Shape shapeId="26" name="innerPartStatic" clipDistance="35" nodeId="366" materialIds="29" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+          </Shape>
+        </TransformGroup>
+        <TransformGroup name="suporte" translation="-0.623979 1.70524 0.625619" rotation="1.54842e-05 90 1.54048e-05" scale="0.292459 0.292459 0.292459" nodeId="367">
+          <Shape shapeId="27" name="Cylinder001" translation="-1.83717 2.15479 -1.50101" rotation="-2.25021 1.62844e-12 -80.0724" scale="0.0188932 0.0139139 0.0263262" nodeId="368" materialIds="22" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+      </TransformGroup>
+  </Scene>
+
+  <UserAttributes>
+    <UserAttribute nodeId="368">
+      <Attribute name="MaxHandle" type="integer" value="3"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032edgeFBXASC032length" type="float" value="2"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032maxFBXASC032displace" type="float" value="20"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032method" type="integer" value="6"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032parametricFBXASC032subdivisionFBXASC032level" type="integer" value="5"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032smoothingFBXASC032on" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032useFBXASC032globalFBXASC032settings" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032viewFBXASC032dependent" type="boolean" value="true"/>
+    </UserAttribute>
+  </UserAttributes>
+
+</i3D>

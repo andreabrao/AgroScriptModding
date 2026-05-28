@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="R30_cereXBib2.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="2" filename="$data/shared/wheels/tires/michelin/cereXBib2/cereXBib2_normal.png"/>
+    <File fileId="3" filename="$data/shared/wheels/tires/michelin/cereXBib2/cereXBib2_vmask.png"/>
+    <File fileId="8" filename="../listras pneu/textura michelin-firestone/michelin.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="cereXBib2_mat" materialId="5" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="tirePressureDeformation">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="morphPosition" value="-0.421 -0.825 0.5 0.05"/>
+    </Material>
+    <Material name="cereXBib2_mat1" materialId="6" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="tirePressureDeformation">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="morphPosition" value="-0.415 -0.811 0.5 0.05"/>
+    </Material>
+    <Material name="cereXBib2_mat2" materialId="7" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="tirePressureDeformation">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="morphPosition" value="-0.417 -0.841 0.5 0.05"/>
+    </Material>
+    <Material name="UnnamedMaterial" materialId="8">
+      <Texture fileId="8"/>
+    </Material>
+    <Material name="UnnamedMaterial" materialId="28">
+      <Texture fileId="8"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="R30_cereXBib2.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="_VF_520_85_R30_CFO_" nodeId="14">
+        <Shape shapeId="1" name="shape19" clipDistance="300" nodeId="15" materialIds="5" castsShadows="true" receiveShadows="true"/>
+      </TransformGroup>
+      <TransformGroup name="_VF_620_70_R30_CFO_" nodeId="16">
+        <Shape shapeId="2" name="shape18" clipDistance="300" nodeId="17" materialIds="6" castsShadows="true" receiveShadows="true">
+          <TransformGroup name="logo" translation="-0.0468271 0 -0.0102416" nodeId="18">
+            <Shape shapeId="3" name="listra" translation="0.348148 -1.13441e-07 -0.00664111" rotation="0 0 -90" scale="1.23181 1.23181 1.23181" nodeId="19" materialIds="8" distanceBlending="false"/>
+          </TransformGroup>
+          <TransformGroup name="logo2" translation="0.0503686 0 0.014567" rotation="0 180 0" nodeId="20">
+            <Shape shapeId="3" name="listra" translation="0.348148 -1.13441e-07 -0.00664111" rotation="0 0 -90" scale="1.23181 1.23181 1.23181" nodeId="21" materialIds="8" distanceBlending="false"/>
+          </TransformGroup>
+        </Shape>
+      </TransformGroup>
+      <TransformGroup name="_VF_710_65_R30_CFO_" nodeId="22">
+        <Shape shapeId="4" name="shape13" clipDistance="300" nodeId="23" materialIds="7" castsShadows="true" receiveShadows="true">
+          <TransformGroup name="logo" nodeId="25">
+            <Shape shapeId="3" name="listra" translation="0.355191 1.66826e-05 -0.0171803" rotation="0 0 -89.8" scale="1.29721 1.29721 1.29721" nodeId="27" materialIds="28" distanceBlending="false"/>
+          </TransformGroup>
+          <TransformGroup name="logo2" rotation="0 180 0" nodeId="29">
+            <Shape shapeId="3" name="listra" translation="0.355191 1.66826e-05 -0.0171803" rotation="0 0 -89.8" scale="1.29721 1.29721 1.29721" nodeId="30" materialIds="28" distanceBlending="false"/>
+          </TransformGroup>
+        </Shape>
+      </TransformGroup>
+  </Scene>
+
+</i3D>

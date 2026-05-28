@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="buehrer6135A" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.3"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/flagShader.xml"/>
+    <File fileId="6" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="2" filename="$data/shared/default_normal.png"/>
+    <File fileId="3" filename="$data/shared/default_specular.png"/>
+    <File fileId="1" filename="brasil.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="bandeirabr_mat" materialId="4" customShaderId="4">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="displacementSpeedFrequency" value="0.1 -9 -10 5"/>
+    </Material>
+    <Material name="lambert1" materialId="5" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="6" customShaderVariation="colorMask">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.8 0.55 0.05 1"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="bandeira.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="Bandeira_1" translation="-0.998143 3.03544 0.00757544" rotation="180 90 180" scale="0.127 0.126824 0.127" nodeId="9">
+        <Shape shapeId="1" name="Bandeira" translation="-0.117605 1.6268 0.0752498" rotation="-1.59695 -6.96179 1.23003" scale="1.87967 2.00272 1.664" clipDistance="300" nodeId="10" materialIds="4" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="2" name="Cylinder001" translation="-0.101942 -2.10835 0.0850003" scale="0.00714073 0.0242879 0.00875599" clipDistance="300" nodeId="11" materialIds="5" castsShadows="true" receiveShadows="true"/>
+      </TransformGroup>
+  </Scene>
+
+  <UserAttributes>
+    <UserAttribute nodeId="11">
+      <Attribute name="MaxHandle" type="integer" value="3"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032edgeFBXASC032length" type="float" value="2"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032maxFBXASC032displace" type="float" value="20"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032method" type="integer" value="6"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032parametricFBXASC032subdivisionFBXASC032level" type="integer" value="5"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032smoothingFBXASC032on" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032useFBXASC032globalFBXASC032settings" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032viewFBXASC032dependent" type="boolean" value="true"/>
+    </UserAttribute>
+  </UserAttributes>
+
+</i3D>

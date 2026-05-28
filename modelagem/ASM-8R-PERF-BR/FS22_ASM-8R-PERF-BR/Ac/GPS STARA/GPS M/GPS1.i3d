@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="GPS1.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="2" filename="../Textura/gps_normal.dds"/>
+    <File fileId="3" filename="../Textura/gps_specular.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="stMax150InteriorDecal_mat" materialId="5" diffuseColor="1 1 1 1" alphaBlending="true" customShaderId="4" customShaderVariation="Decal">
+    </Material>
+    <Material name="stMax150MergedParts_mat" materialId="6" diffuseColor="1 1 1 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="colorMat0" value="0.8832 0.1636 0.0046 1"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="GPS1.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="staraST180Display" translation="-0.510586 2.12712 -0.423499" nodeId="10">
+        <Shape shapeId="1" name="interior_vis2" translation="0.0274445 0.0108173 0.0305618" rotation="9.33467e-06 0 0" clipDistance="150" nodeId="11" materialIds="6" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="2" name="interior_decal" translation="0.020445 0.013745 -0.0305" clipDistance="20" nodeId="12" materialIds="5" castsShadows="true" receiveShadows="true" decalLayer="1"/>
+      </TransformGroup>
+  </Scene>
+
+</i3D>

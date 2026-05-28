@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="R42_machXbib.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="2" filename="machXbib_normal.png"/>
+    <File fileId="3" filename="machXbib_vmask.png"/>
+    <File fileId="8" filename="../listras pneu/textura michelin-firestone/michelin.png"/>
+    <File fileId="9" filename="../sujavel 2.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="machXbib_mat384" materialId="5" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="tirePressureDeformation">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="morphPosition" value="-0.589616 -1.044 0.5 0.1"/>
+    </Material>
+    <Material name="machXbib_mat385" materialId="6" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="tirePressureDeformation">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="morphPosition" value="-0.59044 -1.079 0.5 0.1"/>
+    </Material>
+    <Material name="machXbib_mat386" materialId="7" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="tirePressureDeformation">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="morphPosition" value="-0.668723 -0.985 0.5 0.1"/>
+    </Material>
+    <Material name="UnnamedMaterial" materialId="8">
+      <Texture fileId="8"/>
+      <Glossmap fileId="9"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="R42_machXbib.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="machXbib_710_70R42" nodeId="17">
+        <TransformGroup name="lod" clipDistance="600" nodeId="18" lodDistance="0 25">
+          <Shape shapeId="1" name="lod0" nodeId="19" materialIds="5" castsShadows="true" receiveShadows="true">
+            <TransformGroup name="logo" nodeId="20">
+              <Shape shapeId="2" name="listra" translation="0.357563 -1.16509e-07 -0.0201006" rotation="0 0 -90" scale="1.72765 1.72765 1.72765" nodeId="21" materialIds="8" distanceBlending="false"/>
+            </TransformGroup>
+            <TransformGroup name="logo" translation="0.00392246 0 0.00565021" rotation="0 180 0" nodeId="22">
+              <Shape shapeId="2" name="listra" translation="0.357563 -1.16509e-07 -0.0201006" rotation="0 0 -90" scale="1.72765 1.72765 1.72765" nodeId="23" materialIds="8" distanceBlending="false"/>
+            </TransformGroup>
+          </Shape>
+          <Shape shapeId="3" name="lod1" nodeId="24" materialIds="5" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="machXbib_710_75R42" nodeId="25">
+        <TransformGroup name="lod" clipDistance="600" nodeId="26" lodDistance="0 25">
+          <Shape shapeId="4" name="lod0" nodeId="27" materialIds="6" castsShadows="true" receiveShadows="true"/>
+          <Shape shapeId="5" name="lod1" nodeId="28" materialIds="6" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+      </TransformGroup>
+      <TransformGroup name="machXbib_900_50R42" nodeId="29">
+        <TransformGroup name="lod" clipDistance="600" nodeId="30" lodDistance="0 25">
+          <Shape shapeId="6" name="lod0" nodeId="31" materialIds="7" castsShadows="true" receiveShadows="true"/>
+          <Shape shapeId="7" name="lod1" nodeId="32" materialIds="7" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+      </TransformGroup>
+  </Scene>
+
+</i3D>

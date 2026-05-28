@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="8R Series BR" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.2"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="8" filename="$data/shared/assets/assetLibraryDecals_diffuse.dds"/>
+    <File fileId="9" filename="$data/shared/assets/assetLibraryDecals_normal.dds"/>
+    <File fileId="10" filename="$data/shared/assets/assetLibraryDecals_vmask.dds"/>
+    <File fileId="2" filename="$data/shared/default_normal.dds"/>
+    <File fileId="3" filename="$data/shared/default_vmask.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="caixaDeSom_mat" materialId="18" diffuseColor="0.8 0.8 0.8 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.07 0.07 0.07 7"/>
+      <CustomParameter name="colorMat1" value="0.3 0.3 0.3 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
+    </Material>
+    <Material name="parafusoCaixa_mat" materialId="51" customShaderId="4">
+      <Texture fileId="8"/>
+      <Normalmap fileId="9"/>
+      <Glossmap fileId="10"/>
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="Som.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <Shape shapeId="1" name="som" translation="-0.633184 0.160346 0.547381" clipDistance="300" nodeId="566" materialIds="18" castsShadows="true" receiveShadows="true">
+        <Shape shapeId="2" name="Plane.010" translation="-0.399551 0.925 0.816396" clipDistance="200" nodeId="567" materialIds="51" castsShadows="true" receiveShadows="true"/>
+      </Shape>
+  </Scene>
+
+</i3D>

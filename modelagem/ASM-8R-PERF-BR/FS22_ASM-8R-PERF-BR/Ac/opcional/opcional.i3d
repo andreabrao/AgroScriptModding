@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="opcional.i3d" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="9.0.4"/>
+  </Asset>
+
+  <Files>
+    <File fileId="13" filename="$data/shaders/flagShader.xml"/>
+    <File fileId="4" filename="$data/shaders/vehicleShader.xml"/>
+    <File fileId="25" filename="$data/shared/assets/assetLibraryDecals_diffuse.png"/>
+    <File fileId="26" filename="$data/shared/assets/assetLibraryDecals_normal.png"/>
+    <File fileId="27" filename="$data/shared/assets/assetLibraryDecals_vmask.dds"/>
+    <File fileId="2" filename="$data/shared/default_normal.png"/>
+    <File fileId="12" filename="$data/shared/default_specular.png"/>
+    <File fileId="24" filename="$data/shared/default_vmask.png"/>
+    <File fileId="3" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ac/65_angel/Textur/DefaultMaterial_specular.dds"/>
+    <File fileId="15" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ac/Antena/adesivos_specular.dds"/>
+    <File fileId="16" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ac/Antena/energetico.dds"/>
+    <File fileId="11" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ac/Bandeira Fs 22 isack/brasil.dds"/>
+    <File fileId="20" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ac/etezinho/et.jpg"/>
+    <File fileId="22" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ac/perfume de cabine/Perfume skin.dds"/>
+    <File fileId="23" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ac/perfume de cabine/bandeira-do-brasil-fundo,.dds"/>
+    <File fileId="19" filename="../../../../Documents/My Games/FarmingSimulator2022/mods/FS22_JohnDeere_8R_BR/Ad/cor tampa.png"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="02 - Default" materialId="5" customShaderId="4" customShaderVariation="colorMask">
+      <Glossmap fileId="15"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="colorMat0" value="0.916 0.916 0.916 2"/>
+      <CustomParameter name="colorMat1" value="0 0 0 1"/>
+    </Material>
+    <Material name="07 - Default" materialId="6" diffuseColor="0.109804 0.109804 0.109804 1">
+      <Glossmap fileId="3"/>
+    </Material>
+    <Material name="bandeirabr_mat" materialId="9" customShaderId="13">
+      <Texture fileId="11"/>
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="12"/>
+      <CustomParameter name="displacementSpeedFrequency" value="0.1 -9 -10 5"/>
+    </Material>
+    <Material name="caixaDeSom_mat" materialId="10" diffuseColor="0.8 0.8 0.8 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="24"/>
+      <CustomParameter name="colorMat0" value="0.07 0.07 0.07 7"/>
+      <CustomParameter name="colorMat1" value="0.3 0.3 0.3 1"/>
+    </Material>
+    <Material name="energetico" materialId="41" emissiveColor="0 0 0 1" specularColor="1 1 0">
+      <Texture fileId="16"/>
+    </Material>
+    <Material name="i3d_default_material" materialId="45" diffuseColor="0.8 0.8 0.8 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="3"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+    </Material>
+    <Material name="lambert1" materialId="65" diffuseColor="0.494118 0.494118 0.494118 1" customShaderId="4" customShaderVariation="colorMask">
+      <Normalmap fileId="2"/>
+      <Glossmap fileId="12"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+    </Material>
+    <Material name="lambert8" materialId="70" diffuseColor="1 1 1 1" customShaderId="4" customShaderVariation="colorMask">
+      <Glossmap fileId="12"/>
+      <CustomParameter name="RDT" value="1 1 0 0"/>
+      <CustomParameter name="colorMat5" value="0.03 0.33 0.06 1"/>
+    </Material>
+    <Material name="Materiais.023" materialId="71" emissiveColor="0 0 0 1">
+      <Texture fileId="20"/>
+    </Material>
+    <Material name="parafusoCaixa_mat" materialId="136" customShaderId="4">
+      <Texture fileId="25"/>
+      <Normalmap fileId="26"/>
+      <Glossmap fileId="27"/>
+    </Material>
+    <Material name="Reifenhalter" materialId="140" diffuseColor="0.639216 0.639216 0.639216 1" specularColor="0.639216 1 1">
+    </Material>
+    <Material name="UnnamedMaterial" materialId="186">
+      <Texture fileId="22"/>
+      <Glossmap fileId="23"/>
+    </Material>
+    <Material name="UnnamedMaterial" materialId="190">
+      <Texture fileId="19"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="opcional.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+      <TransformGroup name="opcional " nodeId="1561">
+        <TransformGroup name="escapamento" nodeId="1562">
+          <Shape shapeId="1" name="Pipe" translation="0.0992364 0.559264 0.912438" rotation="9.07265e-06 9.33099e-06 88.3913" scale="1.00746 0.69223 1" clipDistance="300" nodeId="1563" materialIds="45"/>
+          <Shape shapeId="2" name="65angel" translation="-0.87073 0.570368 0.914354" rotation="0 50.4004 0" scale="0.967702 1.14852 1.34794" visibility="false" clipDistance="300" nodeId="1564" materialIds="45"/>
+          <TransformGroup name="escape " translation="-0.912158 1.39367 1.00337" rotation="0 52.5987 0.205892" scale="1 2.13245 1" nodeId="1565">
+            <TransformGroup name="Skrsten" translation="-0.00914736 -0.05 0" nodeId="1566">
+              <Shape shapeId="3" name=".002" translation="-0.55995 -3.61188 0.59795" nodeId="1567" materialIds="140,140,140" castsShadows="true" receiveShadows="true"/>
+            </TransformGroup>
+            <TransformGroup name="transform" translation="0.00101387 0.0103877 -0.0036897" scale="0.95 0.95 0.95" nodeId="1568">
+              <Shape shapeId="3" name="pipe" translation="-0.55995 -3.61188 0.59795" scale="0.99 0.99 0.99" nodeId="1569" materialIds="6" castsShadows="true" receiveShadows="true"/>
+            </TransformGroup>
+          </TransformGroup>
+        </TransformGroup>
+        <TransformGroup name="Bandeira_1" translation="1.30013 2.39281 1.04971" rotation="180 90 180" scale="0.127 0.126824 0.127" visibility="false" nodeId="1570">
+          <Shape shapeId="4" name="Bandeira" translation="-0.117605 1.6268 0.0752498" rotation="-1.59695 -6.96179 1.23003" scale="1.87967 2.00272 1.664" clipDistance="300" nodeId="1571" materialIds="9" castsShadows="true" receiveShadows="true"/>
+          <Shape shapeId="5" name="Cylinder001" translation="-0.101942 -2.10835 0.0850003" scale="0.00714073 0.0242879 0.00875599" clipDistance="300" nodeId="1572" materialIds="65" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+        <TransformGroup name="Bandeira_1" translation="-1.32042 2.39281 1.04971" rotation="180 90 180" scale="0.127 0.126824 0.127" visibility="false" nodeId="1573">
+          <Shape shapeId="4" name="Bandeira" translation="-0.117605 1.6268 0.0752498" rotation="-1.59695 -6.96179 1.23003" scale="1.87967 2.00272 1.664" clipDistance="300" nodeId="1574" materialIds="9" castsShadows="true" receiveShadows="true"/>
+          <Shape shapeId="5" name="Cylinder001" translation="-0.101942 -2.10835 0.0850003" scale="0.00714073 0.0242879 0.00875599" clipDistance="300" nodeId="1575" materialIds="65" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+        <Shape shapeId="6" name="Antena" translation="0.606509 0.709031 0.656947" rotation="0.876997 10.9705 -1.80949e-06" scale="1.1 1.1 1.1" visibility="false" nodeId="1576" materialIds="5" castsShadows="true" receiveShadows="true" distanceBlending="false">
+          <TransformGroup name="lata" translation="-0.0780299 0.592934 0.441" rotation="102.456 -47.867 -103.391" scale="0.6 0.5 0.6" nodeId="1577">
+            <Shape shapeId="7" name="lata" translation="0 -0.244909 -0.005" rotation="-22.7413 -0 0" scale="0.69979 0.7 0.7" nodeId="1578" materialIds="41" castsShadows="true" receiveShadows="true" distanceBlending="false"/>
+            <Shape shapeId="8" name="lata_1" translation="0 -0.244909 -0.005" rotation="-22.7413 -0 0" scale="0.69979 0.7 0.7" nodeId="1579" materialIds="41" castsShadows="true" receiveShadows="true" distanceBlending="false"/>
+          </TransformGroup>
+        </Shape>
+        <Shape shapeId="6" name="Antena" translation="-0.531031 0.702174 0.668797" rotation="0.876997 10.9705 -1.80949e-06" scale="1.1 1.1 1.1" visibility="false" nodeId="1580" materialIds="5" castsShadows="true" receiveShadows="true" distanceBlending="false">
+          <TransformGroup name="lata" translation="-0.0780299 0.592934 0.441" rotation="102.456 -47.867 -103.391" scale="0.6 0.5 0.6" nodeId="1581">
+            <Shape shapeId="7" name="lata" translation="0 -0.244909 -0.005" rotation="-22.7413 -0 0" scale="0.69979 0.7 0.7" nodeId="1582" materialIds="41" castsShadows="true" receiveShadows="true" distanceBlending="false"/>
+            <Shape shapeId="8" name="lata_1" translation="0 -0.244909 -0.005" rotation="-22.7413 -0 0" scale="0.69979 0.7 0.7" nodeId="1583" materialIds="41" castsShadows="true" receiveShadows="true" distanceBlending="false"/>
+          </TransformGroup>
+        </Shape>
+        <Shape shapeId="9" name="tampa " translation="-0.351057 0.372262 0.255004" rotation="1.52667e-12 -6.51378e-12 83.5355" scale="0.699706 1 1.02318" nodeId="1584" materialIds="190" distanceBlending="false"/>
+        <Shape shapeId="10" name="et" translation="0.588941 1.44392 -0.247842" rotation="-165.527 5.89757 -178.116" scale="14.0828 13.3715 14.0828" visibility="false" nodeId="1585" materialIds="71" castsShadows="true" receiveShadows="true" distanceBlending="false"/>
+        <Shape shapeId="11" name="perfume" translation="-0.476404 2.13224 0.464175" rotation="3.05212e-06 -24.0233 -1.192e-06" visibility="false" nodeId="1586" materialIds="70" castsShadows="true" receiveShadows="true">
+          <Shape shapeId="9" name="skin" translation="0 -0.208937 0.00159867" rotation="89.49 -0 0" scale="0.0715832 0.138 0.12492" nodeId="1587" materialIds="186" distanceBlending="false"/>
+          <Shape shapeId="9" name="skin" translation="0.000123031 -0.20897 -0.00210444" rotation="-89.4898 0.331438 -179.997" scale="0.0715832 0.138 0.12492" nodeId="1588" materialIds="186" distanceBlending="false"/>
+        </Shape>
+        <Shape shapeId="12" name="som" translation="-0.630526 0.775964 0.562354" visibility="false" clipDistance="300" nodeId="1589" materialIds="10" castsShadows="true" receiveShadows="true">
+          <Shape shapeId="13" name="Plane.010" translation="-0.399551 0.925 0.816396" clipDistance="200" nodeId="1590" materialIds="136" castsShadows="true" receiveShadows="true"/>
+        </Shape>
+      </TransformGroup>
+  </Scene>
+
+  <UserAttributes>
+    <UserAttribute nodeId="1572">
+      <Attribute name="MaxHandle" type="integer" value="3"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032edgeFBXASC032length" type="float" value="2"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032maxFBXASC032displace" type="float" value="20"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032method" type="integer" value="6"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032parametricFBXASC032subdivisionFBXASC032level" type="integer" value="5"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032smoothingFBXASC032on" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032useFBXASC032globalFBXASC032settings" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032viewFBXASC032dependent" type="boolean" value="true"/>
+    </UserAttribute>
+    <UserAttribute nodeId="1575">
+      <Attribute name="MaxHandle" type="integer" value="3"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032edgeFBXASC032length" type="float" value="2"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032maxFBXASC032displace" type="float" value="20"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032method" type="integer" value="6"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032parametricFBXASC032subdivisionFBXASC032level" type="integer" value="5"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032smoothingFBXASC032on" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032useFBXASC032globalFBXASC032settings" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032viewFBXASC032dependent" type="boolean" value="true"/>
+    </UserAttribute>
+    <UserAttribute nodeId="1586">
+      <Attribute name="MaxHandle" type="integer" value="19"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032edgeFBXASC032length" type="float" value="2"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032maxFBXASC032displace" type="float" value="20"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032method" type="integer" value="6"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032parametricFBXASC032subdivisionFBXASC032level" type="integer" value="5"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032smoothingFBXASC032on" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032useFBXASC032globalFBXASC032settings" type="boolean" value="true"/>
+      <Attribute name="mrFBXASC032displacementFBXASC032viewFBXASC032dependent" type="boolean" value="true"/>
+    </UserAttribute>
+  </UserAttributes>
+
+</i3D>
