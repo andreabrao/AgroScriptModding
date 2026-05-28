@@ -12,6 +12,8 @@ const subscribersPath = path.join(dataDir, "subscribers.json");
 const paymentEventsPath = path.join(dataDir, "payment-events.jsonl");
 const downloadUsagePath = path.join(dataDir, "download-usage.json");
 const backupDir = path.join(dataDir, "backups");
+let r2Client;
+let r2Sdk;
 
 const plans = {
   bronze: { label: "Bronze", quota: 3, price: 9.9 },
@@ -39,6 +41,88 @@ function resolveDataDir() {
   return path.isAbsolute(configuredPath)
     ? path.normalize(configuredPath)
     : path.normalize(path.join(rootDir, configuredPath));
+}
+
+function isR2Configured() {
+  return getR2MissingConfig().length === 0;
+}
+
+function getR2MissingConfig() {
+  const missing = [];
+  if (!process.env.R2_BUCKET) missing.push("R2_BUCKET");
+  if (!process.env.R2_ACCESS_KEY_ID) missing.push("R2_ACCESS_KEY_ID");
+  if (!process.env.R2_SECRET_ACCESS_KEY) missing.push("R2_SECRET_ACCESS_KEY");
+  if (!process.env.R2_ENDPOINT && !process.env.R2_ACCOUNT_ID) {
+    missing.push("R2_ACCOUNT_ID ou R2_ENDPOINT");
+  }
+  return missing;
+}
+
+function getDownloadStorageMode() {
+  return isR2Configured() ? "cloudflare-r2" : "local-private-downloads";
+}
+
+function getR2Endpoint() {
+  const configuredEndpoint = String(process.env.R2_ENDPOINT || "").trim();
+  if (/^https?:\/\//i.test(configuredEndpoint)) {
+    return configuredEndpoint.replace(/\/$/, "");
+  }
+  return `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
+}
+
+function getR2ExpiresIn() {
+  const seconds = Number(process.env.R2_SIGNED_URL_EXPIRES_SECONDS || 300);
+  return Number.isFinite(seconds) && seconds > 0 ? seconds : 300;
+}
+
+function getR2ObjectKey(fileName) {
+  const prefix = String(process.env.R2_KEY_PREFIX || "").replace(/^\/+|\/+$/g, "");
+  return prefix ? `${prefix}/${fileName}` : fileName;
+}
+
+function getR2Sdk() {
+  if (!r2Sdk) {
+    try {
+      r2Sdk = {
+        ...require("@aws-sdk/client-s3"),
+        ...require("@aws-sdk/s3-request-presigner"),
+      };
+    } catch (error) {
+      throw new Error(
+        "Dependencias do Cloudflare R2 ausentes. Rode npm install e redeploy no Render."
+      );
+    }
+  }
+  return r2Sdk;
+}
+
+function getR2Client() {
+  if (!r2Client) {
+    const { S3Client } = getR2Sdk();
+    r2Client = new S3Client({
+      region: "auto",
+      endpoint: getR2Endpoint(),
+      forcePathStyle: true,
+      credentials: {
+        accessKeyId: process.env.R2_ACCESS_KEY_ID,
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+      },
+    });
+  }
+  return r2Client;
+}
+
+async function createR2SignedDownload(fileName) {
+  const { GetObjectCommand, getSignedUrl } = getR2Sdk();
+  const command = new GetObjectCommand({
+    Bucket: process.env.R2_BUCKET,
+    Key: getR2ObjectKey(fileName),
+    ResponseContentType: "application/zip",
+    ResponseContentDisposition: `attachment; filename="${fileName}"`,
+  });
+  const expiresIn = getR2ExpiresIn();
+  const downloadUrl = await getSignedUrl(getR2Client(), command, { expiresIn });
+  return { downloadUrl, expiresIn };
 }
 
 const mimeTypes = {
@@ -83,7 +167,11 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "GET" && requestUrl.pathname === "/api/health") {
-      return sendJson(res, 200, { ok: true, service: "agro-script-modding-api" });
+      return sendJson(res, 200, {
+        ok: true,
+        service: "agro-script-modding-api",
+        downloadStorage: getDownloadStorageMode(),
+      });
     }
 
     if (requestUrl.pathname.startsWith("/api/admin/")) {
@@ -536,6 +624,32 @@ async function handleProtectedDownload(req, res, pathname) {
     });
   }
 
+  if (isR2Configured()) {
+    let signedDownload;
+    try {
+      signedDownload = await createR2SignedDownload(fileName);
+    } catch (error) {
+      console.error("Erro ao gerar link temporario do R2:", error);
+      return sendJson(res, 503, {
+        error: "r2_signed_url_error",
+        message: "Nao foi possivel gerar o link temporario do mod agora.",
+      });
+    }
+
+    if (!alreadyDownloaded) {
+      usedMods.push(modId);
+      usage[usageKey] = usedMods;
+      fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
+    }
+
+    return sendJson(res, 200, {
+      downloadUrl: signedDownload.downloadUrl,
+      fileName,
+      expiresIn: signedDownload.expiresIn,
+      storage: "cloudflare-r2",
+    });
+  }
+
   const filePath = path.normalize(path.join(privateDownloadDir, fileName));
   if (!isPathInside(filePath, privateDownloadDir)) {
     return sendJson(res, 403, { error: "invalid_path", message: "Caminho de arquivo invalido." });
@@ -544,7 +658,7 @@ async function handleProtectedDownload(req, res, pathname) {
   if (!fs.existsSync(filePath)) {
     return sendJson(res, 404, {
       error: "file_missing",
-      message: `Arquivo privado nao encontrado: ${fileName}. Coloque o ZIP em private-downloads no servidor.`,
+      message: `Arquivo privado nao encontrado: ${fileName}. O R2 nao esta ativo neste backend. Configure ${getR2MissingConfig().join(", ")} ou coloque o ZIP em private-downloads no servidor.`,
     });
   }
 
@@ -756,6 +870,20 @@ function maskSecret(value) {
 }
 
 function getModFileStatuses() {
+  if (isR2Configured()) {
+    return Object.entries(modFiles).map(([modId, fileName]) => ({
+      modId,
+      fileName,
+      exists: true,
+      size: 0,
+      sizeLabel: "Cloudflare R2",
+      updatedAt: null,
+      storage: "cloudflare-r2",
+      bucket: process.env.R2_BUCKET,
+      key: getR2ObjectKey(fileName),
+    }));
+  }
+
   return Object.entries(modFiles).map(([modId, fileName]) => {
     const filePath = path.normalize(path.join(privateDownloadDir, fileName));
     const exists = isPathInside(filePath, privateDownloadDir) && fs.existsSync(filePath);

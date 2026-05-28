@@ -17,6 +17,20 @@ services:
         value: /var/data/data
       - key: PRIVATE_DOWNLOADS_DIR
         value: /var/data/private-downloads
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+      - key: R2_BUCKET
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_KEY_PREFIX
+        sync: false
+      - key: R2_SIGNED_URL_EXPIRES_SECONDS
+        value: "300"
       - key: MERCADO_PAGO_ACCESS_TOKEN
         sync: false
       - key: DOWNLOAD_TOKEN_SECRET

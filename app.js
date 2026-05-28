@@ -495,6 +495,29 @@ async function downloadProtectedMod(mod) {
     return false;
   }
 
+  const contentType = response.headers.get("Content-Type") || "";
+  if (contentType.includes("application/json")) {
+    const data = await response.json();
+    if (!data.downloadUrl) {
+      setAccessPanelMessage(
+        "Download indisponivel",
+        "O servidor liberou o mod, mas nao retornou o link temporario.",
+        "is-error"
+      );
+      scrollToAccessPanel();
+      return false;
+    }
+
+    const link = document.createElement("a");
+    link.href = data.downloadUrl;
+    link.download = data.fileName || `${mod.id}.zip`;
+    link.rel = "noopener";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    return true;
+  }
+
   const blob = await response.blob();
   const disposition = response.headers.get("Content-Disposition") || "";
   const filenameMatch = disposition.match(/filename="([^"]+)"/);
