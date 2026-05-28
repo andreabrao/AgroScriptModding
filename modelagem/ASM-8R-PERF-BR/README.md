@@ -31,6 +31,14 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 - `rear-hitch-hydraulics-spec.md`: especificacao do conjunto traseiro, pivots e attacher joints.
 - `production-pass-06-cab-commandview-interior.md`: roteiro do passe de cabine, interior, ActiveSeat II, CommandARM e G5.
 - `cab-commandview-interior-spec.md`: especificacao da cabine, vidros, camera interna e comandos.
+- `production-pass-07-lights-electrical-finish.md`: roteiro do passe de luzes, eletrica, LED 360 e acabamento externo.
+- `lights-electrical-finish-spec.md`: especificacao das luzes de fabrica, barra LED ASM, farois auxiliares e chicotes.
+- `production-pass-08-lowpoly-uv-bake-textures.md`: roteiro de low-poly, UV, bake, LODs e texturas 4K.
+- `lowpoly-uv-bake-textures-spec.md`: especificacao de atlases, mapas PBR, cages e regras de performance.
+- `production-pass-09-fs-integration-final.md`: roteiro de integracao FS22/FS25, exportacao e bloqueio de modelagem.
+- `fs-final-integration-delivery-spec.md`: especificacao final de entrega para I3D/XML e Giants Editor.
+- `final-modeling-lock.md`: bloqueio final de modelagem sem novas alteracoes de design.
+- `final-delivery-checklist.md`: checklist final de entrega, textura, FS e bloqueio.
 - `blender-hierarchy.md`: padrao de colecoes, nomes e pivots.
 - `fs22-fs25-integration.md`: notas para Giants Editor, materiais, LODs e sujeira.
 - `quality-checklist.md`: criterios de aprovacao antes da exportacao.
@@ -42,6 +50,9 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 - `scripts/create_asm8r_engine_powertech_exhaust.py`: script opcional para gerar base high-poly do motor e exaustao ASM.
 - `scripts/create_asm8r_rear_hitch_hydraulics.py`: script opcional para gerar base high-poly do levante traseiro e hidraulico.
 - `scripts/create_asm8r_cab_commandview_interior.py`: script opcional para gerar base high-poly da cabine e interior.
+- `scripts/create_asm8r_lights_electrical_finish.py`: script opcional para gerar base high-poly das luzes e acabamento externo.
+- `scripts/create_asm8r_bake_texture_setup.py`: script opcional para montar guias de low-poly, UV, bake e textura.
+- `scripts/create_asm8r_mod_skeleton.py`: script opcional para criar a estrutura inicial do mod FS22.
 
 ## Referencias oficiais base
 
@@ -51,6 +62,6 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 - John Deere Versatility & Capability/ILS/Hitch/PTO: https://www.deere.com/en/tractors/row-crop-tractors/row-crop-8-family/versatility-capability/
 - G5 CommandCenter: https://www.deere.com/en/technology-products/precision-ag-technology/guidance/g5-commandcenter/
 
-## Escopo inicial
+## Estado final
 
-Este pacote nao contem o mesh 3D final. Ele define a estrutura de producao para iniciar a modelagem no Blender, Maya, 3ds Max ou outro DCC e preparar a entrega para Farming Simulator.
+Este pacote fecha a modelagem tecnica do `ASM-8R-PERF-BR` em estado `FINAL MODELING PACKAGE LOCKED`. A partir deste ponto, novas mudancas devem ficar restritas a exportacao, textura, XML, compatibilidade e correcao de bugs, sem reabrir design ou proporcao do modelo.

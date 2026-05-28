@@ -73,6 +73,14 @@
 - [ ] Mod aparece na loja com imagem e dados corretos.
 - [ ] Testado em mapa com lama/sujeira.
 
+## Bloqueio final
+
+- [ ] Passes 01 a 09 documentados.
+- [ ] Manifesto em estado `final_modeling_package_locked`.
+- [ ] Pasta de exportacao skeleton pronta para ser gerada.
+- [ ] Nenhuma alteracao visual nova pendente.
+- [ ] Proxima fase limitada a exportacao, XML, textura, teste e empacotamento.
+
 ## Aprovacao final ASM
 
 - [ ] Visual robusto e brasileiro.
