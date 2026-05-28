@@ -37,6 +37,16 @@ O pacote final inclui:
 | Textura body | `textures/asm8r_body_4k_*` |
 | Textura rodas | `textures/asm8r_wheels_tires_4k_*` |
 
+## Template I3D incluso
+
+O arquivo abaixo acompanha o pacote como ponto de partida:
+
+```text
+templates/FS22_ASM_8R_PERF_BR/vehicles/ASM_8R_PERF_BR.i3d
+```
+
+Ele contem a hierarquia base de nodes do trator e deve ser substituido pelo `.i3d` exportado do Blender/Giants Editor quando a malha final estiver pronta.
+
 ## Material slots finais
 
 - `mat_jd_green_paint`

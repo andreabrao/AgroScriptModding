@@ -26,6 +26,14 @@ O script cria uma pasta de exportacao inicial:
 modelagem/ASM-8R-PERF-BR/export/FS22_ASM_8R_PERF_BR/
 ```
 
+O pacote tambem inclui um template I3D versionado:
+
+```text
+templates/FS22_ASM_8R_PERF_BR/vehicles/ASM_8R_PERF_BR.i3d
+```
+
+Esse arquivo contem a hierarquia base do trator. Ele nao substitui o export final do Blender/Giants Editor, mas evita que a entrega fique sem um `.i3d` inicial.
+
 ## Estrutura final esperada
 
 ```text

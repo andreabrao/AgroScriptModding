@@ -39,6 +39,7 @@ Criar um asset 3D high-poly para Farming Simulator 22/25 com foco em realismo es
 - `fs-final-integration-delivery-spec.md`: especificacao final de entrega para I3D/XML e Giants Editor.
 - `final-modeling-lock.md`: bloqueio final de modelagem sem novas alteracoes de design.
 - `final-delivery-checklist.md`: checklist final de entrega, textura, FS e bloqueio.
+- `templates/FS22_ASM_8R_PERF_BR/vehicles/ASM_8R_PERF_BR.i3d`: template I3D inicial com a hierarquia base do veiculo.
 - `blender-hierarchy.md`: padrao de colecoes, nomes e pivots.
 - `fs22-fs25-integration.md`: notas para Giants Editor, materiais, LODs e sujeira.
 - `quality-checklist.md`: criterios de aprovacao antes da exportacao.

@@ -76,6 +76,7 @@
     "fs-final-integration-delivery-spec.md",
     "final-modeling-lock.md",
     "final-delivery-checklist.md",
+    "templates/FS22_ASM_8R_PERF_BR/vehicles/ASM_8R_PERF_BR.i3d",
     "scripts/create_asm8r_mod_skeleton.py"
   ],
   "finalLock": {
