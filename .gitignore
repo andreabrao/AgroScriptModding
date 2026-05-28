@@ -2,8 +2,8 @@
 node_modules/
 data/*.json
 data/*.jsonl
-data/backups/*
 installer/*
+data/backups/*
 modelagem/*
 private-downloads/*
 !private-downloads/.gitkeep
