@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const http = require("http");
 
 const rootDir = __dirname;
 loadEnv();
@@ -1092,8 +1093,7 @@ function sendText(res, statusCode, text) {
 // NOVAS FUNCOES ADICIONADAS PARA GERACAO MANUAL DE KEYS
 // ==========================================
 
-async function handleGenerateKey(req, res) {
-  // Protege a rota exigindo o token de admin para evitar abuso publico
+aasync function handleGenerateKey(req, res) {
   const auth = getAdminAuth(req);
   if (!auth.ok) {
     return sendJson(res, auth.status, {
@@ -1137,17 +1137,13 @@ async function handleGenerateKey(req, res) {
 
 function gerarChaveAtivacao() {
   const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  
   const gerarBloco = () => {
     let bloco = '';
     for (let i = 0; i < 4; i++) {
-      // crypto.randomInt é a forma mais segura de gerar números aleatórios no Node.js
       const index = crypto.randomInt(0, caracteres.length);
       bloco += caracteres[index];
     }
     return bloco;
   };
-
-  // Correção: fechei a string com a aspa e o parêntese do return
   return `AGRO-${gerarBloco()}-${gerarBloco()}-${gerarBloco()}`;
 }
