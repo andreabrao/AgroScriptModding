@@ -215,7 +215,7 @@ const server = http.createServer(async (req, res) => {
       requestUrl.pathname.startsWith("/api/mods/") &&
       requestUrl.pathname.endsWith("/download")
     ) {
-      return handleProtectedDownload(req, res, requestUrl.pathname);
+      return await handleProtectedDownload(req, res, requestUrl.pathname);
     }
 
     return serveStatic(req, res, requestUrl.pathname);
@@ -354,6 +354,24 @@ async function handleCreatePreference(req, res) {
     preferenceId: data.id,
     checkoutUrl,
   });
+}
+
+function readPaymentEvents(limit = 50) {
+  if (!fs.existsSync(paymentEventsPath)) return [];
+
+  return fs
+    .readFileSync(paymentEventsPath, "utf8")
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .slice(-limit)
+    .map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return { raw: line };
+      }
+    })
+    .reverse();
 }
 
 async function handleWebhook(req, res) {
@@ -605,7 +623,7 @@ async function handleVerifySubscription(req, res) {
 
 async function handleProtectedDownload(req, res, pathname) {
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const fileName = "AgroScriptInstaller.exe";
+  const fileName = modFiles[modId] || "AgroScriptInstaller.exe";
 
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
@@ -613,19 +631,18 @@ async function handleProtectedDownload(req, res, pathname) {
     return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
   }
 
-  // Verifica se o R2 está configurado
   if (isR2Configured()) {
     try {
-      // Gera a URL assinada do Cloudflare R2
       const { downloadUrl } = await createR2SignedDownload(fileName);
-      return sendJson(res, 200, { downloadUrl });
+      // CORREÇÃO CRÍTICA PARA O INSTALADOR C#: Redirecionamento 302 em vez de enviar JSON
+      res.writeHead(302, { "Location": downloadUrl });
+      return res.end();
     } catch (error) {
       console.error("Erro R2:", error);
       return sendJson(res, 500, { error: "r2_error", message: "Erro ao gerar link de download." });
     }
   }
 
-  // Fallback: Tentativa local (como estava antes)
   const filePath = path.join(privateDownloadDir, fileName);
   if (!fs.existsSync(filePath)) {
     return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
@@ -748,7 +765,8 @@ function getInstallerAuth(req) {
   const bearerToken = authorization.startsWith("Bearer ")
     ? authorization.slice("Bearer ".length).trim()
     : "";
-  const headerToken = String(req.headers["x-installer-token"] || "").trim();
+  // CORREÇÃO CRÍTICA PARA O INSTALADOR: Lendo o header correto enviado pelo C#
+  const headerToken = String(req.headers["x-installer-token"] || "").trim(); 
   const receivedToken = bearerToken || headerToken;
 
   if (!receivedToken || !safeEqual(receivedToken, configuredToken)) {
@@ -909,101 +927,6 @@ function createBackup(reason = "manual") {
   };
 }
 
-function readPaymentEvents(limit = 50) {
-  if (!fs.existsSync(paymentEventsPath)) return [];
-
-  return fs
-    .readFileSync(paymentEventsPath, "utf8")
-    .split(/\r?\n/)
-    .filter(Boolean)
-    .slice(-limit)
-    .map((line) => {
-      try {
-        return JSON.parse(line);
-      } catch {
-        return { raw: line };
-      }
-    })
-    .reverse();
-}
-
-async function sendAccessEmail(subscriber) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM;
-  if (!apiKey || !from || !subscriber?.email) {
-    return { skipped: true };
-  }
-
-  const plan = plans[subscriber.plan];
-  const siteUrl = (process.env.SITE_URL || "").replace(/\/$/, "");
-  const loginUrl = siteUrl ? `${siteUrl}/#acesso` : "#acesso";
-  const subject = `Codigo do Plano ${plan?.label || subscriber.plan} - AGRO SCRIPT MODDING`;
-  const text = [
-    `Seu Plano ${plan?.label || subscriber.plan} foi aprovado.`,
-    `Email: ${subscriber.email}`,
-    `Codigo de acesso: ${subscriber.code}`,
-    `Entrar: ${loginUrl}`,
-    "Nao compartilhe este codigo. Ele libera os downloads do seu plano mensal.",
-  ].join("\n");
-  const html = `
-    <div style="font-family:Arial,sans-serif;line-height:1.5;color:#111">
-      <h1>AGRO SCRIPT MODDING</h1>
-      <p>Seu Plano ${escapeHtml(plan?.label || subscriber.plan)} foi aprovado.</p>
-      <p><strong>Codigo de acesso:</strong> ${escapeHtml(subscriber.code)}</p>
-      <p><strong>Email:</strong> ${escapeHtml(subscriber.email)}</p>
-      <p><a href="${escapeHtml(loginUrl)}">Entrar na area do assinante</a></p>
-      <p>Nao compartilhe este codigo. Ele libera os downloads do seu plano mensal.</p>
-    </div>
-  `;
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: subscriber.email,
-      subject,
-      text,
-      html,
-    }),
-  });
-
-  if (!response.ok) {
-    const details = await response.text().catch(() => "");
-    console.error("Resend recusou o email de acesso:", response.status, details);
-    return { sent: false };
-  }
-
-  return { sent: true };
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function formatBytes(bytes) {
-  const value = Number(bytes) || 0;
-  if (value < 1024) return `${value} B`;
-  const units = ["KB", "MB", "GB"];
-  let size = value / 1024;
-  let unitIndex = 0;
-
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex += 1;
-  }
-
-  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unitIndex]}`;
-}
-
 function appendJsonLine(filePath, data) {
   fs.appendFileSync(filePath, `${JSON.stringify(data)}\n`);
 }
@@ -1080,10 +1003,6 @@ function sendText(res, statusCode, text) {
   res.writeHead(statusCode, { "Content-Type": "text/plain; charset=utf-8" });
   res.end(text);
 }
-
-// ==========================================
-// NOVAS FUNCOES ADICIONADAS PARA GERACAO MANUAL DE KEYS
-// ==========================================
 
 async function handleGenerateKey(req, res) {
   const auth = getAdminAuth(req);
