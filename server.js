@@ -403,20 +403,6 @@ async function handlePaymentClaim(req, res) {
   });
 }
 
-  return sendJson(res, 200, {
-    member: {
-      email: subscriber.email,
-      plan: subscriber.plan,
-      name: subscriber.name,
-      active: true,
-      code: subscriber.code,
-    },
-    accessCode: subscriber.code,
-    downloadToken: createDownloadToken(subscriber),
-  });
-}
-
-
 async function handleVerifyKey(req, res) {
   const auth = getInstallerAuth(req);
   if (!auth.ok) {
