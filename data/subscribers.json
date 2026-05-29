@@ -1,6 +1,7 @@
 {
   "subscribers": [
     {
+<<<<<<< HEAD
       "key": "OURO-727398",
       "email": "cliente@exemplo.com",
       "hwid": null,
@@ -8,3 +9,11 @@
     }
   ]
 }
+=======
+      "key": "A_CHAVE_DO_USUARIO",
+      "hwid": "ID_DO_HARDWARE",
+      "modId": "asm-8r"
+    }
+  ]
+}
+>>>>>>> 12dda023e56d6d08e3e917caa51554787570ca6c
