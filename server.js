@@ -607,18 +607,31 @@ async function handleVerifySubscription(req, res) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
+  // 1. Identifica qual mod foi pedido
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
+
+  // 2. BUSCA O NOME DO ARQUIVO no seu objeto modFiles
+  // Certifique-se de que o objeto modFiles está disponível neste escopo
+  const urlCompleta = modFiles[modId];
+  
+  if (!urlCompleta) {
+    return sendJson(res, 404, { error: "mod_not_found", message: "Mod não encontrado na lista." });
+  }
+
+  // 3. Extrai apenas o nome do arquivo da URL (o que está no seu R2)
+  const fileName = urlCompleta.split('/').pop();
 
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
+  
   if (!member) {
     return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
   }
 
-  // Verifica se o R2 está configurado
+  // 4. Verifica se o R2 está configurado
   if (isR2Configured()) {
     try {
-      // Gera a URL assinada do Cloudflare R2
+      // Gera a URL assinada do Cloudflare R2 para o arquivo correto
       const { downloadUrl } = await createR2SignedDownload(fileName);
       return sendJson(res, 200, { downloadUrl });
     } catch (error) {
@@ -626,6 +639,10 @@ async function handleProtectedDownload(req, res, pathname) {
       return sendJson(res, 500, { error: "r2_error", message: "Erro ao gerar link de download." });
     }
   }
+
+  // Caso o R2 não esteja configurado, retorna erro ou fallback
+  return sendJson(res, 500, { error: "r2_not_configured", message: "Serviço de download não configurado." });
+}
 
   // Fallback: Tentativa local (como estava antes)
   const filePath = path.join(privateDownloadDir, fileName);
