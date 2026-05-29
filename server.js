@@ -605,7 +605,7 @@ async function handleVerifySubscription(req, res) {
 
 async function handleProtectedDownload(req, res, pathname) {
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const fileName = "AgroScriptInstaller.exe"; // Sempre entrega o instalador
+  const fileName = "AgroScriptInstaller.exe";
 
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
@@ -613,26 +613,19 @@ async function handleProtectedDownload(req, res, pathname) {
     return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
   }
 
-  const plan = plans[member.plan];
-  if (!plan) {
-    return sendJson(res, 403, { error: "invalid_plan", message: "Plano inválido." });
+  // Verifica se o R2 está configurado
+  if (isR2Configured()) {
+    try {
+      // Gera a URL assinada do Cloudflare R2
+      const { downloadUrl } = await createR2SignedDownload(fileName);
+      return sendJson(res, 200, { downloadUrl });
+    } catch (error) {
+      console.error("Erro R2:", error);
+      return sendJson(res, 500, { error: "r2_error", message: "Erro ao gerar link de download." });
+    }
   }
 
-  const usage = readDownloadUsage();
-  const usageKey = `${normalize(member.email)}:${new Date().toISOString().slice(0, 7)}`;
-  const usedMods = Array.isArray(usage[usageKey]) ? usage[usageKey] : [];
-  const alreadyDownloaded = usedMods.includes(modId);
-
-  if (plan.quota !== null && !alreadyDownloaded && usedMods.length >= plan.quota) {
-    return sendJson(res, 403, { error: "quota_exceeded", message: "Limite mensal atingido." });
-  }
-
-  if (!alreadyDownloaded) {
-    usedMods.push(modId);
-    usage[usageKey] = usedMods;
-    fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
-  }
-
+  // Fallback: Tentativa local (como estava antes)
   const filePath = path.join(privateDownloadDir, fileName);
   if (!fs.existsSync(filePath)) {
     return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
@@ -643,7 +636,6 @@ async function handleProtectedDownload(req, res, pathname) {
     "Content-Disposition": `attachment; filename="${fileName}"`,
     "Cache-Control": "no-store",
   });
-
   fs.createReadStream(filePath).pipe(res);
 }
 
