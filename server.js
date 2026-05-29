@@ -146,14 +146,14 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "asm-8r": "FS22_asm_8r_performance_br.zip",
-  "case-axial": "FS22_case_axial_flow_9250_br.zip",
-  "nh-t9": "FS22_new_holland_t9_smarttrax_custom.zip",
-  "plantadeira-asm": "FS22_plantadeira_asm_32_linhas.zip",
-  "mapa-sertao": "FS22_mapa_sertao_verde.zip",
-  "script-hud": "FS22_hud_safra_realista.zip",
-  "mf-serie-s": "FS22_massey_serie_s_pro.zip",
-  "grade-asm": "FS22_grade_pesada_asm_48_discos.zip",
+  "asm-8r": "AgroScriptInstaller.exe",
+  "case-axial": "AgroScriptInstaller.exe",
+  "nh-t9": "AgroScriptInstaller.exe",
+  "plantadeira-asm": "AgroScriptInstaller.exe",
+  "mapa-sertao": "AgroScriptInstaller.exe",
+  "script-hud": "AgroScriptInstaller.exe",
+  "mf-serie-s": "AgroScriptInstaller.exe",
+  "grade-asm": "AgroScriptInstaller.exe",
 };
 
 ensureDataFiles();
@@ -635,6 +635,25 @@ async function handleProtectedDownload(req, res, pathname) {
       message: "Limite mensal atingido para esse plano.",
     });
   }
+
+  // --- O QUE FALTAVA: A entrega do arquivo ---
+  
+  if (!alreadyDownloaded) {
+    usedMods.push(modId);
+    usage[usageKey] = usedMods;
+    fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
+  }
+
+  // Envia o arquivo configurado como .exe para o instalador
+  res.writeHead(200, {
+    "Content-Type": "application/vnd.microsoft.portable-executable",
+    "Content-Disposition": `attachment; filename="${fileName}"`,
+    "Cache-Control": "no-store",
+  });
+
+  const filePath = path.normalize(path.join(privateDownloadDir, fileName));
+  fs.createReadStream(filePath).pipe(res);
+}
 
   if (isR2Configured()) {
     let signedDownload;

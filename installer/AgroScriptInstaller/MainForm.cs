@@ -25,9 +25,11 @@ public sealed class MainForm : Form
     public MainForm()
     {
         Text = "AGRO SCRIPT MODDING - Instalador FS22/FS25";
-        Width = 620;
-        Height = 430;
-        MinimumSize = new Size(520, 390);
+        Width = 1000;                       // <-- Alterado para 1000
+        Height = 1000;                      // <-- Alterado para 1000
+        MinimumSize = new Size(1000, 1000); // <-- Alterado para 1000
+        MaximumSize = new Size(1000, 1000); // <-- Alterado para 1000
+        MaximizeBox = false;              
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = Color.FromArgb(7, 20, 11);
         ForeColor = Color.White;
@@ -42,7 +44,6 @@ public sealed class MainForm : Form
         {
             httpClient.Dispose();
         }
-
         base.Dispose(disposing);
     }
 
@@ -52,15 +53,11 @@ public sealed class MainForm : Form
         {
             Dock = DockStyle.Fill,
             Padding = new Padding(24),
-            RowCount = 8,
+            RowCount = 10, // Aumentado para 10 linhas para os novos títulos
             ColumnCount = 1,
         };
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        
+        for (int i = 0; i < 9; i++) root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
         var title = new Label
@@ -80,9 +77,27 @@ public sealed class MainForm : Form
             Margin = new Padding(0, 0, 0, 18),
         };
 
-        keyInput.PlaceholderText = "Codigo de ativacao";
+        // --- NOVO TÍTULO DA KEY ---
+        var keyLabel = new Label
+        {
+            Text = "Chave de Ativacao:",
+            AutoSize = true,
+            ForeColor = Color.White,
+            Margin = new Padding(0, 0, 0, 5)
+        };
+
+        keyInput.PlaceholderText = "Cole sua key aqui...";
         keyInput.Margin = new Padding(0, 0, 0, 14);
         keyInput.Height = 36;
+
+        // --- NOVO TÍTULO DA PASTA ---
+        var pathLabel = new Label
+        {
+            Text = "Diretorio do Jogo:",
+            AutoSize = true,
+            ForeColor = Color.White,
+            Margin = new Padding(0, 0, 0, 5)
+        };
 
         var pathPanel = new TableLayoutPanel
         {
@@ -131,14 +146,18 @@ public sealed class MainForm : Form
         statusLabel.Dock = DockStyle.Fill;
         statusLabel.ForeColor = Color.FromArgb(200, 209, 202);
 
+        // Adicionando os controles na ordem correta
         root.Controls.Add(title);
         root.Controls.Add(subtitle);
+        root.Controls.Add(keyLabel); // Adicionado
         root.Controls.Add(keyInput);
+        root.Controls.Add(pathLabel); // Adicionado
         root.Controls.Add(pathPanel);
         root.Controls.Add(versionLabel);
         root.Controls.Add(installButton);
         root.Controls.Add(progressBar);
         root.Controls.Add(statusLabel);
+        
         Controls.Add(root);
     }
 
