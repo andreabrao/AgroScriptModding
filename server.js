@@ -187,27 +187,27 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "POST" && requestUrl.pathname === "/api/payments/create-preference") {
-      return handleCreatePreference(req, res);
+      return await handleCreatePreference(req, res);
     }
 
     if (req.method === "POST" && requestUrl.pathname === "/api/payments/webhook") {
-      return handleWebhook(req, res);
+      return await handleWebhook(req, res);
     }
 
     if (req.method === "POST" && requestUrl.pathname === "/api/payments/claim") {
-      return handlePaymentClaim(req, res);
+      return await handlePaymentClaim(req, res);
     }
 
     if (req.method === "POST" && requestUrl.pathname === "/api/verify-key") {
-      return handleVerifyKey(req, res);
+      return await handleVerifyKey(req, res);
     }
 
     if (req.method === "POST" && requestUrl.pathname === "/api/subscriptions/verify") {
-      return handleVerifySubscription(req, res);
+      return await handleVerifySubscription(req, res);
     }
 
     if (req.method === "POST" && requestUrl.pathname === "/api/generate-key") {
-      return handleGenerateKey(req, res);
+      return await handleGenerateKey(req, res);
     }
 
     if (
@@ -380,9 +380,6 @@ async function handlePaymentClaim(req, res) {
   }
 
   const subscriber = await tryActivateSubscriptionFromPayment(paymentId);
-  
-  // CORREÇÃO: Removemos a tentativa falha de injetar a chave "OURO-123456" aqui.
-  // Se o pagamento não foi aprovado, apenas retornamos o erro 404 corretamente.
   if (!subscriber) {
     return sendJson(res, 404, {
       error: "payment_not_approved",

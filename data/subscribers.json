@@ -1,9 +1,13 @@
 {
   "subscribers": [
     {
-      "key": "A_CHAVE_DO_USUARIO",
-      "hwid": "ID_DO_HARDWARE",
-      "modId": "asm-8r"
+      "email": "email-do-cliente@exemplo.com",
+      "code": "OURO-727398",
+      "plan": "ouro",
+      "name": "Cliente Ouro",
+      "active": true,
+      "paymentId": "manual_teste",
+      "hwid": null
     }
   ]
 }
