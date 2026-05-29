@@ -382,6 +382,12 @@ function renderAccessState(message = "") {
     return;
   }
 
+  // Caso o usuário ESTEJA logado: exibe a chave
+  if (keyDisplay) {
+    keyDisplay.hidden = false;
+    activeKey.textContent = member.code || "N/A";
+  }
+
   const rule = getPlanRule(member);
   const usage = getMemberUsage(member);
   const remaining = remainingLabel(member);
