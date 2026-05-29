@@ -146,14 +146,14 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "asm-8r": "https://agroscriptmodding.onrender.com/modsprivados/FS22_ASM_8R_PERF_BR.zip",
-  "case-axial": "https://agroscriptmodding.onrender.com/modsprivados/FS22_CASE_AXIAL.zip",
-  "nh-t9": "https://agroscriptmodding.onrender.com/modsprivados/FS22_NH_T9.zip",
-  "plantadeira-asm": "https://agroscriptmodding.onrender.com/modsprivados/FS22_plantadeira-asm.zip",
-  "mapa-sertao": "https://agroscriptmodding.onrender.com/modsprivados/FS22_mapa_sertao.zip",
-  "script-hud": "https://agroscriptmodding.onrender.com/modsprivados/FS22_script_hud.zip",
-  "mf-serie-s": "https://agroscriptmodding.onrender.com/modsprivados/FS22_mf_serie_s.zip",
-  "grade-asm": "https://agroscriptmodding.onrender.com/modsprivados/FS22_grade_asm.zip",
+  "asm-8r": "https://agroscriptmodding.onrender.com/modsprivados/FS22_ASM_8R_PERF_BR.zip",
+  "case-axial": "https://agroscriptmodding.onrender.com/modsprivados/FS22_CASE_AXIAL.zip",
+  "nh-t9": "https://agroscriptmodding.onrender.com/modsprivados/FS22_NH_T9.zip",
+  "plantadeira-asm": "https://agroscriptmodding.onrender.com/modsprivados/FS22_plantadeira-asm.zip",
+  "mapa-sertao": "https://agroscriptmodding.onrender.com/modsprivados/FS22_mapa_sertao.zip",
+  "script-hud": "https://agroscriptmodding.onrender.com/modsprivados/FS22_script_hud.zip",
+  "mf-serie-s": "https://agroscriptmodding.onrender.com/modsprivados/FS22_mf_serie_s.zip",
+  "grade-asm": "https://agroscriptmodding.onrender.com/modsprivados/FS22_grade_asm.zip",
 };
 
 ensureDataFiles();
@@ -415,7 +415,7 @@ async function handleVerifyKey(req, res) {
   const body = await readJson(req);
   const key = String(body.key || "").trim().toUpperCase();
   const hwid = String(body.hwid || "").trim();
-  const modId = String(body.modId || "asm-8r").trim();
+  const modId = String(body.modId || process.env.INSTALLER_DEFAULT_MOD_ID || "asm-8r").trim();
   const fileName = modFiles[modId];
 
   if (!key || !hwid) {
@@ -607,28 +607,38 @@ async function handleVerifySubscription(req, res) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
-  // 1. Identifica o mod solicitado
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const urlDoMod = modFiles[modId];
 
-  if (!urlDoMod) {
-    return sendJson(res, 404, { error: "mod_not_found" });
+  const body = await readJson(req).catch(() => ({}));
+  const member = verifyDownloadToken(body.token);
+  if (!member) {
+    return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
   }
 
-  // 2. Extrai o nome do arquivo (ex: FS22_ASM_8R.zip)
-  const fileName = urlDoMod.split('/').pop();
-
-  // 3. APENAS retorna a URL assinada para o instalador, NÃO começa o download no navegador
+  // Verifica se o R2 está configurado
   if (isR2Configured()) {
     try {
+      // Gera a URL assinada do Cloudflare R2
       const { downloadUrl } = await createR2SignedDownload(fileName);
-      // Retorna JSON com a URL, o instalador receberá isso e fará o download sozinho
       return sendJson(res, 200, { downloadUrl });
     } catch (error) {
       console.error("Erro R2:", error);
-      return sendJson(res, 500, { error: "r2_error" });
+      return sendJson(res, 500, { error: "r2_error", message: "Erro ao gerar link de download." });
     }
   }
+
+  // Fallback: Tentativa local (como estava antes)
+  const filePath = path.join(privateDownloadDir, fileName);
+  if (!fs.existsSync(filePath)) {
+    return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
+  }
+
+  res.writeHead(200, {
+    "Content-Type": "application/vnd.microsoft.portable-executable",
+    "Content-Disposition": `attachment; filename="${fileName}"`,
+    "Cache-Control": "no-store",
+  });
+  fs.createReadStream(filePath).pipe(res);
 }
 
 function createDownloadToken(subscriber) {
