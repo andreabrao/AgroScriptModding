@@ -606,8 +606,6 @@ async function handleVerifySubscription(req, res) {
   });
 }
 
-161531727398
-
 function createDownloadToken(subscriber) {
   const payload = {
     email: subscriber.email,
