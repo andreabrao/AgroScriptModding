@@ -146,7 +146,7 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "asm-8r": "AgroScriptInstaller.exe",
+  "asm-8r": "FS22_ASM-8R-PERF-BR.zip",
   "case-axial": "AgroScriptInstaller.exe",
   "nh-t9": "AgroScriptInstaller.exe",
   "plantadeira-asm": "AgroScriptInstaller.exe",

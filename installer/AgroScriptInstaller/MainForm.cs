@@ -25,8 +25,8 @@ public sealed class MainForm : Form
     public MainForm()
     {
         Text = "AGRO SCRIPT MODDING - Instalador FS22/FS25";
-        Width = 620;
-        Height = 430;
+        Width = 1500;
+        Height = 1500;
         MinimumSize = new Size(520, 390);
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = Color.FromArgb(7, 20, 11);
@@ -315,6 +315,12 @@ public sealed class MainForm : Form
 
     private static string InstallModFile(string tempFile, string modsDirectory, string fileName, string version)
     {
+        // SEGURANÇA: Bloqueia qualquer tentativa de instalar arquivos .exe
+        if (fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException("Erro: O arquivo baixado parece ser um executável, nao um mod.");
+        }
+
         Directory.CreateDirectory(modsDirectory);
 
         var prefix = version == "FS25" ? "FS25_" : "FS22_";
@@ -329,15 +335,16 @@ public sealed class MainForm : Form
 
     private static string LocateModsDirectory(string selectedRoot, string version)
     {
-        var directMods = Directory
-            .EnumerateDirectories(selectedRoot, "mods", SearchOption.AllDirectories)
-            .FirstOrDefault();
-
-        if (!string.IsNullOrWhiteSpace(directMods))
+        // 1. Tenta usar a pasta 'mods' dentro da raiz selecionada do jogo
+        var directMods = Path.Combine(selectedRoot, "mods");
+        
+        // Se a pasta existir, usa ela
+        if (Directory.Exists(directMods))
         {
             return directMods;
         }
 
+        // 2. Fallback: Usa a pasta oficial em Documentos (mais seguro contra erro de permissão)
         var year = version == "FS25" ? "2025" : "2022";
         var documentsMods = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -345,10 +352,14 @@ public sealed class MainForm : Form
             $"FarmingSimulator{year}",
             "mods");
 
-        Directory.CreateDirectory(documentsMods);
+        // Garante que a pasta nos documentos exista antes de retornar
+        if (!Directory.Exists(documentsMods))
+        {
+            Directory.CreateDirectory(documentsMods);
+        }
+        
         return documentsMods;
     }
-
     private static string? DetectGameVersion(string root)
     {
         if (File.Exists(Path.Combine(root, "FarmingSimulator2025.exe")) ||
