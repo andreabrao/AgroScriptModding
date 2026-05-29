@@ -403,18 +403,20 @@ function renderAccessState(message = "") {
     <span class="status-pill">Plano ativo</span>
     <h3>${rule.label} liberado</h3>
     <p>${message || "Acesso mensal validado para esta conta."}</p>
-    ${
-      member.code
-        ? `<p class="access-code"><strong>Codigo de acesso:</strong> ${member.code}</p>`
-        : ""
-    }
+    
+    <!-- A chave agora faz parte do HTML gerado dinamicamente -->
+    <div id="keyDisplayArea">
+      <p>Sua chave ativa:</p>
+      <code id="activeKey" style="font-weight: bold; background: #eee; padding: 5px;">${member.code || "-"}</code>
+    </div>
+
     <div class="access-stats">
       <span><strong>${rule.label}</strong> Plano</span>
       <span><strong>${usedText}</strong> Usados</span>
       <span><strong>${remaining}</strong> Restantes</span>
     </div>
   `;
-}
+
 
 function scrollToAccessPanel() {
   document.querySelector("#acesso")?.scrollIntoView({ behavior: "smooth", block: "start" });
