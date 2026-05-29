@@ -1093,7 +1093,7 @@ function sendText(res, statusCode, text) {
 // NOVAS FUNCOES ADICIONADAS PARA GERACAO MANUAL DE KEYS
 // ==========================================
 
-aasync function handleGenerateKey(req, res) {
+async function handleGenerateKey(req, res) {
   const auth = getAdminAuth(req);
   if (!auth.ok) {
     return sendJson(res, auth.status, {
