@@ -582,7 +582,7 @@ async function handleProtectedDownload(req, res, pathname) {
   const fileName = pathname.split('/').pop(); 
   
   // 2. Define onde os instaladores ficam no seu servidor
-  const filePath = path.join(privateDownloadDir, fileName);
+  const filePath = path.join(modsprivados, fileName);
 
   // 3. Verifica se o arquivo existe localmente
   if (!fs.existsSync(filePath)) {
