@@ -576,37 +576,48 @@ async function handleAdminRequest(req, res, requestUrl) {
   });
 }
 
-async function handleVerifySubscription(req, res) {
-  const body = await readJson(req);
-  const email = String(body.email || "");
-  const code = String(body.code || "").trim().toUpperCase();
+async function handleProtectedDownload(req, res, pathname) {
+  try {
+    // 1. Identifica o mod solicitado
+    const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
+    console.log("DEBUG: Iniciando download para modId:", modId);
 
-  const database = readSubscribers();
-  const subscriber = database.subscribers.find(
-    (entry) =>
-      entry.active &&
-      normalize(entry.email) === normalize(email) &&
-      String(entry.code || "").toUpperCase() === code
-  );
+    // 2. Verifica se o mod existe na sua lista
+    if (!modFiles || !modFiles[modId]) {
+      console.error("DEBUG: modId nao encontrado no dicionario:", modId);
+      return sendJson(res, 404, { error: "mod_not_found", message: "Mod não cadastrado." });
+    }
 
-  if (!subscriber) {
-    return sendJson(res, 404, { error: "not_found", message: "Assinatura nao encontrada." });
+    const urlCompleta = modFiles[modId];
+    const fileName = urlCompleta.split('/').pop();
+    console.log("DEBUG: Nome do arquivo identificado:", fileName);
+
+    // 3. Verifica token
+    const body = await readJson(req).catch(() => ({}));
+    const member = verifyDownloadToken(body.token);
+    if (!member) {
+      return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
+    }
+
+    // 4. Tenta buscar no R2
+    if (typeof isR2Configured === 'function' && isR2Configured()) {
+      try {
+        console.log("DEBUG: Chamando R2 para o arquivo:", fileName);
+        const { downloadUrl } = await createR2SignedDownload(fileName);
+        return sendJson(res, 200, { downloadUrl });
+      } catch (error) {
+        console.error("DEBUG: ERRO CRITICO NO R2:", error);
+        return sendJson(res, 500, { error: "r2_error", message: "Erro no Cloudflare R2." });
+      }
+    } else {
+      return sendJson(res, 500, { error: "r2_not_configured", message: "R2 nao configurado." });
+    }
+
+  } catch (err) {
+    console.error("DEBUG: ERRO GERAL NO DOWNLOAD:", err);
+    return sendJson(res, 500, { error: "internal_error", message: "Erro interno no servidor." });
   }
-
-  return sendJson(res, 200, {
-    member: {
-      email: subscriber.email,
-      plan: subscriber.plan,
-      name: subscriber.name || `Cliente ${plans[subscriber.plan]?.label || ""}`.trim(),
-      active: true,
-      code: subscriber.code,
-    },
-    accessCode: subscriber.code,
-    downloadToken: createDownloadToken(subscriber),
-  });
 }
-
-161531727398
 
 function createDownloadToken(subscriber) {
   const payload = {
