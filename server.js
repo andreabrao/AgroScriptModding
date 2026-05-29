@@ -608,7 +608,7 @@ async function handleVerifySubscription(req, res) {
 
 async function handleProtectedDownload(req, res, pathname) {
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const fileName = "AgroScriptInstaller.exe";
+  const fileName = "Instalador_NOME-DO-MOD.exe";
 
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
