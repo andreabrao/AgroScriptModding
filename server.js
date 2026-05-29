@@ -607,19 +607,32 @@ async function handleVerifySubscription(req, res) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
+  // 1. Captura o modId da URL
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const fileName = "Instalador_NOME-DO-MOD.exe";
+  
+  // 2. BUSCA O NOME DO ARQUIVO REAL NO SEU DICIONÁRIO
+  // Certifique-se de que o objeto 'modFiles' esteja acessível nesta função
+  const urlCompleta = modFiles[modId]; 
+  
+  // Extrai apenas o nome do arquivo da URL (ou use o nome que você salvou no R2)
+  const fileName = urlCompleta ? urlCompleta.split('/').pop() : null;
 
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
+  
   if (!member) {
     return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
   }
 
-  // Verifica se o R2 está configurado
+  // 3. Valida se o mod existe
+  if (!fileName) {
+    return sendJson(res, 404, { error: "mod_not_found", message: "Mod nao encontrado." });
+  }
+
+  // 4. Verifica se o R2 está configurado e baixa o arquivo correto
   if (isR2Configured()) {
     try {
-      // Gera a URL assinada do Cloudflare R2
+      // Agora ele vai buscar o arquivo do mod (ex: FS22_ASM-8R.zip) no R2
       const { downloadUrl } = await createR2SignedDownload(fileName);
       return sendJson(res, 200, { downloadUrl });
     } catch (error) {
@@ -627,7 +640,7 @@ async function handleProtectedDownload(req, res, pathname) {
       return sendJson(res, 500, { error: "r2_error", message: "Erro ao gerar link de download." });
     }
   }
-
+}
   // Fallback: Tentativa local (como estava antes)
   const filePath = path.join(privateDownloadDir, fileName);
   if (!fs.existsSync(filePath)) {
