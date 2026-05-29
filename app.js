@@ -417,6 +417,7 @@ function renderAccessState(message = "") {
     </div>
   `;
 
+}
 
 function scrollToAccessPanel() {
   document.querySelector("#acesso")?.scrollIntoView({ behavior: "smooth", block: "start" });
