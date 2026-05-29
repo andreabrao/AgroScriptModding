@@ -605,32 +605,51 @@ async function handleVerifySubscription(req, res) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
+  // 1. Identificação
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
+  const fileName = "AgroScriptInstaller.exe"; // Forçamos o seu instalador
+
+  // 2. Validações de Segurança (Early Return)
+  const body = await readJson(req).catch(() => ({}));
+  const member = verifyDownloadToken(body.token);
   
-  // Força sempre o instalador, não importa o modId
-  const fileName = "AgroScriptInstaller.exe"; 
+  if (!member) {
+    return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
+  }
 
-  // ... (mantenha a lógica de validação de token e quota aqui como já estava) ...
+  const plan = plans[member.plan];
+  if (!plan) {
+    return sendJson(res, 403, { error: "invalid_plan", message: "Plano inválido." });
+  }
 
-  // Atualiza cota
-  if (!alreadyDownloaded) {
+  // 3. Lógica de Quota
+  const usage = readDownloadUsage();
+  const usageKey = `${normalize(member.email)}:${new Date().toISOString().slice(0, 7)}`;
+  const usedMods = Array.isArray(usage[usageKey]) ? usage[usageKey] : [];
+  
+  if (plan.quota !== null && !usedMods.includes(modId) && usedMods.length >= plan.quota) {
+    return sendJson(res, 403, { error: "quota_exceeded", message: "Limite mensal atingido." });
+  }
+
+  // 4. Gravação de Uso
+  if (!usedMods.includes(modId)) {
     usedMods.push(modId);
     usage[usageKey] = usedMods;
     fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
   }
 
-  // Entrega o Instalador diretamente da pasta 'modsprivados'
+  // 5. Envio do Instalador
+  const filePath = path.join(rootDir, "modsprivados", fileName);
+  
+  if (!fs.existsSync(filePath)) {
+    return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado." });
+  }
+
   res.writeHead(200, {
     "Content-Type": "application/vnd.microsoft.portable-executable",
     "Content-Disposition": `attachment; filename="${fileName}"`,
     "Cache-Control": "no-store",
   });
-
-  const filePath = path.normalize(path.join(path.join(rootDir, "modsprivados"), fileName));
-  
-  if (!fs.existsSync(filePath)) {
-    return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
-  }
 
   fs.createReadStream(filePath).pipe(res);
 }
