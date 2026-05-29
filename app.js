@@ -372,6 +372,9 @@ function renderAccessState(message = "") {
 
   const member = state.member;
   if (!member) {
+    // Caso o usuário NÃO esteja logado: esconde a chave
+    if (keyDisplay) keyDisplay.hidden = true; 
+    
     setGuestAccessStatus(
       "Entre para liberar seus mods",
       "Os downloads ficam travados ate o plano mensal ser validado."
