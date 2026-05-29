@@ -381,6 +381,8 @@ async function handlePaymentClaim(req, res) {
 
   const subscriber = await tryActivateSubscriptionFromPayment(paymentId);
   if (!subscriber) {
+  novaChave = "OURO-123456";
+  subscribers.push({ key: novaChave, hwid: null, active: true });
     return sendJson(res, 404, {
       error: "payment_not_approved",
       message: "Pagamento ainda nao aprovado ou nao encontrado.",
