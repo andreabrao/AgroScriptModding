@@ -1,8 +1,10 @@
 {
-  "subscribers": {
-  "key": "CHAVE-GERADA-AQUI",
-  "email": "email-do-cliente@exemplo.com",
-  "hwid": null,
-  "active": true
-}
+  "subscribers": [
+    {
+      "key": "OURO-727398",
+      "email": "cliente@exemplo.com",
+      "hwid": null,
+      "active": true
+    }
+  ]
 }
