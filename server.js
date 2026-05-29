@@ -380,14 +380,28 @@ async function handlePaymentClaim(req, res) {
   }
 
   const subscriber = await tryActivateSubscriptionFromPayment(paymentId);
+  
+  // CORREÇÃO: Removemos a tentativa falha de injetar a chave "OURO-123456" aqui.
+  // Se o pagamento não foi aprovado, apenas retornamos o erro 404 corretamente.
   if (!subscriber) {
-  novaChave = "OURO-123456";
-  subscribers.push({ key: novaChave, hwid: null, active: true });
     return sendJson(res, 404, {
       error: "payment_not_approved",
       message: "Pagamento ainda nao aprovado ou nao encontrado.",
     });
   }
+
+  return sendJson(res, 200, {
+    member: {
+      email: subscriber.email,
+      plan: subscriber.plan,
+      name: subscriber.name,
+      active: true,
+      code: subscriber.code,
+    },
+    accessCode: subscriber.code,
+    downloadToken: createDownloadToken(subscriber),
+  });
+}
 
   return sendJson(res, 200, {
     member: {
