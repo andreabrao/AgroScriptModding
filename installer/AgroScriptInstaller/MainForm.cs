@@ -229,7 +229,7 @@ public sealed class MainForm : Form
     private async Task<VerifyKeyResponse> VerifyKeyAsync(string key, string hwid)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, $"{InstallerSettings.ApiBaseUrl}/api/verify-key");
-        request.Headers.Add("X-Installer-Token", InstallerSettings.InstallerApiToken);
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", InstallerSettings.InstallerApiToken);
         request.Content = JsonContent(new
         {
             key,
