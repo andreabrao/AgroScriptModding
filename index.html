@@ -433,15 +433,22 @@
           </form>
 
           <aside class="access-status" id="accessStatus" aria-live="polite">
-            <span class="status-pill">Aguardando verificacao</span>
-            <h3>Entre para liberar seus mods</h3>
-            <p>Os downloads ficam travados ate o plano mensal ser validado.</p>
-            <div class="access-stats">
-              <span><strong>-</strong> Plano</span>
-              <span><strong>-</strong> Usados</span>
-              <span><strong>-</strong> Restantes</span>
-            </div>
-          </aside>
+          <span class="status-pill">Aguardando verificacao</span>
+          <h3>Entre para liberar seus mods</h3>
+          <p>Os downloads ficam travados ate o plano mensal ser validado.</p>
+          
+          <!-- Parte adicionada para exibir a chave -->
+          <div id="keyDisplayArea" hidden>
+            <p>Sua chave ativa:</p>
+            <code id="activeKey" style="font-weight: bold; background: #eee; padding: 5px;">-</code>
+          </div>
+
+          <div class="access-stats">
+            <span><strong>-</strong> Plano</span>
+            <span><strong>-</strong> Usados</span>
+            <span><strong>-</strong> Restantes</span>
+          </div>
+        </aside>
 
           <form class="payment-claim-form" id="paymentClaimForm">
             <label for="paymentId">
@@ -533,43 +540,7 @@
       </button>
     </div>
 
-    <section id="resultado-pagamento" style="text-align: center; padding: 20px;">
-        <p id="mensagem-status">Verificando seu pagamento...</p>
-        <h2 id="display-key" style="color: green; font-weight: bold;"></h2>
-    </section>
-
-    <script>
-      async function verificarPagamento() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const paymentId = urlParams.get('payment_id');
-
-        if (!paymentId) {
-            document.getElementById('mensagem-status').innerText = ""; 
-            return;
-        }
-
-        try {
-            const resposta = await fetch('/api/payments/claim', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ paymentId: paymentId })
-            });
-
-            const dados = await resposta.json();
-
-            if (dados.accessCode) {
-                document.getElementById('mensagem-status').innerText = "Pagamento confirmado! Sua chave é:";
-                document.getElementById('display-key').innerText = dados.accessCode;
-            } else {
-                document.getElementById('mensagem-status').innerText = "Pagamento ainda não processado. Tente novamente em instantes.";
-            }
-        } catch (error) {
-            console.error("Erro ao verificar:", error);
-        }
-      }
-
-      // Executa a função automaticamente ao carregar
-      verificarPagamento();
-    </script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
