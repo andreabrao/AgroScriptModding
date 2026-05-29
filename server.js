@@ -607,53 +607,27 @@ async function handleVerifySubscription(req, res) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
-  try {
-    const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-    
-    // 1. Busca o link no seu dicionário modFiles
-    const urlDoMod = modFiles[modId]; 
-    
-    if (!urlDoMod) {
-      console.error(`ModId '${modId}' não encontrado no dicionário.`);
-      return sendJson(res, 404, { error: "mod_not_found", message: "Mod não cadastrado." });
+  // 1. Identifica o mod solicitado
+  const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
+  const urlDoMod = modFiles[modId];
+
+  if (!urlDoMod) {
+    return sendJson(res, 404, { error: "mod_not_found" });
+  }
+
+  // 2. Extrai o nome do arquivo (ex: FS22_ASM_8R.zip)
+  const fileName = urlDoMod.split('/').pop();
+
+  // 3. APENAS retorna a URL assinada para o instalador, NÃO começa o download no navegador
+  if (isR2Configured()) {
+    try {
+      const { downloadUrl } = await createR2SignedDownload(fileName);
+      // Retorna JSON com a URL, o instalador receberá isso e fará o download sozinho
+      return sendJson(res, 200, { downloadUrl });
+    } catch (error) {
+      console.error("Erro R2:", error);
+      return sendJson(res, 500, { error: "r2_error" });
     }
-
-    // Pega o nome do arquivo da URL (ex: FS22_ASM-8R.zip)
-    const fileName = urlDoMod.split('/').pop();
-
-    const body = await readJson(req).catch(() => ({}));
-    const member = verifyDownloadToken(body.token);
-    if (!member) {
-      return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
-    }
-
-    // 2. Tenta buscar no R2
-    if (isR2Configured()) {
-      try {
-        const { downloadUrl } = await createR2SignedDownload(fileName);
-        return sendJson(res, 200, { downloadUrl });
-      } catch (error) {
-        console.error("Erro R2:", error);
-        // Se falhar no R2, não quebre o servidor, tente o próximo passo
-      }
-    }
-
-    // 3. Fallback: Se não for R2 ou se o R2 falhar, busca no diretório local
-    const filePath = path.join(privateDownloadDir, fileName);
-    if (!fs.existsSync(filePath)) {
-      return sendJson(res, 404, { error: "file_missing", message: `Arquivo ${fileName} não encontrado no servidor.` });
-    }
-
-    res.writeHead(200, {
-      "Content-Type": "application/zip", // Mudamos para zip, já que agora é um mod!
-      "Content-Disposition": `attachment; filename="${fileName}"`,
-      "Cache-Control": "no-store",
-    });
-    fs.createReadStream(filePath).pipe(res);
-
-  } catch (err) {
-    console.error("Erro crítico no download:", err);
-    return sendJson(res, 500, { error: "internal_error", message: "Erro interno no processamento do download." });
   }
 }
 
