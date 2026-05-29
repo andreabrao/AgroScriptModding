@@ -611,13 +611,10 @@ async function handleProtectedDownload(req, res, pathname) {
     return sendJson(res, 404, { error: "mod_not_found", message: "Mod nao cadastrado no servidor." });
   }
 
-  const body = await readJson(req);
+  const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
   if (!member) {
-    return sendJson(res, 401, {
-      error: "invalid_token",
-      message: "Sessao invalida. Verifique seu plano novamente.",
-    });
+    return sendJson(res, 401, { error: "invalid_token", message: "Sessao invalida." });
   }
 
   const plan = plans[member.plan];
@@ -625,86 +622,54 @@ async function handleProtectedDownload(req, res, pathname) {
     return sendJson(res, 403, { error: "invalid_plan", message: "Plano invalido." });
   }
 
+  // Lógica de cota
   const usage = readDownloadUsage();
   const usageKey = `${normalize(member.email)}:${new Date().toISOString().slice(0, 7)}`;
   const usedMods = Array.isArray(usage[usageKey]) ? usage[usageKey] : [];
   const alreadyDownloaded = usedMods.includes(modId);
 
   if (plan.quota !== null && !alreadyDownloaded && usedMods.length >= plan.quota) {
-    return sendJson(res, 403, {
-      error: "quota_exceeded",
-      message: "Limite mensal atingido para esse plano.",
-    });
+    return sendJson(res, 403, { error: "quota_exceeded", message: "Limite mensal atingido." });
   }
 
-  // --- O QUE FALTAVA: A entrega do arquivo ---
-  
+  // Atualiza cota no disco (se for download novo)
   if (!alreadyDownloaded) {
     usedMods.push(modId);
     usage[usageKey] = usedMods;
     fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
   }
 
-  // Envia o arquivo configurado como .exe para o instalador
-  res.writeHead(200, {
-    "Content-Type": "application/vnd.microsoft.portable-executable",
-    "Content-Disposition": `attachment; filename="${fileName}"`,
-    "Cache-Control": "no-store",
-  });
+  // --- ESCOLHA DO MÉTODO DE ENTREGA ---
 
-  const filePath = path.normalize(path.join(privateDownloadDir, fileName));
-  fs.createReadStream(filePath).pipe(res);
-}
-
+  // 1. Se estiver usando Cloudflare R2
   if (isR2Configured()) {
-    let signedDownload;
     try {
-      signedDownload = await createR2SignedDownload(fileName);
-    } catch (error) {
-      console.error("Erro ao gerar link temporario do R2:", error);
-      return sendJson(res, 503, {
-        error: "r2_signed_url_error",
-        message: "Nao foi possivel gerar o link temporario do mod agora.",
+      const signedDownload = await createR2SignedDownload(fileName);
+      return sendJson(res, 200, {
+        downloadUrl: signedDownload.downloadUrl,
+        fileName,
+        expiresIn: signedDownload.expiresIn,
+        storage: "cloudflare-r2",
       });
+    } catch (error) {
+      return sendJson(res, 503, { error: "r2_error", message: "Erro ao gerar link R2." });
     }
-
-    if (!alreadyDownloaded) {
-      usedMods.push(modId);
-      usage[usageKey] = usedMods;
-      fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
-    }
-
-    return sendJson(res, 200, {
-      downloadUrl: signedDownload.downloadUrl,
-      fileName,
-      expiresIn: signedDownload.expiresIn,
-      storage: "cloudflare-r2",
-    });
   }
 
+  // 2. Se estiver usando Armazenamento Local (Pasta modsprivados)
   const filePath = path.normalize(path.join(privateDownloadDir, fileName));
-  if (!isPathInside(filePath, privateDownloadDir)) {
-    return sendJson(res, 403, { error: "invalid_path", message: "Caminho de arquivo invalido." });
-  }
-
+  
   if (!fs.existsSync(filePath)) {
-    return sendJson(res, 404, {
-      error: "file_missing",
-      message: `Arquivo privado nao encontrado: ${fileName}. O R2 nao esta ativo neste backend. Configure ${getR2MissingConfig().join(", ")} ou coloque o ZIP em private-downloads no servidor.`,
-    });
+    return sendJson(res, 404, { error: "file_missing", message: "Arquivo nao encontrado no servidor." });
   }
 
-  if (!alreadyDownloaded) {
-    usedMods.push(modId);
-    usage[usageKey] = usedMods;
-    fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
-  }
-
+  // Envia como executável (ou o formato que o ficheiro tiver)
   res.writeHead(200, {
-    "Content-Type": "application/zip",
+    "Content-Type": "application/vnd.microsoft.portable-executable", 
     "Content-Disposition": `attachment; filename="${fileName}"`,
     "Cache-Control": "no-store",
   });
+  
   fs.createReadStream(filePath).pipe(res);
 }
 
@@ -1208,7 +1173,7 @@ function gerarChaveAtivacao() {
     return bloco;
   };
   return `AGRO-${gerarBloco()}-${gerarBloco()}-${gerarBloco()}`;
-=======
+
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
