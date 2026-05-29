@@ -177,13 +177,11 @@ const memberSummary = document.querySelector("#memberSummary");
 const checkoutButtons = Array.from(document.querySelectorAll("[data-checkout-plan]"));
 const paymentClaimForm = document.querySelector("#paymentClaimForm");
 const paymentIdInput = document.querySelector("#paymentId");
-const paymentIdInput = document.querySelector("#paymentId");
 
 // Adição das novas referências para exibição da chave
 const keyDisplay = document.querySelector('#keyDisplayArea');
 const activeKey = document.querySelector('#activeKey');
 
-const formatter = new Intl.NumberFormat("pt-BR");s
 const formatter = new Intl.NumberFormat("pt-BR");
 const apiBaseUrl = (window.ASM_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
 
