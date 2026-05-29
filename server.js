@@ -400,6 +400,25 @@ async function handlePaymentClaim(req, res) {
   });
 }
 
+// Exemplo de como o seu site deve chamar essa função:
+async function finalizarPagamento(idDoPagamento) {
+  const resposta = await fetch('/api/payments/claim', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paymentId: idDoPagamento })
+  });
+
+  const dados = await resposta.json();
+
+  if (dados.accessCode) {
+    // AQUI VOCÊ MOSTRA A KEY NA TELA
+    alert("Pagamento confirmado! Sua chave é: " + dados.accessCode);
+    document.getElementById('display-key').innerText = dados.accessCode;
+  } else {
+    alert("Ainda estamos processando seu pagamento. Tente novamente em alguns segundos.");
+  }
+}
+
 async function handleVerifyKey(req, res) {
   const auth = getInstallerAuth(req);
   if (!auth.ok) {
