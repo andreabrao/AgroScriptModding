@@ -20,10 +20,12 @@ public sealed class MainForm : Form
     private readonly Label versionLabel = new();
 
     private string? selectedGameRoot;
+    private readonly string _modId;
     private string? detectedVersion;
 
-    public MainForm()
+    public MainForm(string modId)
     {
+        _modId = modId;
         Text = "AGRO SCRIPT MODDING - Instalador FS22/FS25";
         Width = 1500;
         Height = 1500;
@@ -228,13 +230,16 @@ public sealed class MainForm : Form
 
     private async Task<VerifyKeyResponse> VerifyKeyAsync(string key, string hwid)
     {
+
+        MessageBox.Show($"Enviando para API: Key={key}, HWID={hwid}, ModId={_modId}");
+        
         using var request = new HttpRequestMessage(HttpMethod.Post, $"{InstallerSettings.ApiBaseUrl}/api/verify-key");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", InstallerSettings.InstallerApiToken);
         request.Content = JsonContent(new
         {
             key,
             hwid,
-            modId = InstallerSettings.ModId,
+            modId = _modId
         });
 
         using var response = await httpClient.SendAsync(request);

@@ -415,7 +415,7 @@ async function handleVerifyKey(req, res) {
   const body = await readJson(req);
   const key = String(body.key || "").trim().toUpperCase();
   const hwid = String(body.hwid || "").trim();
-  const modId = String(body.modId || process.env.INSTALLER_DEFAULT_MOD_ID || "asm-8r").trim();
+  const modId = String(body.modId || "asm-8r").trim().toLowerCase();
   const fileName = modFiles[modId];
 
   if (!key || !hwid) {
