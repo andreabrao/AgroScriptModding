@@ -27,11 +27,8 @@ const plans = {
 
 function resolvePrivateDownloadDir() {
   const configuredPath = process.env.PRIVATE_DOWNLOADS_DIR;
-  if (!configuredPath) return path.join(rootDir, "private-downloads");
-
-  return path.isAbsolute(configuredPath)
-    ? path.normalize(configuredPath)
-    : path.normalize(path.join(rootDir, configuredPath));
+  if (!configuredPath) return path.join(rootDir, "modsprivados");
+  return path.isAbsolute(configuredPath) ? path.normalize(configuredPath) : path.normalize(path.join(rootDir, configuredPath));
 }
 
 function resolveDataDir() {
@@ -1153,6 +1150,7 @@ function gerarChaveAtivacao() {
     return bloco;
   };
   return `AGRO-${gerarBloco()}-${gerarBloco()}-${gerarBloco()}`;
+}
 
 const http = require("http");
 const fs = require("fs");
@@ -1761,23 +1759,17 @@ async function handleVerifySubscription(req, res) {
 
 async function handleProtectedDownload(req, res, pathname) {
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const fileName = modFiles[modId];
-  if (!fileName) {
-    return sendJson(res, 404, { error: "mod_not_found", message: "Mod nao cadastrado no servidor." });
-  }
+  const fileName = "AgroScriptInstaller.exe"; // Sempre entrega o instalador
 
-  const body = await readJson(req);
+  const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
   if (!member) {
-    return sendJson(res, 401, {
-      error: "invalid_token",
-      message: "Sessao invalida. Verifique seu plano novamente.",
-    });
+    return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
   }
 
   const plan = plans[member.plan];
   if (!plan) {
-    return sendJson(res, 403, { error: "invalid_plan", message: "Plano invalido." });
+    return sendJson(res, 403, { error: "invalid_plan", message: "Plano inválido." });
   }
 
   const usage = readDownloadUsage();
@@ -1786,48 +1778,7 @@ async function handleProtectedDownload(req, res, pathname) {
   const alreadyDownloaded = usedMods.includes(modId);
 
   if (plan.quota !== null && !alreadyDownloaded && usedMods.length >= plan.quota) {
-    return sendJson(res, 403, {
-      error: "quota_exceeded",
-      message: "Limite mensal atingido para esse plano.",
-    });
-  }
-
-  if (isR2Configured()) {
-    let signedDownload;
-    try {
-      signedDownload = await createR2SignedDownload(fileName);
-    } catch (error) {
-      console.error("Erro ao gerar link temporario do R2:", error);
-      return sendJson(res, 503, {
-        error: "r2_signed_url_error",
-        message: "Nao foi possivel gerar o link temporario do mod agora.",
-      });
-    }
-
-    if (!alreadyDownloaded) {
-      usedMods.push(modId);
-      usage[usageKey] = usedMods;
-      fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
-    }
-
-    return sendJson(res, 200, {
-      downloadUrl: signedDownload.downloadUrl,
-      fileName,
-      expiresIn: signedDownload.expiresIn,
-      storage: "cloudflare-r2",
-    });
-  }
-
-  const filePath = path.normalize(path.join(privateDownloadDir, fileName));
-  if (!isPathInside(filePath, privateDownloadDir)) {
-    return sendJson(res, 403, { error: "invalid_path", message: "Caminho de arquivo invalido." });
-  }
-
-  if (!fs.existsSync(filePath)) {
-    return sendJson(res, 404, {
-      error: "file_missing",
-      message: `Arquivo privado nao encontrado: ${fileName}. O R2 nao esta ativo neste backend. Configure ${getR2MissingConfig().join(", ")} ou coloque o ZIP em private-downloads no servidor.`,
-    });
+    return sendJson(res, 403, { error: "quota_exceeded", message: "Limite mensal atingido." });
   }
 
   if (!alreadyDownloaded) {
@@ -1836,11 +1787,17 @@ async function handleProtectedDownload(req, res, pathname) {
     fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
   }
 
+  const filePath = path.join(privateDownloadDir, fileName);
+  if (!fs.existsSync(filePath)) {
+    return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
+  }
+
   res.writeHead(200, {
-    "Content-Type": "application/zip",
+    "Content-Type": "application/vnd.microsoft.portable-executable",
     "Content-Disposition": `attachment; filename="${fileName}"`,
     "Cache-Control": "no-store",
   });
+
   fs.createReadStream(filePath).pipe(res);
 }
 
@@ -2335,14 +2292,17 @@ async function handleGenerateKey(req, res) {
 
 function gerarChaveAtivacao() {
   const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  
   const gerarBloco = () => {
     let bloco = '';
     for (let i = 0; i < 4; i++) {
+      // crypto.randomInt é a forma mais segura de gerar números aleatórios no Node.js
       const index = crypto.randomInt(0, caracteres.length);
       bloco += caracteres[index];
     }
     return bloco;
   };
+
+  // Correção: fechei a string com a aspa e o parêntese do return
   return `AGRO-${gerarBloco()}-${gerarBloco()}-${gerarBloco()}`;
->>>>>>> 197049182dfa1e5e5bcdcab7e46fcbaaf415b72e
 }
