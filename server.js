@@ -577,20 +577,22 @@ async function handleAdminRequest(req, res, requestUrl) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
-  // 1. Pega o nome do arquivo que foi solicitado (Ex: Instalador_ASM-8R.exe)
-  // Como o usuário clicou no link, o nome já vem na URL
+  // 1. Pega o nome do arquivo da URL (ex: Instalador_ASM-8R.exe)
   const fileName = pathname.split('/').pop(); 
   
-  // 2. Define onde os instaladores ficam no seu servidor
-  const filePath = path.join(modsprivados, fileName);
+  // 2. Define a pasta onde os seus .exe estão salvos no servidor
+  // Ajuste este caminho para a pasta onde você subiu seus executáveis
+  const pathExecutaveis = path.join(process.cwd(), 'modsprivados'); 
 
-  // 3. Verifica se o arquivo existe localmente
+  const filePath = path.join(pathExecutaveis, fileName);
+
+  // 3. Verifica se o instalador existe
   if (!fs.existsSync(filePath)) {
-    console.error("Arquivo não encontrado no servidor:", filePath);
+    console.log("Erro: Instalador não encontrado em:", filePath);
     return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado." });
   }
 
-  // 4. Envia o instalador (.exe) que você renomeou
+  // 4. Entrega o instalador para o navegador do cliente
   res.writeHead(200, {
     "Content-Type": "application/vnd.microsoft.portable-executable",
     "Content-Disposition": `attachment; filename="${fileName}"`,
