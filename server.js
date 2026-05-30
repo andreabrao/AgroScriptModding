@@ -560,34 +560,41 @@ async function handleAdminRequest(req, res, requestUrl) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
+  // 1. Define o cabeçalho como JSON para evitar que o navegador baixe como arquivo
   res.setHeader('Content-Type', 'application/json');
 
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
   const urlCompleta = modFiles[modId];
 
-  // LOG DE VERIFICAÇÃO
-  console.log(`[DEBUG] ModID: ${modId}, URL definida: ${urlCompleta}`);
+  console.log(`[DEBUG] Tentativa de download para: ${modId}`);
 
   if (!urlCompleta) return sendJson(res, 404, { error: "mod_not_found" });
 
+  // 2. Valida o Token
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
   if (!member) return sendJson(res, 401, { error: "invalid_token" });
 
+  // 3. Verificação de cota (Opcional, mas recomendado para evitar abusos)
+  if (!checkDownloadQuota(member)) {
+    return sendJson(res, 403, { error: "quota_exceeded", message: "Limite atingido." });
+  }
+
+  // 4. Gera a URL assinada do R2
   try {
     const fileName = urlCompleta.split('/').pop();
     const { downloadUrl } = await createR2SignedDownload(fileName);
     
-    // LOG DO QUE ESTÁ SENDO ENVIADO
-    console.log(`[DEBUG] Enviando JSON com URL: ${downloadUrl}`);
+    // Registrar o uso
+    registerDownload(member);
     
+    console.log(`[DEBUG] URL assinada gerada com sucesso.`);
     return sendJson(res, 200, { downloadUrl });
   } catch (error) {
     console.error("Erro R2:", error);
     return sendJson(res, 500, { error: "r2_error" });
   }
 }
-
 function createDownloadToken(subscriber) {
   const payload = {
     email: subscriber.email,
