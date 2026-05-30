@@ -775,15 +775,16 @@ document.addEventListener("click", async (event) => {
   if (!downloadLink) return;
   event.preventDefault();
 
+  console.log("Botão clicado! Tentando baixar o ID:", downloadLink.dataset.downloadId);
+
   const mod = mods.find((item) => item.id === downloadLink.dataset.downloadId);
-  if (!mod) return;
+  if (!mod) {
+    console.error("❌ ERRO: O ID do HTML não existe no array 'mods' do front-end!");
+    return;
+  }
 
   if (!state.member) {
-    setGuestAccessStatus(
-      "Plano necessario",
-      "Verifique sua assinatura para liberar os downloads.",
-      "is-warning"
-    );
+    setGuestAccessStatus("Plano necessario", "Verifique sua assinatura...", "is-warning");
     scrollToAccessPanel();
     return;
   }
@@ -794,9 +795,15 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  console.log("Passou nas travas de plano. Chamando a API do servidor...");
   const downloaded = await downloadProtectedMod(mod);
-  if (!downloaded) return;
+  
+  if (!downloaded) {
+    console.error("❌ ERRO: O servidor recusou o download ou deu erro 404/500!");
+    return;
+  }
 
+  console.log("✅ Sucesso! Download liberado.");
   registerMemberDownload(state.member, mod.id);
 
   const nextDownloads = getDownloads(mod) + 1;
