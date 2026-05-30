@@ -146,15 +146,15 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "inst-asm8r": "https://agroscriptmodding.onrender.com/modsprivados/download/Instalador_NOME_DO_MOD.exe",
-  "asm-8r": "https://agroscriptmodding.onrender.com/modsprivados/FS22_ASM_8R_PERF_BR.zip",
-  "case-axial": "https://agroscriptmodding.onrender.com/modsprivados/FS22_CASE_AXIAL.zip",
-  "nh-t9": "https://agroscriptmodding.onrender.com/modsprivados/FS22_NH_T9.zip",
-  "plantadeira-asm": "https://agroscriptmodding.onrender.com/modsprivados/FS22_plantadeira-asm.zip",
-  "mapa-sertao": "https://agroscriptmodding.onrender.com/modsprivados/FS22_mapa_sertao.zip",
-  "script-hud": "https://agroscriptmodding.onrender.com/modsprivados/FS22_script_hud.zip",
-  "mf-serie-s": "https://agroscriptmodding.onrender.com/modsprivados/FS22_mf_serie_s.zip",
-  "grade-asm": "https://agroscriptmodding.onrender.com/modsprivados/FS22_grade_asm.zip",
+  "inst-asm8r": "Instalador_NOME_DO_MOD.exe",
+  "asm-8r": "FS22_ASM_8R_PERF_BR.zip",
+  "case-axial": "FS22_CASE_AXIAL.zip",
+  "nh-t9": "FS22_NH_T9.zip",
+  "plantadeira-asm": "FS22_plantadeira-asm.zip",
+  "mapa-sertao": "FS22_mapa_sertao.zip",
+  "script-hud": "FS22_script_hud.zip",
+  "mf-serie-s": "FS22_mf_serie_s.zip",
+  "grade-asm": "FS22_grade_asm.zip",
 };
 
 ensureDataFiles();
