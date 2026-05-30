@@ -585,6 +585,7 @@ function registerDownload(subscriber) {
 async function handleProtectedDownload(req, res, pathname) {
   // 1. Define o cabeçalho como JSON para evitar que o navegador baixe como arquivo
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Disposition', 'inline');
 
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
   const urlCompleta = modFiles[modId];
