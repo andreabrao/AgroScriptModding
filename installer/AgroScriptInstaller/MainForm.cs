@@ -262,60 +262,81 @@ public sealed class MainForm : Form
 
     private async Task<string> DownloadModAsync(VerifyKeyResponse license)
     {
-        var modId = string.IsNullOrWhiteSpace(license.ModId) ? InstallerSettings.ModId : license.ModId;
-        var fileName = SanitizeFileName(license.FileName);
-        var tempFile = Path.Combine(Path.GetTempPath(), $"asm-{Guid.NewGuid():N}-{fileName}");
+    var modId = string.IsNullOrWhiteSpace(license.ModId) ? InstallerSettings.ModId : license.ModId;
+    var fileName = SanitizeFileName(license.FileName);
+    var tempFile = Path.Combine(Path.GetTempPath(), $"asm-{Guid.NewGuid():N}-{fileName}");
 
-        using var request = new HttpRequestMessage(
-            HttpMethod.Post,
-            $"{InstallerSettings.ApiBaseUrl}/api/mods/{Uri.EscapeDataString(modId)}/download");
-        request.Content = JsonContent(new
-        {
-            token = license.DownloadToken,
-        });
+    // --- ETAPA 1: Bater na tua API Node para pegar o JSON com a URL assinada ---
+    using var request = new HttpRequestMessage(
+        HttpMethod.Post,
+        $"{InstallerSettings.ApiBaseUrl}/api/mods/{Uri.EscapeDataString(modId)}/download");
+    
+    // Passamos o token e o "format": "zip" para a tua API saber que quem está pedindo é o instalador
+    request.Content = JsonContent(new
+    {
+        token = license.DownloadToken,
+        format = "zip"
+    });
 
-        using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-        if (!response.IsSuccessStatusCode)
+    using var response = await httpClient.SendAsync(request);
+    var responseText = await response.Content.ReadAsStringAsync();
+
+    if (!response.IsSuccessStatusCode)
+    {
+        var error = TryReadApiError(responseText);
+        throw new InvalidOperationException(error ?? $"Download recusado pela API: {(int)response.StatusCode}");
+    }
+
+    // Extrair o "downloadUrl" de dentro do texto JSON que o servidor respondeu
+    using var jsonDoc = JsonDocument.Parse(responseText);
+    if (!jsonDoc.RootElement.TryGetProperty("downloadUrl", out var urlProp) || string.IsNullOrWhiteSpace(urlProp.GetString()))
+    {
+        throw new InvalidOperationException("A API não retornou uma URL de download válida.");
+    }
+
+    string urlRealDoR2 = urlProp.GetString()!;
+
+    // --- ETAPA 2: Fazer o GET real no Cloudflare R2 para baixar os bytes do ZIP ---
+    using var downloadResponse = await httpClient.GetAsync(urlRealDoR2, HttpCompletionOption.ResponseHeadersRead);
+    if (!downloadResponse.IsSuccessStatusCode)
+    {
+        throw new InvalidOperationException($"Falha ao baixar o arquivo do servidor R2: {(int)downloadResponse.StatusCode}");
+    }
+
+    var contentDisposition = downloadResponse.Content.Headers.ContentDisposition;
+    if (!string.IsNullOrWhiteSpace(contentDisposition?.FileNameStar))
+    {
+        fileName = SanitizeFileName(contentDisposition.FileNameStar);
+        tempFile = Path.Combine(Path.GetTempPath(), $"asm-{Guid.NewGuid():N}-{fileName}");
+    }
+    else if (!string.IsNullOrWhiteSpace(contentDisposition?.FileName))
+    {
+        fileName = SanitizeFileName(contentDisposition.FileName.Trim('"'));
+        tempFile = Path.Combine(Path.GetTempPath(), $"asm-{Guid.NewGuid():N}-{fileName}");
+    }
+
+    var totalBytes = downloadResponse.Content.Headers.ContentLength;
+    await using var input = await downloadResponse.Content.ReadAsStreamAsync();
+    await using var output = File.Create(tempFile);
+
+    var buffer = new byte[81920];
+    long receivedBytes = 0;
+    int read;
+
+    while ((read = await input.ReadAsync(buffer)) > 0)
+    {
+        await output.WriteAsync(buffer.AsMemory(0, read));
+        receivedBytes += read;
+
+        if (totalBytes is > 0)
         {
-            var responseText = await response.Content.ReadAsStringAsync();
-            var error = TryReadApiError(responseText);
-            throw new InvalidOperationException(error ?? $"Download recusado pela API: {(int)response.StatusCode}");
+            var progress = (int)Math.Clamp(receivedBytes * 100 / totalBytes.Value, 0, 100);
+            progressBar.Value = progress;
         }
+    }
 
-        var contentDisposition = response.Content.Headers.ContentDisposition;
-        if (!string.IsNullOrWhiteSpace(contentDisposition?.FileNameStar))
-        {
-            fileName = SanitizeFileName(contentDisposition.FileNameStar);
-            tempFile = Path.Combine(Path.GetTempPath(), $"asm-{Guid.NewGuid():N}-{fileName}");
-        }
-        else if (!string.IsNullOrWhiteSpace(contentDisposition?.FileName))
-        {
-            fileName = SanitizeFileName(contentDisposition.FileName.Trim('"'));
-            tempFile = Path.Combine(Path.GetTempPath(), $"asm-{Guid.NewGuid():N}-{fileName}");
-        }
-
-        var totalBytes = response.Content.Headers.ContentLength;
-        await using var input = await response.Content.ReadAsStreamAsync();
-        await using var output = File.Create(tempFile);
-
-        var buffer = new byte[81920];
-        long receivedBytes = 0;
-        int read;
-
-        while ((read = await input.ReadAsync(buffer)) > 0)
-        {
-            await output.WriteAsync(buffer.AsMemory(0, read));
-            receivedBytes += read;
-
-            if (totalBytes is > 0)
-            {
-                var progress = (int)Math.Clamp(receivedBytes * 100 / totalBytes.Value, 0, 100);
-                progressBar.Value = progress;
-            }
-        }
-
-        progressBar.Value = 100;
-        return tempFile;
+    progressBar.Value = 100;
+    return tempFile;
     }
 
     private static string InstallModFile(string tempFile, string modsDirectory, string fileName, string version)

@@ -599,7 +599,8 @@ async function handleProtectedDownload(req, res, pathname) {
     pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, "")
   );
 
-  const fileName = modFiles[modId];
+  // CORREÇÃO AQUI: Mudamos de modFiles para modZipFiles
+  const fileName = modZipFiles[modId];
   if (!fileName) return sendJson(res, 404, { error: "mod_not_found" });
 
   const body = await readJson(req).catch(() => ({}));
