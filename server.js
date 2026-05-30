@@ -1010,33 +1010,28 @@ function readJson(req) {
   });
 }
 
-function serveStatic(req, res, pathname) {
-  const safePath = pathname === "/" ? "/index.html" : decodeURIComponent(pathname);
-  const filePath = path.normalize(path.join(rootDir, safePath));
-  const normalizedDataDir = path.normalize(dataDir);
-  const normalizedPrivateDir = path.normalize(privateDownloadDir);
+async function handleProtectedDownload(req, res, pathname) {
+  // 1. Identifica o mod/instalador solicitado
+  const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
+  const urlCompleta = modFiles[modId];
 
-  if (!isPathInside(filePath, rootDir)) {
-    return sendText(res, 403, "Acesso negado.");
+  if (!urlCompleta) return sendJson(res, 404, { error: "mod_not_found" });
+
+  // 2. Valida o Token
+  const body = await readJson(req).catch(() => ({}));
+  const member = verifyDownloadToken(body.token);
+  if (!member) return sendJson(res, 401, { error: "invalid_token" });
+
+  // 3. Gera a URL e RETORNA JSON (NADA DE PIPE)
+  try {
+    const fileName = urlCompleta.split('/').pop();
+    const { downloadUrl } = await createR2SignedDownload(fileName);
+    
+    // AQUI ESTÁ O SEGREDO: O servidor responde apenas com texto (JSON)
+    return sendJson(res, 200, { downloadUrl });
+  } catch (error) {
+    return sendJson(res, 500, { error: "r2_error" });
   }
-
-  if (
-    isPathInside(filePath, normalizedDataDir) ||
-    isPathInside(filePath, normalizedPrivateDir) ||
-    path.basename(filePath).startsWith(".env")
-  ) {
-    return sendText(res, 403, "Arquivo protegido.");
-  }
-
-  fs.stat(filePath, (error, stat) => {
-    if (error || !stat.isFile()) {
-      return sendText(res, 404, "Arquivo nao encontrado.");
-    }
-
-    const extension = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { "Content-Type": mimeTypes[extension] || "application/octet-stream" });
-    fs.createReadStream(filePath).res.json(res);
-  });
 }
 
 function isPathInside(childPath, parentPath) {
