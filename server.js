@@ -652,24 +652,30 @@ async function handleProtectedDownload(req, res, pathname) {
     pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, "")
   );
 
-  // Lemos primeiro o corpo da requisição para validar o token
+  // 1. Lemos o corpo da requisição (JSON)
   const body = await readJson(req).catch(() => ({}));
+  
+  // 2. Validamos o token de acesso
   const member = verifyDownloadToken(body.token);
   if (!member) return sendJson(res, 401, { error: "invalid_token" });
 
-  // CORREÇÃO DEFINITIVA: Força a buscar sempre no bloco de ZIPs (.zip)
-  const fileName = modZipFiles[modId];
-  
+  // 3. SEPARAÇÃO INTELIGENTE:
+  // Se no JSON vier "isZip: true", o servidor vai buscar ao bloco 'modZipFiles' (.zip)
+  // Se não vier (pedido feito pelo site), vai buscar ao bloco 'modFiles' (.exe)
+  const fileName = body.isZip ? modZipFiles[modId] : modFiles[modId];
+
+  // 4. Se não encontrar o ID no bloco selecionado
   if (!fileName) {
-    console.log(`[ERRO R2] Arquivo ZIP não encontrado para o ID: "${modId}"`);
+    console.log(`[ERRO] Ficheiro não encontrado para o ID: "${modId}" (Procurou Zip: ${!!body.isZip})`);
     return sendJson(res, 404, { error: "mod_not_found" });
   }
 
+  // 5. Valida a quota do plano do utilizador
   if (!checkDownloadQuota(member)) {
     return sendJson(res, 403, { error: "quota_exceeded", message: "Limite atingido." });
   }
 
-  // 5. Geração do link no R2 (permanece igual)
+  // 6. Geração do link seguro no R2
   try {
     const { GetObjectCommand, getSignedUrl } = getR2Sdk();
     const command = new GetObjectCommand({
