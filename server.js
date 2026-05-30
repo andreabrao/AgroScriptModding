@@ -986,30 +986,6 @@ function readJson(req) {
   });
 }
 
-async function handleProtectedDownload(req, res, pathname) {
-  // 1. Identifica o mod/instalador solicitado
-  const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const urlCompleta = modFiles[modId];
-
-  if (!urlCompleta) return sendJson(res, 404, { error: "mod_not_found" });
-
-  // 2. Valida o Token
-  const body = await readJson(req).catch(() => ({}));
-  const member = verifyDownloadToken(body.token);
-  if (!member) return sendJson(res, 401, { error: "invalid_token" });
-
-  // 3. Gera a URL e RETORNA JSON (NADA DE PIPE)
-  try {
-    const fileName = urlCompleta.split('/').pop();
-    const { downloadUrl } = await createR2SignedDownload(fileName);
-    
-    // AQUI ESTÁ O SEGREDO: O servidor responde apenas com texto (JSON)
-    return sendJson(res, 200, { downloadUrl });
-  } catch (error) {
-    return sendJson(res, 500, { error: "r2_error" });
-  }
-}
-
 function isPathInside(childPath, parentPath) {
   const relative = path.relative(parentPath, childPath);
   return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
