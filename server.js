@@ -1035,7 +1035,7 @@ function serveStatic(req, res, pathname) {
 
     const extension = path.extname(filePath).toLowerCase();
     res.writeHead(200, { "Content-Type": mimeTypes[extension] || "application/octet-stream" });
-    fs.createReadStream(filePath).pipe(res);
+    fs.createReadStream(filePath).res.json(res);
   });
 }
 
