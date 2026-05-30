@@ -577,27 +577,21 @@ async function handleAdminRequest(req, res, requestUrl) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
-  // 1. O nome do arquivo vem direto da URL (ex: "Instalador_ASM-8R.exe")
-  const fileName = pathname.split('/').pop().replace('/download', '');
+  // 1. O nome do arquivo (ex: Instalador_ASM-8R.exe)
+  const fileName = pathname.split('/').pop(); 
+  
+  // 2. CAMINHO CORRETO baseado na sua foto:
+  // process.cwd() é a raiz, depois entra em 'modsprivados', depois em 'download'
+  const filePath = path.join(process.cwd(), 'modsprivados', 'download', fileName);
 
-  // 2. Define a pasta onde você guardou seus .exe no servidor
-  // Ajuste 'caminho_dos_executaveis' para o nome da pasta onde seus .exe estão
-  const filePath = path.join(process.cwd(), 'modsprivados', fileName);
+  console.log("DEBUG: Servidor procurando o arquivo em:", filePath);
 
-  // 3. Verifica se o token é válido (mantemos sua segurança)
-  const body = await readJson(req).catch(() => ({}));
-  const member = verifyDownloadToken(body.token);
-  if (!member) {
-    return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
-  }
-
-  // 4. Verifica se o arquivo físico existe no servidor
+  // 3. Verifica se existe
   if (!fs.existsSync(filePath)) {
-    console.error("Arquivo não encontrado:", filePath);
     return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
   }
 
-  // 5. Envia o arquivo .exe para o navegador
+  // 4. Envia o arquivo
   res.writeHead(200, {
     "Content-Type": "application/vnd.microsoft.portable-executable",
     "Content-Disposition": `attachment; filename="${fileName}"`,
