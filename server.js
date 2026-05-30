@@ -149,9 +149,6 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  // =========================================================================
-  // 1. DOWNLOADS VIA SITE (O que o cliente baixa na Web: os Instaladores .exe)
-  // =========================================================================
   "inst-asm-8r":          "Instalador_ASM_8R_PERF_BR.exe",
   "inst-case-axial":      "Instalador_CASE_AXIAL.exe",
   "inst-nh-t9":           "Instalador_NH_T9.exe",
@@ -160,10 +157,9 @@ const modFiles = {
   "inst-script-hud":      "Instalador_SCRIPT_HUD.exe",
   "inst-mf-serie-s":      "Instalador_MF_SERIE_S.exe",
   "inst-grade-asm":       "Instalador_GRADE_ASM.exe",
+};
 
-  // =========================================================================
-  // 2. DOWNLOADS VIA DESKTOP (O que o app C# baixa em segundo plano: os Mods .zip)
-  // =========================================================================
+const modZipFiles = {
   "asm-8r":               "FS22_ASM_8R_PERF_BR.zip",
   "case-axial":           "FS22_CASE_AXIAL.zip",
   "nh-t9":                "FS22_NH_T9.zip",
