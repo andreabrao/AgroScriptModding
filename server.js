@@ -122,13 +122,18 @@ function getR2Client() {
 
 async function streamR2File(fileName, res) {
   const { GetObjectCommand } = getR2Sdk();
+  const key = getR2ObjectKey(fileName);
+  
+  console.log(`[DEBUG R2] Bucket: ${process.env.R2_BUCKET}`);
+  console.log(`[DEBUG R2] Key buscada: "${key}"`);
+  console.log(`[DEBUG R2] R2_KEY_PREFIX: "${process.env.R2_KEY_PREFIX || '(vazio)'}"`);
+
   const command = new GetObjectCommand({
     Bucket: process.env.R2_BUCKET,
-    Key: getR2ObjectKey(fileName),
+    Key: key,
   });
 
-  const s3Response = await getR2Client().send(command);
-  return s3Response; // retorna o objeto com Body (stream) e ContentLength
+  return await getR2Client().send(command);
 }
 
 const mimeTypes = {
