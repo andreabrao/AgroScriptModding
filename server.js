@@ -146,7 +146,7 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "ins-tall": "https://agroscriptmodding.onrender.com/modsprivados/download/Instalador_NOME_DO_MOD.exe",
+  "inst-asm8r": "https://agroscriptmodding.onrender.com/modsprivados/download/Instalador_NOME_DO_MOD.exe",
   "asm-8r": "https://agroscriptmodding.onrender.com/modsprivados/FS22_ASM_8R_PERF_BR.zip",
   "case-axial": "https://agroscriptmodding.onrender.com/modsprivados/FS22_CASE_AXIAL.zip",
   "nh-t9": "https://agroscriptmodding.onrender.com/modsprivados/FS22_NH_T9.zip",
