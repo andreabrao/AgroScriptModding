@@ -1,5 +1,18 @@
 const mods = [
   {
+    id: "valmt-8750",
+    title: "VALMT 8750 Performance BR",
+    category: "Tratores",
+    brand: "Valtra",
+    version: "1.0.0",
+    downloads: 12872,
+    power: "85 cv",
+    image: "assets/mod-valmt-8750.svg",
+    description:
+      "Pacote com ronco encorpado, iluminação revisada, giro de motor calibrado e configuração pronta para lavouras brasileiras.",
+    tags: ["valtra", "valmet", "8750", "antigo", "performance"],
+  },
+  {
     id: "asm-8r",
     title: "ASM 8R Performance BR",
     category: "Tratores",
