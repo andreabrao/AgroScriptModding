@@ -526,7 +526,8 @@ async function downloadProtectedMod(mod) {
 
     const link = document.createElement("a");
     link.href = data.downloadUrl;
-    link.download = data.fileName || `${mod.id}.zip`;
+    link.download = data.fileName || `Instalador_${mod.id}.exe`;
+    const filename = filenameMatch?.[1] || data.fileName || `Instalador_${mod.id}.exe`;
     link.rel = "noopener";
     document.body.appendChild(link);
     link.click();
