@@ -504,12 +504,12 @@ async function downloadProtectedMod(mod) {
     const data = await response.json().catch(() => ({}));
     setAccessPanelMessage(
       "Download bloqueado",
-      data.message || "O servidor nao liberou esse arquivo para o seu plano.",
+      data.message || data.error || "O servidor nao liberou esse arquivo para o seu plano.",
       "is-error"
     );
     scrollToAccessPanel();
     return false;
-  }
+}
 
   const data = await response.json();
   if (!data.downloadUrl) {
