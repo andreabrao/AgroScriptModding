@@ -599,6 +599,14 @@ async function handleProtectedDownload(req, res, pathname) {
   const filePath = path.join(process.cwd(), 'modsprivados', subPasta, fileName);
 
   console.log("DEBUG: Procurando arquivo em:", filePath);
+  // DEBUG: Lista o que o servidor consegue enxergar na pasta
+  const pastaMod = path.join(process.cwd(), 'modsprivados');
+  try {
+    const arquivos = fs.readdirSync(pastaMod);
+    console.log("DEBUG: Arquivos encontrados na pasta modsprivados:", arquivos);
+  } catch (e) {
+    console.log("DEBUG: Erro ao ler a pasta modsprivados:", e.message);
+  }
 
   if (!fs.existsSync(filePath)) {
     return sendJson(res, 404, { error: "file_missing", message: "Arquivo não encontrado." });
