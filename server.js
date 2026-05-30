@@ -202,15 +202,15 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "valmt-8750":       "Instalador_VALMT_8750_PERF_BR.exe",
-  "asm-8r":           "Instalador_ASM_8R_PERF_BR.exe",
-  "case-axial":       "Instalador_CASE_AXIAL.exe",
-  "nh-t9":            "Instalador_NH_T9.exe",
-  "plantadeira-asm":  "Instalador_PLANTADEIRA_ASM.exe",
-  "mapa-sertao":      "Instalador_MAPA_SERTAO.exe",
-  "script-hud":       "Instalador_SCRIPT_HUD.exe",
-  "mf-serie-s":       "Instalador_MF_SERIE_S.exe",
-  "grade-asm":        "Instalador_GRADE_ASM.exe",
+  "valmt-8750":       "Instalador_valmt-8750.exe",
+  "asm-8r":           "Instalador_asm-8r.exe",
+  "case-axial":       "Instalador_case-axial.exe",
+  "nh-t9":            "Instalador_nh-t9.exe",
+  "plantadeira-asm":  "Instalador_plantadeira-asm.exe",
+  "mapa-sertao":      "Instalador_mapa-sertao.exe",
+  "script-hud":       "Instalador_script-hud.exe",
+  "mf-serie-s":       "Instalador_mf-serie-s.exe",
+  "grade-asm":        "Instalador_grade-asm.exe",
 };
 
 const modZipFiles = {
