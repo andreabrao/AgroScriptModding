@@ -149,14 +149,15 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "asm-8r":         "Instalador_ASM_8R_PERF_BR.exe",  // ← aponta para o .exe renomeado
-  "case-axial":     "Instalador_CASE_AXIAL.exe",
-  "nh-t9":          "Instalador_NH_T9.exe",
-  "plantadeira-asm":"Instalador_PLANTADEIRA_ASM.exe",
-  "mapa-sertao":    "Instalador_MAPA_SERTAO.exe",
-  "script-hud":     "Instalador_SCRIPT_HUD.exe",
-  "mf-serie-s":     "Instalador_MF_SERIE_S.exe",
-  "grade-asm":      "Instalador_GRADE_ASM.exe",
+  "inst-asm8r": "Instalador_NOME_DO_MOD.exe",
+  "asm-8r": "FS22_ASM_8R_PERF_BR.zip",
+  "case-axial": "FS22_CASE_AXIAL.zip",
+  "nh-t9": "FS22_NH_T9.zip",
+  "plantadeira-asm": "FS22_plantadeira-asm.zip",
+  "mapa-sertao": "FS22_mapa_sertao.zip",
+  "script-hud": "FS22_script_hud.zip",
+  "mf-serie-s": "FS22_mf_serie_s.zip",
+  "grade-asm": "FS22_grade_asm.zip",
 };
 
 ensureDataFiles();
@@ -399,7 +400,7 @@ async function handleVerifyKey(req, res) {
   const body = await readJson(req);
   const key = String(body.key || "").trim().toUpperCase();
   const hwid = String(body.hwid || "").trim();
-  const modId = String(body.modId || process.env.INSTALLER_DEFAULT_MOD_ID || "asm-8r").trim();
+  const modId = String(body.modId || process.env.INSTALLER_DEFAULT_MOD_ID || "inst-asm8r").trim();
   const fileName = modFiles[modId];
 
   if (!key || !hwid) {
