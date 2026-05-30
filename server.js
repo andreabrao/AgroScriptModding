@@ -579,47 +579,37 @@ async function handleAdminRequest(req, res, requestUrl) {
 
 async function handleProtectedDownload(req, res, pathname) {
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
+  
+  // 1. Pega o link do arquivo no seu dicionário (modFiles)
   const urlCompleta = modFiles[modId];
-
   if (!urlCompleta) {
     return sendJson(res, 404, { error: "mod_not_found" });
   }
 
-  // fileName será "Instalador_ASM_8R.exe" ou "FS22_...zip"
+  // 2. Extrai o nome do arquivo (ex: FS22_ASM_8R_PERF_BR.zip ou Instalador_NOME.exe)
   const fileName = urlCompleta.split('/').pop();
 
-  // Verifica Token (Segurança mantida)
+  // 3. Valida o Token do cliente
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
-  if (!member) return sendJson(res, 401, { error: "invalid_token" });
-
-  // CAMINHO DINÂMICO:
-  // Se for .exe, olha em 'modsprivados/download'. Se for .zip, olha em 'modsprivados'.
-  const subPasta = fileName.endsWith('.exe') ? 'download' : '';
-  const filePath = path.join(process.cwd(), 'modsprivados', subPasta, fileName);
-
-  console.log("DEBUG: Procurando arquivo em:", filePath);
-  // DEBUG: Lista o que o servidor consegue enxergar na pasta
-  const pastaMod = path.join(process.cwd(), 'modsprivados');
-  try {
-    const arquivos = fs.readdirSync(pastaMod);
-    console.log("DEBUG: Arquivos encontrados na pasta modsprivados:", arquivos);
-  } catch (e) {
-    console.log("DEBUG: Erro ao ler a pasta modsprivados:", e.message);
+  if (!member) {
+    return sendJson(res, 401, { error: "invalid_token" });
   }
 
-  if (!fs.existsSync(filePath)) {
-    return sendJson(res, 404, { error: "file_missing", message: "Arquivo não encontrado." });
+  // 4. Se o token é válido, NÃO procure arquivo local.
+  // Apenas gere a URL assinada do R2 e envie para o instalador/navegador
+  if (isR2Configured()) {
+    try {
+      console.log("DEBUG: Gerando link assinado para:", fileName);
+      const { downloadUrl } = await createR2SignedDownload(fileName);
+      
+      // Retorna a URL para o cliente, o servidor NÃO tenta ler o arquivo
+      return sendJson(res, 200, { downloadUrl });
+    } catch (error) {
+      console.error("Erro R2:", error);
+      return sendJson(res, 500, { error: "r2_error" });
+    }
   }
-
-  // Envia o arquivo
-  res.writeHead(200, {
-    "Content-Type": fileName.endsWith('.exe') ? "application/vnd.microsoft.portable-executable" : "application/zip",
-    "Content-Disposition": `attachment; filename="${fileName}"`,
-    "Cache-Control": "no-store",
-  });
-  
-  fs.createReadStream(filePath).pipe(res);
 }
 
 function createDownloadToken(subscriber) {
