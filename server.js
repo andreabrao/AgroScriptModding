@@ -120,9 +120,6 @@ function getR2Client() {
   return r2Client;
 }
 
-const fs = require('fs');
-const path = require('path');
-
 // FUNÇÃO PARA SERVIR ARQUIVOS ESTÁTICOS DO SITE (HTML, CSS, JS, Imagens)
 function serveStatic(req, res) {
     // Define a pasta onde estão os arquivos do seu site (ajuste 'public' se for outro nome)
