@@ -126,7 +126,8 @@ async function createR2SignedDownload(fileName) {
     Bucket: process.env.R2_BUCKET,
     Key: getR2ObjectKey(fileName),
     ResponseContentType: "application/zip",
-    ResponseContentDisposition: `attachment; filename="${fileName}"`,
+    // REMOVA A LINHA ABAIXO OU COMENTE ELA:
+    // ResponseContentDisposition: `attachment; filename="${fileName}"`,
   });
   const expiresIn = getR2ExpiresIn();
   const downloadUrl = await getSignedUrl(getR2Client(), command, { expiresIn });
