@@ -275,9 +275,8 @@ public sealed class MainForm : Form
     request.Content = JsonContent(new
     {
         token = license.DownloadToken,
-        "isZip": true
+        isZip = true // <-- Sem aspas e usando "="
     });
-
     using var response = await httpClient.SendAsync(request);
     var responseText = await response.Content.ReadAsStringAsync();
 
