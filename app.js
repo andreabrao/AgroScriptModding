@@ -487,7 +487,7 @@ async function downloadProtectedMod(mod) {
   if (!state.member?.token) {
     setAccessPanelMessage(
       "Assinatura sem token seguro",
-      "No GitHub Pages, valide pelo backend online para liberar download protegido.",
+      "Valide pelo backend online para liberar download protegido.",
       "is-warning"
     );
     scrollToAccessPanel();
@@ -511,34 +511,12 @@ async function downloadProtectedMod(mod) {
     return false;
   }
 
-  const contentType = response.headers.get("Content-Type") || "";
-  if (contentType.includes("application/json")) {
-    const data = await response.json();
-    if (!data.downloadUrl) {
-      setAccessPanelMessage(
-        "Download indisponivel",
-        "O servidor liberou o mod, mas nao retornou o link temporario.",
-        "is-error"
-      );
-      scrollToAccessPanel();
-      return false;
-    }
-
-    const link = document.createElement("a");
-    link.href = data.downloadUrl;
-    link.download = data.fileName || `Instalador_${mod.id}.exe`;
-    const filename = filenameMatch?.[1] || data.fileName || `Instalador_${mod.id}.exe`;
-    link.rel = "noopener";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    return true;
-  }
-
+  // O backend agora sempre faz stream — nunca retorna JSON aqui
   const blob = await response.blob();
   const disposition = response.headers.get("Content-Disposition") || "";
   const filenameMatch = disposition.match(/filename="([^"]+)"/);
-  const filename = filenameMatch?.[1] || `${mod.id}.zip`;
+  const filename = filenameMatch?.[1] || `Instalador_${mod.id}.exe`;
+
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;

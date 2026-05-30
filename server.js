@@ -120,17 +120,15 @@ function getR2Client() {
   return r2Client;
 }
 
-async function createR2SignedDownload(fileName) {
-  const { GetObjectCommand, getSignedUrl } = getR2Sdk();
+async function streamR2File(fileName, res) {
+  const { GetObjectCommand } = getR2Sdk();
   const command = new GetObjectCommand({
     Bucket: process.env.R2_BUCKET,
     Key: getR2ObjectKey(fileName),
-    ResponseContentType: "application/octet-stream",          // ← correto para .exe
-    ResponseContentDisposition: `attachment; filename="${fileName}"`, // ← força download com nome certo
   });
-  const expiresIn = getR2ExpiresIn();
-  const downloadUrl = await getSignedUrl(getR2Client(), command, { expiresIn });
-  return { downloadUrl, fileName, expiresIn };
+
+  const s3Response = await getR2Client().send(command);
+  return s3Response; // retorna o objeto com Body (stream) e ContentLength
 }
 
 const mimeTypes = {
@@ -581,40 +579,69 @@ function registerDownload(subscriber) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
-  // 1. Define o cabeçalho como JSON para evitar que o navegador baixe como arquivo
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Content-Disposition', 'inline');
-
-  const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  const urlCompleta = modFiles[modId];
+  const modId = decodeURIComponent(
+    pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, "")
+  );
 
   console.log(`[DEBUG] Tentativa de download para: ${modId}`);
 
-  if (!urlCompleta) return sendJson(res, 404, { error: "mod_not_found" });
+  const fileName = modFiles[modId];
+  if (!fileName) return sendJson(res, 404, { error: "mod_not_found" });
 
-  // 2. Valida o Token
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
   if (!member) return sendJson(res, 401, { error: "invalid_token" });
 
-  // 3. Verificação de cota (Opcional, mas recomendado para evitar abusos)
   if (!checkDownloadQuota(member)) {
     return sendJson(res, 403, { error: "quota_exceeded", message: "Limite atingido." });
   }
 
-  // 4. Gera a URL assinada do R2
   try {
-    const fileName = urlCompleta.split('/').pop();
-    const { downloadUrl } = await createR2SignedDownload(fileName);
-    
-    // Registrar o uso
+    if (isR2Configured()) {
+      // Modo R2: stream direto do Cloudflare para o cliente
+      const s3Response = await streamR2File(fileName, res);
+
+      const contentLength = s3Response.ContentLength;
+      res.writeHead(200, {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": `attachment; filename="${fileName}"`,
+        ...(contentLength ? { "Content-Length": String(contentLength) } : {}),
+      });
+
+      // Pipe do stream S3 direto para a resposta HTTP
+      const nodeStream = s3Response.Body.transformToWebStream
+        ? require("stream").Readable.fromWeb(s3Response.Body.transformToWebStream())
+        : s3Response.Body; // já é um Node.js Readable
+
+      nodeStream.pipe(res);
+      nodeStream.on("error", (err) => {
+        console.error("[ERRO] Stream R2 quebrou:", err);
+        if (!res.headersSent) res.writeHead(500);
+        res.end();
+      });
+    } else {
+      // Modo local: serve o arquivo da pasta private-downloads
+      const filePath = path.join(privateDownloadDir, fileName);
+      if (!fs.existsSync(filePath) || !isPathInside(filePath, privateDownloadDir)) {
+        return sendJson(res, 404, { error: "file_not_found" });
+      }
+
+      const stat = fs.statSync(filePath);
+      res.writeHead(200, {
+        "Content-Type": "application/octet-stream",
+        "Content-Disposition": `attachment; filename="${fileName}"`,
+        "Content-Length": String(stat.size),
+      });
+      fs.createReadStream(filePath).pipe(res);
+    }
+
     registerDownload(member);
-    
-    console.log(`[DEBUG] URL assinada gerada com sucesso.`);
-    return sendJson(res, 200, { downloadUrl, fileName });
+    console.log(`[DEBUG] Stream iniciado com sucesso para: ${fileName}`);
   } catch (error) {
-    console.error("Erro R2:", error);
-    return sendJson(res, 500, { error: "r2_error" });
+    console.error("[ERRO] Falha no download:", error);
+    if (!res.headersSent) {
+      return sendJson(res, 500, { error: "download_error", message: "Erro ao servir o arquivo." });
+    }
   }
 }
 function createDownloadToken(subscriber) {
