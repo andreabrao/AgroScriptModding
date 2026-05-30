@@ -171,57 +171,38 @@ const server = http.createServer(async (req, res) => {
       return res.end();
     }
 
-    if (req.method === "GET" && requestUrl.pathname === "/api/plans") {
-      return sendJson(res, 200, { plans });
-    }
+    // --- BLOCO DE APIS ---
+    if (req.method === "GET" && requestUrl.pathname === "/api/plans") return sendJson(res, 200, { plans });
+    if (req.method === "GET" && requestUrl.pathname === "/api/health") return sendJson(res, 200, { ok: true, service: "agro-script-modding-api", downloadStorage: getDownloadStorageMode() });
+    if (requestUrl.pathname.startsWith("/api/admin/")) return handleAdminRequest(req, res, requestUrl);
+    if (req.method === "POST" && requestUrl.pathname === "/api/payments/create-preference") return handleCreatePreference(req, res);
+    if (req.method === "POST" && requestUrl.pathname === "/api/payments/webhook") return handleWebhook(req, res);
+    if (req.method === "POST" && requestUrl.pathname === "/api/payments/claim") return handlePaymentClaim(req, res);
+    if (req.method === "POST" && requestUrl.pathname === "/api/verify-key") return handleVerifyKey(req, res);
+    if (req.method === "POST" && requestUrl.pathname === "/api/subscriptions/verify") return handleVerifySubscription(req, res);
+    if (req.method === "POST" && requestUrl.pathname === "/api/generate-key") return handleGenerateKey(req, res);
 
-    if (req.method === "GET" && requestUrl.pathname === "/api/health") {
-      return sendJson(res, 200, {
-        ok: true,
-        service: "agro-script-modding-api",
-        downloadStorage: getDownloadStorageMode(),
-      });
-    }
-
-    if (requestUrl.pathname.startsWith("/api/admin/")) {
-      return handleAdminRequest(req, res, requestUrl);
-    }
-
-    if (req.method === "POST" && requestUrl.pathname === "/api/payments/create-preference") {
-      return handleCreatePreference(req, res);
-    }
-
-    if (req.method === "POST" && requestUrl.pathname === "/api/payments/webhook") {
-      return handleWebhook(req, res);
-    }
-
-    if (req.method === "POST" && requestUrl.pathname === "/api/payments/claim") {
-      return handlePaymentClaim(req, res);
-    }
-
-    if (req.method === "POST" && requestUrl.pathname === "/api/verify-key") {
-      return handleVerifyKey(req, res);
-    }
-
-    if (req.method === "POST" && requestUrl.pathname === "/api/subscriptions/verify") {
-      return handleVerifySubscription(req, res);
-    }
-
-    if (req.method === "POST" && requestUrl.pathname === "/api/generate-key") {
-      return handleGenerateKey(req, res);
-    }
-
-    if (
-      req.method === "POST" &&
-      requestUrl.pathname.startsWith("/api/mods/") &&
-      requestUrl.pathname.endsWith("/download")
-    ) {
+    // --- BLOCO DE DOWNLOAD (DEBUGADO) ---
+    if (requestUrl.pathname.startsWith("/api/mods/") && requestUrl.pathname.endsWith("/download")) {
+      console.log(`[DEBUG] Rota de download interceptada: ${req.method} ${requestUrl.pathname}`);
+      // Se não for POST, vamos avisar no log, mas não deixar passar
+      if (req.method !== "POST") {
+        console.warn(`[AVISO] Tentativa de download com método inválido: ${req.method}`);
+        return sendJson(res, 405, { error: "method_not_allowed" });
+      }
       return handleProtectedDownload(req, res, requestUrl.pathname);
+    }
+
+    // --- BLOCO DE ARQUIVOS ESTÁTICOS ---
+    // AQUI ESTÁ A PROTEÇÃO: Se a URL começar com /api/, NÃO deve tentar servir como arquivo
+    if (requestUrl.pathname.startsWith("/api/")) {
+      console.log(`[DEBUG] API não encontrada: ${requestUrl.pathname}`);
+      return sendJson(res, 404, { error: "api_not_found" });
     }
 
     return serveStatic(req, res, requestUrl.pathname);
   } catch (error) {
-    console.error(error);
+    console.error("Erro no servidor:", error);
     return sendJson(res, 500, { error: "server_error", message: "Erro interno do servidor." });
   }
 });
