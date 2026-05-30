@@ -157,9 +157,7 @@ const modFiles = {
   "script-hud":      "Instalador_SCRIPT_HUD.exe",
   "mf-serie-s":      "Instalador_MF_SERIE_S.exe",
   "grade-asm":       "Instalador_GRADE_ASM.exe",
-};
 
-const modZipFiles = {
   "asm-8r":          "FS22_ASM_8R_PERF_BR.zip",
   "case-axial":      "FS22_CASE_AXIAL.zip",
   "nh-t9":           "FS22_NH_T9.zip",
@@ -600,7 +598,7 @@ async function handleProtectedDownload(req, res, pathname) {
   );
 
   // CORREÇÃO AQUI: Mudamos de modFiles para modZipFiles
-  const fileName = modZipFiles[modId];
+  const fileName = modFiles[modId];
   if (!fileName) return sendJson(res, 404, { error: "mod_not_found" });
 
   const body = await readJson(req).catch(() => ({}));
