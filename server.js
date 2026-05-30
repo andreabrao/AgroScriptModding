@@ -577,24 +577,36 @@ async function handleAdminRequest(req, res, requestUrl) {
   });
 }
 
-  async function handleProtectedDownload(req, res, pathname) {
-  // 1. Pega o nome do arquivo da URL (ex: Instalador_ASM-8R.exe)
-  const fileName = pathname.split('/').pop(); 
-  
-  // 2. CAMINHO CORRIGIDO: 
-  // Removi o 'download' do path.join, pois a estrutura que você mostrou na foto 
-  // já é modsprivados/download/arquivo
-  const filePath = path.join(process.cwd(), 'modsprivados', fileName);
+async function handleProtectedDownload(req, res, pathname) {
+  const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
+  const urlCompleta = modFiles[modId];
 
-  console.log("DEBUG: Servidor procurando o arquivo em:", filePath);
-
-  if (!fs.existsSync(filePath)) {
-    return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
+  if (!urlCompleta) {
+    return sendJson(res, 404, { error: "mod_not_found" });
   }
 
-  // 4. Envia o arquivo
+  // fileName será "Instalador_ASM_8R.exe" ou "FS22_...zip"
+  const fileName = urlCompleta.split('/').pop();
+
+  // Verifica Token (Segurança mantida)
+  const body = await readJson(req).catch(() => ({}));
+  const member = verifyDownloadToken(body.token);
+  if (!member) return sendJson(res, 401, { error: "invalid_token" });
+
+  // CAMINHO DINÂMICO:
+  // Se for .exe, olha em 'modsprivados/download'. Se for .zip, olha em 'modsprivados'.
+  const subPasta = fileName.endsWith('.exe') ? 'download' : '';
+  const filePath = path.join(process.cwd(), 'modsprivados', subPasta, fileName);
+
+  console.log("DEBUG: Procurando arquivo em:", filePath);
+
+  if (!fs.existsSync(filePath)) {
+    return sendJson(res, 404, { error: "file_missing", message: "Arquivo não encontrado." });
+  }
+
+  // Envia o arquivo
   res.writeHead(200, {
-    "Content-Type": "application/vnd.microsoft.portable-executable",
+    "Content-Type": fileName.endsWith('.exe') ? "application/vnd.microsoft.portable-executable" : "application/zip",
     "Content-Disposition": `attachment; filename="${fileName}"`,
     "Cache-Control": "no-store",
   });
