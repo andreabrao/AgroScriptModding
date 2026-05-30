@@ -202,7 +202,7 @@ const mimeTypes = {
 };
 
 const modFiles = {
-  "valmt-8750":       "FS22_ASM_8R_PERF_BR.exe",
+  "valmt-8750":       "Instalador_VALMT_8750.exe",
   "asm-8r":           "Instalador_ASM_8R_PERF_BR.exe",
   "case-axial":       "Instalador_CASE_AXIAL.exe",
   "nh-t9":            "Instalador_NH_T9.exe",
@@ -214,7 +214,7 @@ const modFiles = {
 };
 
 const modZipFiles = {
-  "valmt-8750":       "FS22_ASM_8R_PERF_BR.zip",
+  "valmt-8750":       "FS22_valmt_8750.zip",
   "asm-8r":           "FS22_ASM_8R_PERF_BR.zip",
   "case-axial":       "FS22_CASE_AXIAL.zip",
   "nh-t9":            "FS22_NH_T9.zip",
