@@ -582,7 +582,7 @@ async function handleProtectedDownload(req, res, pathname) {
 
   // 2. Define a pasta onde você guardou seus .exe no servidor
   // Ajuste 'caminho_dos_executaveis' para o nome da pasta onde seus .exe estão
-  const filePath = path.join(process.cwd(), 'caminho_dos_executaveis', fileName);
+  const filePath = path.join(process.cwd(), 'modsprivados', fileName);
 
   // 3. Verifica se o token é válido (mantemos sua segurança)
   const body = await readJson(req).catch(() => ({}));
