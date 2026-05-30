@@ -559,6 +559,29 @@ async function handleAdminRequest(req, res, requestUrl) {
   });
 }
 
+function checkDownloadQuota(subscriber) {
+  const plan = plans[subscriber.plan];
+  if (!plan || plan.quota === null) return true; // Usuários sem limite (ex: Diamante) passam direto
+
+  const usage = readDownloadUsage();
+  const currentMonth = new Date().toISOString().slice(0, 7);
+  const key = `${subscriber.email}:${currentMonth}`;
+  
+  const downloadsEsteMes = usage[key] || [];
+  return downloadsEsteMes.length < plan.quota;
+}
+
+function registerDownload(subscriber) {
+  const usage = readDownloadUsage();
+  const currentMonth = new Date().toISOString().slice(0, 7);
+  const key = `${subscriber.email}:${currentMonth}`;
+  
+  if (!usage[key]) usage[key] = [];
+  usage[key].push(new Date().toISOString());
+  
+  fs.writeFileSync(downloadUsagePath, JSON.stringify(usage, null, 2));
+}
+
 async function handleProtectedDownload(req, res, pathname) {
   // 1. Define o cabeçalho como JSON para evitar que o navegador baixe como arquivo
   res.setHeader('Content-Type', 'application/json');
