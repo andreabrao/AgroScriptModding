@@ -577,40 +577,36 @@ async function handleAdminRequest(req, res, requestUrl) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
-  // 1. Captura o modId da URL
-  const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  
-  // 2. BUSCA O NOME DO ARQUIVO REAL NO SEU DICIONÁRIO
-  // Certifique-se de que o objeto 'modFiles' esteja acessível nesta função
-  const urlCompleta = modFiles[modId]; 
-  
-  // Extrai apenas o nome do arquivo da URL (ou use o nome que você salvou no R2)
-  const fileName = urlCompleta ? urlCompleta.split('/').pop() : null;
+  // 1. O nome do arquivo vem direto da URL (ex: "Instalador_ASM-8R.exe")
+  const fileName = pathname.split('/').pop().replace('/download', '');
 
+  // 2. Define a pasta onde você guardou seus .exe no servidor
+  // Ajuste 'caminho_dos_executaveis' para o nome da pasta onde seus .exe estão
+  const filePath = path.join(process.cwd(), 'caminho_dos_executaveis', fileName);
+
+  // 3. Verifica se o token é válido (mantemos sua segurança)
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
-  
   if (!member) {
     return sendJson(res, 401, { error: "invalid_token", message: "Sessão inválida." });
   }
 
-  // 3. Valida se o mod existe
-  if (!fileName) {
-    return sendJson(res, 404, { error: "mod_not_found", message: "Mod nao encontrado." });
+  // 4. Verifica se o arquivo físico existe no servidor
+  if (!fs.existsSync(filePath)) {
+    console.error("Arquivo não encontrado:", filePath);
+    return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
   }
 
-  // 4. Verifica se o R2 está configurado e baixa o arquivo correto
-  if (isR2Configured()) {
-    try {
-      // Agora ele vai buscar o arquivo do mod (ex: FS22_ASM-8R.zip) no R2
-      const { downloadUrl } = await createR2SignedDownload(fileName);
-      return sendJson(res, 200, { downloadUrl });
-    } catch (error) {
-      console.error("Erro R2:", error);
-      return sendJson(res, 500, { error: "r2_error", message: "Erro ao gerar link de download." });
-    }
-  }
+  // 5. Envia o arquivo .exe para o navegador
+  res.writeHead(200, {
+    "Content-Type": "application/vnd.microsoft.portable-executable",
+    "Content-Disposition": `attachment; filename="${fileName}"`,
+    "Cache-Control": "no-store",
+  });
+  
+  fs.createReadStream(filePath).pipe(res);
 }
+
 function createDownloadToken(subscriber) {
   const payload = {
     email: subscriber.email,
