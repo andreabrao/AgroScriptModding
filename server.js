@@ -583,7 +583,7 @@ async function handleAdminRequest(req, res, requestUrl) {
   // 2. CAMINHO CORRIGIDO: 
   // Removi o 'download' do path.join, pois a estrutura que você mostrou na foto 
   // já é modsprivados/download/arquivo
-  const filePath = path.join(process.cwd(), 'modsprivados', 'download', fileName);
+  const filePath = path.join(process.cwd(), 'modsprivados', fileName);
 
   console.log("DEBUG: Servidor procurando o arquivo em:", filePath);
 
