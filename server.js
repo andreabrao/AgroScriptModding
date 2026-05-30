@@ -588,8 +588,6 @@ async function handleProtectedDownload(req, res, pathname) {
     pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, "")
   );
 
-  console.log(`[DEBUG] Tentativa de download para: ${modId}`);
-
   const fileName = modFiles[modId];
   if (!fileName) return sendJson(res, 404, { error: "mod_not_found" });
 
@@ -602,51 +600,20 @@ async function handleProtectedDownload(req, res, pathname) {
   }
 
   try {
-    if (isR2Configured()) {
-      // Modo R2: stream direto do Cloudflare para o cliente
-      const s3Response = await streamR2File(fileName, res);
-
-      const contentLength = s3Response.ContentLength;
-      res.writeHead(200, {
-        "Content-Type": "application/octet-stream",
-        "Content-Disposition": `attachment; filename="${fileName}"`,
-        ...(contentLength ? { "Content-Length": String(contentLength) } : {}),
-      });
-
-      // Pipe do stream S3 direto para a resposta HTTP
-      const nodeStream = s3Response.Body.transformToWebStream
-        ? require("stream").Readable.fromWeb(s3Response.Body.transformToWebStream())
-        : s3Response.Body; // já é um Node.js Readable
-
-      nodeStream.pipe(res);
-      nodeStream.on("error", (err) => {
-        console.error("[ERRO] Stream R2 quebrou:", err);
-        if (!res.headersSent) res.writeHead(500);
-        res.end();
-      });
-    } else {
-      // Modo local: serve o arquivo da pasta private-downloads
-      const filePath = path.join(privateDownloadDir, fileName);
-      if (!fs.existsSync(filePath) || !isPathInside(filePath, privateDownloadDir)) {
-        return sendJson(res, 404, { error: "file_not_found" });
-      }
-
-      const stat = fs.statSync(filePath);
-      res.writeHead(200, {
-        "Content-Type": "application/octet-stream",
-        "Content-Disposition": `attachment; filename="${fileName}"`,
-        "Content-Length": String(stat.size),
-      });
-      fs.createReadStream(filePath).pipe(res);
-    }
+    const { GetObjectCommand, getSignedUrl } = getR2Sdk();
+    const command = new GetObjectCommand({
+      Bucket: process.env.R2_BUCKET,
+      Key: getR2ObjectKey(fileName),
+      ResponseContentDisposition: `attachment; filename="${fileName}"`,
+      ResponseContentType: "application/octet-stream",
+    });
+    const downloadUrl = await getSignedUrl(getR2Client(), command, { expiresIn: getR2ExpiresIn() });
 
     registerDownload(member);
-    console.log(`[DEBUG] Stream iniciado com sucesso para: ${fileName}`);
+    return sendJson(res, 200, { downloadUrl, fileName });
   } catch (error) {
-    console.error("[ERRO] Falha no download:", error);
-    if (!res.headersSent) {
-      return sendJson(res, 500, { error: "download_error", message: "Erro ao servir o arquivo." });
-    }
+    console.error("[ERRO] Falha ao gerar URL assinada:", error);
+    return sendJson(res, 500, { error: "r2_error", message: "Erro ao gerar link de download." });
   }
 }
 function createDownloadToken(subscriber) {
