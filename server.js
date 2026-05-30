@@ -559,37 +559,31 @@ async function handleAdminRequest(req, res, requestUrl) {
 }
 
 async function handleProtectedDownload(req, res, pathname) {
+  res.setHeader('Content-Type', 'application/json');
+
   const modId = decodeURIComponent(pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, ""));
-  
-  // 1. Pega o link do arquivo no seu dicionário (modFiles)
   const urlCompleta = modFiles[modId];
-  if (!urlCompleta) {
-    return sendJson(res, 404, { error: "mod_not_found" });
-  }
 
-  // 2. Extrai o nome do arquivo (ex: FS22_ASM_8R_PERF_BR.zip ou Instalador_NOME.exe)
-  const fileName = urlCompleta.split('/').pop();
+  // LOG DE VERIFICAÇÃO
+  console.log(`[DEBUG] ModID: ${modId}, URL definida: ${urlCompleta}`);
 
-  // 3. Valida o Token do cliente
+  if (!urlCompleta) return sendJson(res, 404, { error: "mod_not_found" });
+
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
-  if (!member) {
-    return sendJson(res, 401, { error: "invalid_token" });
-  }
+  if (!member) return sendJson(res, 401, { error: "invalid_token" });
 
-  // 4. Se o token é válido, NÃO procure arquivo local.
-  // Apenas gere a URL assinada do R2 e envie para o instalador/navegador
-  if (isR2Configured()) {
-    try {
-      console.log("DEBUG: Gerando link assinado para:", fileName);
-      const { downloadUrl } = await createR2SignedDownload(fileName);
-      
-      // Retorna a URL para o cliente, o servidor NÃO tenta ler o arquivo
-      return sendJson(res, 200, { downloadUrl });
-    } catch (error) {
-      console.error("Erro R2:", error);
-      return sendJson(res, 500, { error: "r2_error" });
-    }
+  try {
+    const fileName = urlCompleta.split('/').pop();
+    const { downloadUrl } = await createR2SignedDownload(fileName);
+    
+    // LOG DO QUE ESTÁ SENDO ENVIADO
+    console.log(`[DEBUG] Enviando JSON com URL: ${downloadUrl}`);
+    
+    return sendJson(res, 200, { downloadUrl });
+  } catch (error) {
+    console.error("Erro R2:", error);
+    return sendJson(res, 500, { error: "r2_error" });
   }
 }
 
