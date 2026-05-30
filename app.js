@@ -494,38 +494,57 @@ async function downloadProtectedMod(mod) {
     return false;
   }
 
-  const response = await fetch(apiUrl(`/api/mods/${encodeURIComponent(mod.id)}/download`), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token: state.member.token }),
-  });
+  // Cria e anexa o link ANTES do await — mantém o contexto do clique do usuário
+  const link = document.createElement("a");
+  link.style.display = "none";
+  document.body.appendChild(link);
 
-  if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
+  try {
+    const response = await fetch(apiUrl(`/api/mods/${encodeURIComponent(mod.id)}/download`), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: state.member.token }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      setAccessPanelMessage(
+        "Download bloqueado",
+        data.message || "O servidor nao liberou esse arquivo para o seu plano.",
+        "is-error"
+      );
+      scrollToAccessPanel();
+      return false;
+    }
+
+    const blob = await response.blob();
+    const disposition = response.headers.get("Content-Disposition") || "";
+    const filenameMatch = disposition.match(/filename="([^"]+)"/);
+    const filename = filenameMatch?.[1] || `Instalador_${mod.id}.exe`;
+
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = filename;
+    link.click();
+
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      link.remove();
+    }, 2000);
+
+    return true;
+  } catch (err) {
+    console.error("Erro no download:", err);
     setAccessPanelMessage(
-      "Download bloqueado",
-      data.message || "O servidor nao liberou esse arquivo para o seu plano.",
+      "Erro no download",
+      "Nao foi possivel baixar o arquivo. Tente novamente.",
       "is-error"
     );
-    scrollToAccessPanel();
     return false;
+  } finally {
+    // Garante remoção mesmo se der erro antes de criar o blob
+    if (!link.href) link.remove();
   }
-
-  // O backend agora sempre faz stream — nunca retorna JSON aqui
-  const blob = await response.blob();
-  const disposition = response.headers.get("Content-Disposition") || "";
-  const filenameMatch = disposition.match(/filename="([^"]+)"/);
-  const filename = filenameMatch?.[1] || `Instalador_${mod.id}.exe`;
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-  return true;
 }
 
 async function claimApprovedPayment(paymentId) {
