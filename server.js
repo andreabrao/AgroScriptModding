@@ -465,7 +465,14 @@ async function handleVerifyKey(req, res) {
   const body = await readJson(req);
   const key = String(body.key || "").trim().toUpperCase();
   const hwid = String(body.hwid || "").trim();
-  const modId = String(body.modId || process.env.INSTALLER_DEFAULT_MOD_ID || "inst-asm8r").trim();
+
+  // 1. Tenta pegar o ID da URL de todas as formas possíveis (Express, parâmetros ou quebrando a URL)
+  const idDaUrl = req.params?.id || req.params?.modId || req.url?.split('/')[3];
+
+  // 2. Define o modId priorizando a URL, depois o body, e por fim um ID válido do seu dicionário
+  const modId = String(idDaUrl || body.modId || process.env.INSTALLER_DEFAULT_MOD_ID || "valmt-8750").trim();
+  
+  // 3. Pega o arquivo ZIP correto dentro do seu modZipFiles
   const fileName = modZipFiles[modId];
 
   if (!key || !hwid) {
