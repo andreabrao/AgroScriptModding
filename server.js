@@ -652,23 +652,19 @@ async function handleProtectedDownload(req, res, pathname) {
     pathname.replace(/^\/api\/mods\//, "").replace(/\/download$/, "")
   );
 
-  // 1. PRIMEIRO: Lemos o body e verificamos o token
+  // Lemos primeiro o corpo da requisição para validar o token
   const body = await readJson(req).catch(() => ({}));
   const member = verifyDownloadToken(body.token);
   if (!member) return sendJson(res, 401, { error: "invalid_token" });
 
-  // 2. SEGUNDO: Agora que sabemos quem é o 'member', escolhemos a tabela certa
-  // Se o token identificar que veio do instalador desktop, usa modZipFiles (.zip)
-  // Se veio do site, usa modFiles (.exe)
-  const fileName = member.isInstaller ? modZipFiles[modId] : modFiles[modId];
-
-  // 3. TERCEIRO: Se não encontrar o ID na tabela selecionada, dá o erro
+  // CORREÇÃO DEFINITIVA: Força a buscar sempre no bloco de ZIPs (.zip)
+  const fileName = modZipFiles[modId];
+  
   if (!fileName) {
-    console.log(`[DEBUG R2] ID "${modId}" não encontrado. (Instalador: ${!!member.isInstaller})`);
+    console.log(`[ERRO R2] Arquivo ZIP não encontrado para o ID: "${modId}"`);
     return sendJson(res, 404, { error: "mod_not_found" });
   }
 
-  // 4. QUARTO: Valida a cota do plano do usuário
   if (!checkDownloadQuota(member)) {
     return sendJson(res, 403, { error: "quota_exceeded", message: "Limite atingido." });
   }
