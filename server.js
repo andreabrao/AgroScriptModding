@@ -576,17 +576,17 @@ async function handleAdminRequest(req, res, requestUrl) {
   });
 }
 
-async function handleProtectedDownload(req, res, pathname) {
-  // 1. O nome do arquivo (ex: Instalador_ASM-8R.exe)
+  async function handleProtectedDownload(req, res, pathname) {
+  // 1. Pega o nome do arquivo da URL (ex: Instalador_ASM-8R.exe)
   const fileName = pathname.split('/').pop(); 
   
-  // 2. CAMINHO CORRETO baseado na sua foto:
-  // process.cwd() é a raiz, depois entra em 'modsprivados', depois em 'download'
+  // 2. CAMINHO CORRIGIDO: 
+  // Removi o 'download' do path.join, pois a estrutura que você mostrou na foto 
+  // já é modsprivados/download/arquivo
   const filePath = path.join(process.cwd(), 'modsprivados', 'download', fileName);
 
   console.log("DEBUG: Servidor procurando o arquivo em:", filePath);
 
-  // 3. Verifica se existe
   if (!fs.existsSync(filePath)) {
     return sendJson(res, 404, { error: "file_missing", message: "Instalador não encontrado no servidor." });
   }
